@@ -2,6 +2,8 @@
 
 @section('content')
 
+    {{ Breadcrumbs::render('records.index') }}
+
     <div class="vertical-spacer"></div>
     <div class="container">
         <div class="spanner"></div>

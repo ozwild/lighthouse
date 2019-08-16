@@ -64,7 +64,7 @@ class RecordController extends Controller
      */
     public function edit(Record $record)
     {
-        //
+        return view('models.records.edit', compact('record'));
     }
 
     /**
@@ -76,7 +76,8 @@ class RecordController extends Controller
      */
     public function update(Request $request, Record $record)
     {
-        //
+        $record->update($request->all());
+        return back();
     }
 
     /**

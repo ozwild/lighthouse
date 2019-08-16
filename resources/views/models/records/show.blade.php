@@ -44,10 +44,15 @@
     </style>
 @endpush
 
+@include('components.youtube')
+
 @section('content')
+
+    {{ Breadcrumbs::render('records.show', $record) }}
+
     @if($record->video)
         <div class="video-container">
-            {!! $record->video !!}
+            <div id="player"></div>
         </div>
     @endif
 

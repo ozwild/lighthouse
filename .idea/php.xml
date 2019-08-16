@@ -84,6 +84,7 @@
       <path value="$PROJECT_DIR$/vendor/sebastian/resource-operations" />
       <path value="$PROJECT_DIR$/vendor/opis/closure" />
       <path value="$PROJECT_DIR$/vendor/protoqol/prequel" />
+      <path value="$PROJECT_DIR$/vendor/davejamesmiller/laravel-breadcrumbs" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />

@@ -7,9 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Record extends Model
 {
     protected $fillable = [
-        'name', 'artist', 'video', 'lyrics'
+        'name', 'artist', 'video', 'video_start', 'lyrics'
     ];
-
-
-
+    
 }
