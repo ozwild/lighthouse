@@ -17,7 +17,7 @@ class CreateRecordsTable extends Migration
             $table->bigIncrements('id');
             $table->string('artist')->nullable();
             $table->string('name');
-            $table->string('video')->nullable();
+            $table->string('youtube_id')->nullable();
             $table->integer('video_start')->default(0);
             $table->text('lyrics')->nullable();
             $table->timestamps();

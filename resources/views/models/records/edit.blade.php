@@ -34,16 +34,15 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="video">Video</label>
-                            <textarea id="video" class="form-control" type="text" name="video"
-                                      placeholder="Youtube embed code"
-                                      rows="5">{{ $record->video }}</textarea>
+                            <label for="youtube_id">Youtube Video Id</label>
+                            <input id="youtube_id" class="form-control" type="text" name="youtube_id"
+                                   placeholder="Youtube embed code" value="{{ $record->youtube_id }}">
                         </div>
 
                         <div class="form-group">
                             <label for="video_start">Video Start</label>
                             <input id="video_start" class="form-control" type="number" step="1" name="video_start"
-                                   placeholder="Video start time in seconds">
+                                   placeholder="Video start time in seconds" value="{{ $record->video_start }}">
                         </div>
 
                         <div class="form-group">

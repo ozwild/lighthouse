@@ -5,9 +5,13 @@
     {{ Breadcrumbs::render('records.index') }}
 
     <div class="vertical-spacer"></div>
+
     <div class="container">
         <div class="spanner"></div>
         <main>
+
+            <a href="{{ route('records.create') }}">Add New</a>
+
             <div class="card">
                 <table class="table table-striped">
                     <thead>
@@ -22,7 +26,10 @@
                         <tr>
                             <td>{{ $record->name }}</td>
                             <td>{{ $record->artist }}</td>
-                            <td><a href="{{ route('records.show', $record->id) }}">Show</a></td>
+                            <td>
+                                <a href="{{ route('records.show', $record->id) }}">Show</a>
+                                <a href="{{ route('records.edit', $record->id) }}">Edit</a>
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>

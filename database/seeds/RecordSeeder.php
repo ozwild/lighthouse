@@ -18,10 +18,11 @@ class RecordSeeder extends Seeder
         $recordsData = [
             [
                 "name" => "Deja te conecto",
-                "video" => '<iframe width="560" height="315" src="https://www.youtube.com/embed/PJr0gJ__BPk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
-                "lyrics" => 'No me pidas que llore por ti,
-Alguna vez te vi sometido,
-Tus ojos caen why flotan en la obscuridad,
+                "youtube_id" => 'PJr0gJ__BPk',
+                "video_start" => 9,
+                "lyrics" => '[17.5] No me pidas que llore por ti,
+[20.5] Alguna vez te vi sometido,
+[25.5] Tus ojos caen why flotan en la obscuridad,
 Alumbrame, que estoy bien perdido.
 why fue una vez, si solo una vez,
 Que te dije la verdad, si solo una vez,
@@ -62,7 +63,8 @@ Try to make it right, love is the way.)',
                 "updated_at" => $now
             ], [
                 "name" => "azul",
-                "video" => '<iframe width="560" height="315" src="https://www.youtube.com/embed/e4ANL_JebVg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+                "youtube_id" => '<e4ANL_JebVg',
+                "video_start" => 0,
                 "lyrics" => 'Tú, qué manera de aferrarte, tú 
 Tú, que me orbitas como el sol 
 Tú, pegada a la pared
@@ -95,7 +97,8 @@ Ya tienes otro',
                 "updated_at" => $now
             ], [
                 "name" => "No hay mal que dure",
-                "video" => '<iframe width="560" height="315" src="https://www.youtube.com/embed/LI_xR-RNvOc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+                "youtube_id" => 'LI_xR-RNvOc',
+                "video_start" => 0,
                 "lyrics" => 'No tienes remedio
 Sientes demasiado
 Percibes la lluvia

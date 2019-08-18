@@ -13,7 +13,7 @@
                 player = new YT.Player('player', {
                     width: '426',
                     height: '240',
-                    videoId: '{{ $record->video }}',
+                    videoId: '{{ $record->youtube_id }}',
                     events: {
                         'onReady': onPlayerReady,
                         'onStateChange': onPlayerStateChange
@@ -21,24 +21,31 @@
                 });
             }
 
-            function onPlayerReady(event) {
-                player.seekTo(9);
+            function onPlayerReady() {
+                @if($record->video_start)
+                player.seekTo({{ $record->video_start }});
+                @endif
             }
 
             function onPlayerStateChange(event) {
                 if (event.data === YT.PlayerState.ENDED && shouldLoop) {
-                    player.seekTo(9);
-                }
-            }
 
-            function stopVideo() {
-                player.stopVideo();
+                    @if($record->video_start)
+
+                    player.seekTo({{ $record->video_start }});
+
+                    @else
+
+                    player.seekTo(0);
+
+                    @endif
+
+                }
             }
 
             window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
             window.getVideoTimestamp = function () {
                 return player.getCurrentTime();
-                return videoTarget.getCurrentTime();
             };
             window.shoudLoop = shouldLoop;
 

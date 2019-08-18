@@ -31,10 +31,9 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="video">Video</label>
-                            <textarea id="video" class="form-control" type="text" name="video"
-                                      placeholder="Youtube embed code"
-                                      rows="5"></textarea>
+                            <label for="youtube_id">Youtube Video Id</label>
+                            <input id="youtube_id" class="form-control" type="text" name="youtube_id"
+                                   placeholder="Youtube embed code">
                         </div>
 
                         <div class="form-group">
