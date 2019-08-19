@@ -37,103 +37,71 @@
         }
 
         .lyrics-container {
-            background: rgba(250, 250, 250, 0.1);
             color: white;
-            padding: 2em;
-            line-height: 1em;
-            z-index: 1;
+            line-height: 1;
             position: fixed;
             pointer-events: none;
+            z-index: 1;
+            text-align: center;
+            top: 0;
+            transition: top 0.3s;
+        }
+
+        .lyrics-container .lyrics-block.active {
+            padding: 2em 0;
         }
 
         .lyrics-container p {
-            line-height: 0.75em;
+            color: rgba(255, 255, 0, 0.2);
+            line-height: 1;
             font-size: 1.5em;
+            transition: color;
         }
 
         .lyrics-container p.active,
         .lyrics-container .active p {
-            color: yellow;
+            color: rgba(255, 255, 0, 1);
             font-weight: 500;
             font-size: 1.75em;
-            /* line-height: 1.5em; */
-            padding: 0 1em;
+            line-height: 1.15;
         }
 
     </style>
 @endpush
 
-@include('components.youtube')
+@include('assets.youtube')
+@include('assets.video')
+@include('assets.lyrics')
 
 @push('scripts')
     <script>
 
-        (function () {
+        const recordModel = @json($record);
+        let videoHelper;
+        let lyricsHelper;
+        let isPlaying = false;
 
-            let timeRegularExpression = /(?:\[)([\d.]+)(?:\])/;
+        document.addEventListener('youtube.ready', () => {
+            videoHelper = new VideoHelper();
+            videoHelper.recordModel = recordModel;
+            videoHelper.initialize();
+            videoHelper.on('playing', (...arguments) => {
+                isPlaying = true;
+            });
+            videoHelper.on('stopped', (...arguments) => {
+                isPlaying = false;
+            });
+            videoHelper.on('tick', time => {
+                lyricsHelper.showElementForTime(time);
+            });
+        });
 
-            let record = @json($record);
-
-            function createLine(content) {
-
-                let timestamp, timestampMatch, $element, lyricsText;
-
-                $element = $("<p>", {
-                    class: "lyrics-line"
-                });
-
-                lyricsText = content.replace(timeRegularExpression, "").trim();
-
-                $element.html(lyricsText);
-
-                timestampMatch = content.match(timeRegularExpression);
-
-                if (timestampMatch) {
-                    timestamp = timestampMatch[1];
-                    $element.attr('data-timestamp', timestamp);
-                }
-
-                return $element;
-
-            }
-
-            function createBlock(content) {
-                return $("<div>", {
-                    class: "lyrics-block"
-                }).html(content);
-            }
-
-            function processLyrics() {
-
-                let $container = $(".lyrics-container");
-                let lyricsText = record.lyrics;
-                let groupSplits, $blocks;
-
-                /**
-                 * Get Blocks
-                 */
-
-                lyricsText = lyricsText.replace(/[\r\n]\s{2,}/g, '[break here]');
-                groupSplits = lyricsText.split('[break here]');
-
-                $blocks = groupSplits.map(function (textBlock) {
-
-                    let lineSplits = textBlock.split("\n");
-                    let $blockLines = lineSplits.map(textLine => createLine(textLine));
-
-                    return createBlock($blockLines);
-
-                });
-
-                $container.html($blocks);
-
-                return $blocks;
-
-            }
-
-            processLyrics();
-
-        })();
+        $(document).ready(() => {
+            lyricsHelper = new LyricsHelper('.lyrics-container');
+            lyricsHelper.recordModel = recordModel;
+            lyricsHelper.process();
+            lyricsHelper.render();
+        });
 
     </script>
 @endpush
