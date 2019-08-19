@@ -37,14 +37,14 @@
         }
 
         .lyrics-container {
-            color: white;
-            line-height: 1;
             position: fixed;
-            pointer-events: none;
-            z-index: 1;
-            text-align: center;
             top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
             transition: top 0.3s;
+            z-index: 1;
+            pointer-events: none;
         }
 
         .lyrics-container .lyrics-block.active {
@@ -52,18 +52,18 @@
         }
 
         .lyrics-container p {
-            color: rgba(255, 255, 0, 0.2);
+            color: #444;
             line-height: 1;
-            font-size: 1.5em;
-            transition: color;
+            font-size: 2em;
+            font-weight: 500;
+            transition: color 0.3s, transform 0.3s;
+            transform: scale(0.85);
         }
 
         .lyrics-container p.active,
         .lyrics-container .active p {
-            color: rgba(255, 255, 0, 1);
-            font-weight: 500;
-            font-size: 1.75em;
-            line-height: 1.15;
+            color: yellowgreen;
+            transform: scale(1);
         }
 
     </style>
@@ -123,15 +123,6 @@
         @endforeach
     </div>
 
-    <div class="container">
-        <div class="row">
+    <div class="lyrics-container col col-sm-12 col-md-8"></div>
 
-            <div class="col col-sm-12 col-lg-7">
-                <div class="lyrics-container">
-                    {{ $record->lyrics }}
-                </div>
-            </div>
-
-        </div>
-    </div>
 @endsection

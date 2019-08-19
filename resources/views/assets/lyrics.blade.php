@@ -9,8 +9,11 @@
             sourceContent;
             htmlContent;
             lyrics = [];
-            bufferTime = 1;
-            groupMode = false;
+            bufferTimer = false;
+            bufferDuration = 0.5;
+            groupMode = true;
+            activeElement;
+
             #timestampRegularExpression = /(?:\[)([\d.]+)(?:])/;
             #lyricsGroupSeparatorRegularExpression = /[\r\n]\s{2,}/g;
             #lyricsGroupSeparatorReplacement = '[break here]';
@@ -95,6 +98,16 @@
                 this.$container.html(this.lyricsElements);
             }
 
+            #getTimestampOfLines = function (lines) {
+                let pool = lines
+                    .filter(line => line.timestamp !== null)
+                    .sort((a, b) => a.timestamp - b.timestamp);
+
+                return pool.length > 0 ?
+                    pool[0].timestamp :
+                    null;
+            };
+
             processGroups(text) {
                 let instance = this;
                 text = text.replace(instance.#lyricsGroupSeparatorRegularExpression, instance.#lyricsGroupSeparatorReplacement);
@@ -103,13 +116,14 @@
                 return groupSplits.map(function (blockText) {
 
                     let lines = instance.processLines(blockText);
-                    let timestamp = lines.sort((a, b) => a.timestamp - b.timestamp)[0].timestamp;
+                    let timestamp = instance.#getTimestampOfLines(lines);
 
                     let $contents = lines.map(line => line.$element);
                     let $element = instance.#createBlock($contents, timestamp);
                     $element.append($contents);
 
                     return {
+                        id: Symbol("group_id"),
                         lines: lines,
                         timestamp: timestamp,
                         $element: $element
@@ -131,6 +145,7 @@
                     let $element = instance.#createLine(content, timestamp);
 
                     return {
+                        id: Symbol("line_id"),
                         content: content,
                         timestamp: timestamp,
                         $element: $element
@@ -148,10 +163,22 @@
 
             }
 
+            getActiveElement() {
+                let result = this.lyrics
+                    .filter(item => item.$element.hasClass('active'))
+                    .splice(0, 1);
+
+                if (result.length === 0) {
+                    return null;
+                }
+
+                return result[0];
+            }
+
             getElementForTime(time) {
                 let result = this.lyrics
-                    .sort((a, b) => a.timestamp - b.timestamp)
-                    .filter(item => item.timestamp >= time)
+                    .sort((a, b) => b.timestamp - a.timestamp)
+                    .filter(item => item.timestamp && item.timestamp <= time)
                     .splice(0, 1);
 
                 if (result.length === 0) {
@@ -163,11 +190,18 @@
 
             showElementForTime(time) {
 
-                time = time - this.bufferTime;
+                if (this.bufferTimer) {
+                    time = time - this.bufferDuration;
+                }
 
                 let element = this.getElementForTime(time);
-
+                console.log(element);
                 if (!element) {
+                    this.#resetHighlights();
+                    return;
+                }
+
+                if (this.activeElement && element.id === this.activeElement.id) {
                     return;
                 }
 
@@ -175,6 +209,7 @@
                 this.#resetHighlights();
                 this.#highlightElement($element);
                 this.#repositionContainer($element);
+                this.activeElement = element;
             }
 
             #resetHighlights = function () {

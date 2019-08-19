@@ -6,6 +6,7 @@
             player;
             containerId = 'player';
             shouldLoop = true;
+            currentState;
 
             #eventHandlers = {
                 load: [],
@@ -17,7 +18,8 @@
                 paused: [],
                 buffering: [],
                 cued: [],
-                stopped: []
+                stopped: [],
+                tick: []
             };
 
             #autoStartVideo = function () {
@@ -50,7 +52,7 @@
                     throw "Unlisted event";
                 }
 
-                list.forEach(handler => handler.apply(this, ...args));
+                list.forEach(handler => handler.call(this, ...args));
             }
 
             initialize() {
@@ -68,7 +70,31 @@
                         }
                     }
                 });
+                this.#heartbeat();
             }
+
+            #heartbeat = function () {
+
+                let instance = this;
+                let start;
+
+                window.requestAnimationFrame(function tick(timestamp) {
+                    if (!start) {
+                        start = timestamp;
+                    }
+                    let progress = timestamp - start;
+
+                    if (progress > 250 && instance.isPlaying) {
+                        start = null;
+                        let videoTimestamp = instance.currentTimestamp;
+                        instance.trigger('tick', videoTimestamp);
+                    }
+
+                    window.requestAnimationFrame(tick);
+
+                });
+
+            };
 
             onPlayerReady(e) {
                 this.trigger('load', e);
@@ -76,8 +102,17 @@
                 this.trigger('ready', e);
             }
 
+            get isPlaying() {
+                switch (this.currentState) {
+                    case YT.PlayerState.PLAYING:
+                        return true;
+                        return false;
+                }
+            }
+
             onPlayerStateChange(e) {
                 this.trigger('stateChange', e);
+                this.currentState = e.data;
                 if (e.data === YT.PlayerState.UNSTARTED) {
                     this.trigger('unstarted', e);
                     this.trigger('stopped', e);
