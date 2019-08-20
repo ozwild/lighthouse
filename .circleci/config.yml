@@ -6,23 +6,34 @@ version: 2
 jobs:
   build:
     docker:
-      # Specify the version you desire here
       - image: circleci/php:7.1-stretch-node-browsers
+        environment:
+          APP_ENV: Testing
+          DB_CONNECTION: sqlite
 
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # Using the RAM variation mitigates I/O contention
-      # for database intensive operations.
-      # - image: circleci/mysql:5.7-ram
-      #
-      # - image: redis:2.8.19
+    working_directory: ~/laravel
 
     steps:
       - checkout
 
-      - run: sudo apt update && sudo apt install zlib1g-dev libsqlite3-dev # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
-      - run: sudo docker-php-ext-install zip
+      - run:
+          name: Update System
+          command: sudo apt-get update
+
+      - run:
+          name: Install SQLite
+          command: sudo apt install zlib1g-dev libsqlite3-dev
+
+      - run:
+          name: Install PHP extensions
+          command: |
+            sudo docker-php-ext-install zip pdo_sqlite
+
+      - run:
+          name: Setup Laravel environment variables for CircleCI test
+          command: cp .env.example .env
+
+      - run: sudo composer self-update
 
       # Download and cache dependencies
       - restore_cache:
@@ -35,29 +46,48 @@ jobs:
       - run: composer install -n --prefer-dist
 
       - save_cache:
-          key: composer-v1-{{ checksum "composer.json" }}
+          key: v1-dependencies-{{ checksum "composer.json" }}
           paths:
-            - ./vendor
+            - vendor
+
+      - run:
+          name: Generate Key
+          command: |
+            cp .env.testing .env
+            php artisan key:generate
+            touch ./storage/logs/laravel.log
+
+
       - restore_cache:
           keys:
             - node-v4-{{ checksum "package.json" }}
             - node-v4-
-      - run: npm install
+
+      - run:
+          name: Install Node dependencies
+          command: |
+            node --version
+            npm --version
+            npm install
       - save_cache:
           key: node-v4-{{ checksum "package.json" }}
           paths:
             - node_modules
-            - ~/.yarn
 
-      # prepare the database
-      - run: touch storage/testing.sqlite
-      - run: php artisan migrate --env=testing --database=sqlite_testing --force
+      - run:
+          name: Run Webpack
+          command: npm run prod
 
-      # run tests with phpunit or codecept
-      #- run: ./vendor/bin/phpunit
-      - run: ./vendor/bin/codecept build
-      - run: ./vendor/bin/codecept run --xml result.xml
-      - store_test_results:
-          path: tests/_output
-      - store_artifacts:
-          path: tests/_output
+      - run:
+          name: Prepare SQLite Database;
+          command: touch storage/testing.sqlite
+
+      - run:
+          name: Laravel stuff
+          command: php artisan migrate --env=testing --database=sqlite_testing --force
+
+      - run:
+          name: Run Unit Tests
+          command: |
+            mkdir -p ./logs/phpunit
+            ./vendor/bin/phpunit -d memory_limit=512M --log-junit logs/phpunit/junit.xml --testdox-html logs/phpunit/testdox.html
