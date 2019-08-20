@@ -10,7 +10,7 @@
             lyrics = [];
             bufferTimer = false;
             bufferDuration = 0.5;
-            groupMode = true;
+            groupMode = false;
             activeElement;
 
             #timestampRegularExpression = /(?:\[)([\d.]+)(?:])/;
@@ -193,7 +193,7 @@
                 }
 
                 let element = this.getElementForTime(time);
-                console.log(element);
+
                 if (!element) {
                     this.#resetHighlights();
                     return;

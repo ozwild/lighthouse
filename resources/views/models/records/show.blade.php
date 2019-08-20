@@ -92,6 +92,9 @@
                 isPlaying = false;
             });
             videoHelper.on('tick', time => {
+                if(!lyricsHelper){
+                    return;
+                }
                 lyricsHelper.showElementForTime(time);
             });
         });
