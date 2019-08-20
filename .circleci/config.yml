@@ -55,6 +55,7 @@ jobs:
           command: |
             cp .env.testing .env
             php artisan key:generate
+            php artisan config:cache
             touch ./storage/logs/laravel.log
 
 
@@ -80,7 +81,7 @@ jobs:
 
       - run:
           name: Prepare SQLite Database;
-          command: touch storage/testing.sqlite
+          command: touch storage/sqlite_testing.sqlite
 
       - run:
           name: Laravel stuff
