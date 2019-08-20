@@ -5,7 +5,6 @@
             #recordModel;
             containerSelector;
             $container;
-            timestamps = [];
             sourceContent;
             htmlContent;
             lyrics = [];
@@ -81,12 +80,11 @@
                 this.sourceContent = record.lyrics;
             }
 
-            set lyrics(lyrics) {
+            set content(lyrics) {
                 this.sourceContent = lyrics;
-                this.render();
             }
 
-            get lyrics() {
+            get content() {
                 return this.sourceContent;
             }
 

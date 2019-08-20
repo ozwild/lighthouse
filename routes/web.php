@@ -16,3 +16,11 @@ Route::get('/', function () {
 })->name('home');
 
 Route::resource('records', 'RecordController');
+
+Route::prefix("records")
+    ->group(function () {
+
+        Route::get("{record}/sync", 'RecordController@getSync')
+            ->name("records.lyrics.sync");
+
+    });

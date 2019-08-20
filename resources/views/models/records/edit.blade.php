@@ -45,11 +45,12 @@
                                    placeholder="Video start time in seconds" value="{{ $record->video_start }}">
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group clearfix">
                             <label for="lyrics">Lyrics</label>
                             <textarea id="lyrics" class="form-control" type="text" name="lyrics"
                                       placeholder="Song lyrics"
                                       rows="15">{{ $record->lyrics }}</textarea>
+                            <a class="btn btn-link float-right" href="{{ route('records.lyrics.sync', $record->id) }}">Sync</a>
                         </div>
 
                         <div class="form-group">

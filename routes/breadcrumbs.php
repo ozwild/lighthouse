@@ -20,3 +20,8 @@ Breadcrumbs::for('records.edit', function ($trail, $record) {
     $trail->push("Edit", route('records.edit', $record->id));
 });
 
+Breadcrumbs::for('lyrics.sync', function ($trail, $record) {
+    $trail->parent('records.edit', $record);
+    $trail->push("Sync", route('records.lyrics.sync', $record->id));
+});
+
