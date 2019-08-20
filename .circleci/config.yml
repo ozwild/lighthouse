@@ -81,11 +81,11 @@ jobs:
 
       - run:
           name: Prepare SQLite Database;
-          command: touch storage/sqlite_testing.sqlite
+          command: touch ./database/database.sqlite
 
       - run:
           name: Laravel stuff
-          command: php artisan migrate --env=testing --database=sqlite_testing --force
+          command: php artisan migrate --env=testing --database=sqlite --force
 
       - run:
           name: Run Unit Tests
