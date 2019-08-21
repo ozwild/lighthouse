@@ -16,8 +16,6 @@
             #timestampRegularExpression = /(?:\[)([\d.]+)(?:])/;
             #lyricsGroupSeparatorRegularExpression = /[\r\n]\s{2,}/g;
             #lyricsGroupSeparatorReplacement = '[break here]';
-            #lineClass = "lyrics-line";
-            #groupClass = "lyrics-block";
 
             #eventHandlers = {
                 load: [],
@@ -40,11 +38,11 @@
             };
 
             #createLine = function (content, timestamp) {
-                return LyricsHelper.createDOMElement("p", this.#lineClass, content, timestamp);
+                return LyricsHelper.createDOMElement("p", "lyrics-line", content, timestamp);
             };
 
             #createBlock = function (content, timestamp) {
-                return LyricsHelper.createDOMElement("div", this.#groupClass, content, timestamp);
+                return LyricsHelper.createDOMElement("div", "lyrics-block", content, timestamp);
             };
 
             constructor(containerSelector) {

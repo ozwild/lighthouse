@@ -325,7 +325,7 @@
                      * Esc Key
                      **/
                     if (keyCode === 69) {
-                        this.wrapUpLine();
+                        this.wrapUpLyric();
                         this.unselectLine();
                     }
                 });

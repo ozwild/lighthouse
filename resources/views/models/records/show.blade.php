@@ -69,41 +69,21 @@
     </style>
 @endpush
 
-@include('assets.youtube')
-@include('assets.video')
-@include('assets.lyrics')
-
 @push('scripts')
     <script>
-
+        const app = window.app;
         const recordModel = @json($record);
-        let videoHelper;
-        let lyricsHelper;
-        let isPlaying = false;
+        const VideoController = app.controllers.VideoController;
+        const LyricsController = app.controllers.LyricsDisplayController;
 
-        document.addEventListener('youtube.ready', () => {
-            videoHelper = new VideoHelper();
-            videoHelper.recordModel = recordModel;
-            videoHelper.initialize();
-            videoHelper.on('playing', (...arguments) => {
-                isPlaying = true;
-            });
-            videoHelper.on('stopped', (...arguments) => {
-                isPlaying = false;
-            });
-            videoHelper.on('tick', time => {
-                if(!lyricsHelper){
-                    return;
-                }
-                lyricsHelper.showElementForTime(time);
-            });
-        });
+        app.YTAPILoader.load().then(() => {
+            VideoController.load(recordModel, 'player');
+            LyricsController.load(recordModel, '.lyrics-container');
 
-        $(document).ready(() => {
-            lyricsHelper = new LyricsHelper('.lyrics-container');
-            lyricsHelper.recordModel = recordModel;
-            lyricsHelper.process();
-            lyricsHelper.render();
+            VideoController.app.on('tick', timestamp => {
+                LyricsController.app.showLyricsForTime(timestamp);
+            });
+
         });
 
     </script>

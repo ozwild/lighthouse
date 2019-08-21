@@ -88,96 +88,19 @@
     </style>
 @endpush
 
-@include('assets.youtube')
-@include('assets.video')
-@include('assets.lyrics-sync')
-
 @push('scripts')
     <script>
+        const app = window.app;
         const recordModel = @json($record);
-        let videoHelper;
-        let lyricsHelper;
-        let isPlaying = false;
+        const VideoController = app.controllers.VideoController;
+        const LyricsController = app.controllers.LyricsSyncController;
 
-        document.addEventListener('youtube.ready', () => {
-            videoHelper = new VideoHelper();
-            videoHelper.recordModel = recordModel;
-            videoHelper.initialize();
-            videoHelper.on('ready', (...arguments) => {
-                lyricsHelper.selectNextLine();
-            });
-            videoHelper.on('playing', (...arguments) => {
-                isPlaying = true;
-            });
-            videoHelper.on('stopped', (...arguments) => {
-                isPlaying = false;
-            });
+        app.YTAPILoader.load().then(() => {
+            VideoController.load(recordModel, 'player');
+            LyricsController.load(recordModel, '.lyrics-container');
+            LyricsController.pairVideoController(VideoController);
         });
 
-        function next() {
-            validateVideoExists();
-            lyricsHelper.next(videoHelper.currentTimestamp);
-        }
-
-        function validateVideoExists() {
-            if (!videoHelper) {
-                alert("No video resource is present");
-                throw "No video resource is present";
-            }
-        }
-
-        function play() {
-            validateVideoExists();
-            videoHelper.play();
-        }
-
-        function pause() {
-            validateVideoExists();
-            videoHelper.pause();
-        }
-
-        function stop() {
-            validateVideoExists();
-            videoHelper.stop();
-        }
-
-        function saveChanges() {
-
-            videoHelper.stop();
-
-            $.ajax('{{ route('records.update', $record->id) }}', {
-                type: "PATCH",
-                data: {
-                    lyrics: lyricsHelper.output
-                },
-                dataType: "json",
-                beforeSend: () => {
-                    $(".save").attr('disabled', 'disabled');
-                },
-                success: data => {
-                    alert("Record lyrics succesfully updated!");
-                }
-            }).always(data => {
-                $(".save").removeAttr('disabled');
-            });
-
-        }
-
-        $(document).ready(() => {
-            lyricsHelper = new LyricsSyncHelper('.lyrics-container');
-            lyricsHelper.recordModel = recordModel;
-            lyricsHelper.process();
-            lyricsHelper.render();
-
-            lyricsHelper.on('step', () => {
-                lyricsHelper.next(videoHelper.currentTimestamp);
-            });
-
-            $(".lyrics-container").on("click", ".lyrics-line", event => {
-                lyricsHelper.selectLineByElement(event.currentTarget);
-            });
-
-        });
     </script>
 @endpush
 
