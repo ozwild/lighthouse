@@ -1,0 +1,9 @@
+.flex {
+  display: flex;
+}
+
+@each $flex in (1, 2, 3, 5, 7) {
+  .flex-#{$flex} {
+    flex: $flex;
+  }
+}

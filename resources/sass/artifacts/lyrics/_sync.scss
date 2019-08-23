@@ -1,0 +1,92 @@
+@import "../../variables";
+
+$transitionSpeed: map_get($animationSpeed, "in-slow");
+$startColor: lighten(map_get($palette, 'base'), 20%);
+$endColor: lighten(map_get($palette, 'accent'), 20%);
+$lyricColor: map_get($palette, 'pale');
+$selectionColor: map_get($palette, 'contrast');
+
+.lyrics-container.sync {
+  .lyrics-content {
+
+    .lyric {
+      color: rgba($lyricColor, 1);
+      display: flex;
+      align-items: baseline;
+      cursor: pointer;
+      position: relative;
+      padding-left: 0.5em;
+      font-size: 1.25em;
+
+      &.selected {
+        color: $selectionColor;
+        background: linear-gradient(45deg, $lyricColor, transparent);
+        animation: lineSelection $transitionSpeed alternate infinite;
+      }
+
+      &:hover {
+        background: linear-gradient(45deg, darken($lyricColor, 5%), transparent);
+      }
+
+      .timestamp {
+        padding: 2px 3px;
+        line-height: 1;
+        font-size: 0.8em;
+      }
+
+      .lyric-content {
+        font-weight: 500;
+        text-indent: 0.5em;
+      }
+
+      .lyric-start {
+        color: $startColor;
+
+        &.active {
+          color: white;
+          animation: startTimestampSelection $transitionSpeed alternate infinite;
+        }
+
+      }
+
+      .lyric-end {
+        color: $endColor;
+
+        &.active {
+          color: white;
+          animation: endTimestampSelection $transitionSpeed alternate infinite;
+        }
+
+      }
+
+    }
+
+    @keyframes lineSelection {
+      0% {
+        border-bottom: 1px solid transparent;
+      }
+      100% {
+        border-bottom: 1px solid;
+      }
+    }
+
+    @keyframes startTimestampSelection {
+      0% {
+        background: transparent;
+      }
+      100% {
+        background: $startColor;
+      }
+    }
+
+    @keyframes endTimestampSelection {
+      0% {
+        background: transparent;
+      }
+      100% {
+        background: $endColor;
+      }
+    }
+
+  }
+}

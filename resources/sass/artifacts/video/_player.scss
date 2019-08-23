@@ -1,0 +1,91 @@
+@import "../../variables";
+
+.player-container {
+  position: fixed;
+  display: none;
+  right: -100%;
+
+  @media screen and (min-device-width: 640px) {
+    bottom: 7em;
+    right: 0;
+    z-index: 2;
+    display: initial;
+    margin: 0;
+    padding: 0;
+    height: 7em;
+    overflow: hidden;
+
+  }
+
+}
+
+.player-controls {
+  height: 7em;
+  padding: 0.5em;
+  position: fixed;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(0, 0, 0, 0.85), transparent);
+  width: 100%;
+  display: flex;
+  z-index: 2;
+
+  .player-control {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: rgba(255, 255, 255, 0.7);
+    transition: color map-get($animationSpeed, "out");
+
+    &:hover {
+      color: white;
+      transition: color map-get($animationSpeed, "in");
+    }
+
+    &.pause {
+      display: none;
+      background: #FB8B24;
+
+      &:hover {
+        background: lighten(#FB8B24, 5%);
+      }
+    }
+
+    &.play {
+      background: #D90368;
+
+      &:hover {
+        background: lighten(#D90368, 5%);
+      }
+    }
+
+    &.play, &.pause {
+      position: relative;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      height: 2.25em;
+      width: 2.25em;
+
+      i {
+        font-size: 1.5em;
+      }
+
+    }
+
+    &.stop {
+      top: 35%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      position: absolute;
+      margin-left: 2em;
+
+      i {
+        font-size: 1em;
+      }
+
+    }
+
+  }
+
+}

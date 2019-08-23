@@ -5,6 +5,7 @@ import Lyric from "./Lyric";
 export default class BaseApp extends Eventful {
 
     #record;
+    $wrapper;
     $container;
     lyrics = [];
     selectedLyric;
@@ -20,7 +21,9 @@ export default class BaseApp extends Eventful {
             throw "A valid DOM selector is required to initialize Lyrics Controls";
         }
 
-        this.$container = $(selector);
+        this.$wrapper = $(selector);
+        this.$container = $("<div>").addClass("lyrics-content");
+        this.$wrapper.append(this.$container);
 
     }
 
@@ -126,7 +129,6 @@ export default class BaseApp extends Eventful {
     }
 
     repaintSelectionState() {
-        this.selectedLyric.selected = true;
         this.lyrics.forEach(lyric => lyric.repaintSelectionState());
     }
 

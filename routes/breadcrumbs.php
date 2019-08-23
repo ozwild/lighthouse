@@ -1,6 +1,5 @@
 <?php
 
-// Home
 Breadcrumbs::for('records.index', function ($trail) {
     $trail->push('Home', route('records.index'));
 });

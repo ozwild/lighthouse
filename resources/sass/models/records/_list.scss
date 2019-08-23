@@ -1,0 +1,65 @@
+@import "../../mixins";
+
+ul.record-list {
+
+  li {
+    user-select: none;
+    position: relative;
+    padding: 0.5em 2em 0.5em 1.5em;
+    min-height: 3.5em;
+
+    .secondary-line {
+      font-size: 0.9em;
+    }
+
+    .link {
+      position: absolute;
+
+      &.play-link {
+        float: left;
+        left: 0.25em;
+
+        .material-icons {
+          line-height: 1.5;
+          position: absolute;
+
+          &.hover-icon {
+            @include disappears;
+          }
+
+          &.default-icon {
+            @include appears;
+          }
+
+        }
+
+      }
+
+      &.edit-link {
+        right: 0.5em;
+      }
+
+    }
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.125);
+
+      .play-link {
+
+        .material-icons {
+          &.hover-icon {
+            @include appears;
+          }
+
+          &.default-icon {
+            @include disappears;
+          }
+
+        }
+      }
+
+    }
+
+  }
+
+}

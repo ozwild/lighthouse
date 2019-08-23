@@ -22,7 +22,7 @@ export default class DisplayApp extends BaseApp {
                 if (!item || (item && (!item.start || !item.end))) {
                     return;
                 }
-                return timestamp >= item.start && timestamp <= item.end;
+                return timestamp > item.start && timestamp < item.end;
             });
     }
 
@@ -37,12 +37,28 @@ export default class DisplayApp extends BaseApp {
         if (
             !this.activeLyrics ||
             this.activeLyrics.length !== lyrics.length ||
-            this.activeLyrics.filter(lyric => lyrics.includes(lyric))
+            !this.activeLyrics.includes(lyrics)
         ) {
             this.releaseActive();
             this.holdActive(lyrics);
         }
 
+    }
+
+    showLyric(lyric) {
+
+        if (!lyric) {
+            return this.releaseActive();
+        }
+
+        if (
+            !this.activeLyrics ||
+            this.activeLyrics.length > 1 ||
+            !this.activeLyrics.includes(lyric)
+        ) {
+            this.releaseActive();
+            this.holdActive([lyric]);
+        }
     }
 
     repaintActiveState() {
@@ -51,14 +67,15 @@ export default class DisplayApp extends BaseApp {
     }
 
     #repositionContainer() {
-        if (!this.activeLyrics) {
+        if (!this.activeLyrics || this.activeLyrics.length === 0) {
             return;
         }
 
         let verticalFix = this.activeLyrics.reduce((sum, lyric) => sum + lyric.verticalPosition, 0);
-        this.$container.css({
-            "top": "calc(50vh - ${verticalFix}px )"
-        });
+        verticalFix += window.innerHeight / 2;
+
+        this.$wrapper[0].scrollTo(0, verticalFix)
+
     }
 
 }

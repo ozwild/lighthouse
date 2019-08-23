@@ -19,10 +19,9 @@ export default class LyricsSyncController {
 
         let videoApp = controller.app;
         videoApp.on('ready', () => {
-            this.app.selectNextLyric();
         });
         this.app.on('step', () => {
-            this.app.next(VideoController.app.currentTimestamp);
+            this.app.next(controller.app.currentTimestamp);
         });
     }
 

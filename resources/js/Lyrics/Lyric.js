@@ -8,8 +8,8 @@ export default class Lyric {
 
     id;
     content;
-    start;
-    end;
+    _start;
+    _end;
     $element;
 
     isSelected;
@@ -22,20 +22,21 @@ export default class Lyric {
 
         this.id = Symbol('lyric_id');
         this.content = decoded.content;
-        this.start = decoded.start;
-        this.end = decoded.end;
+        this._start = decoded.start;
+        this._end = decoded.end;
         this.$element = this._createNode();
         this.updateNodeData();
     }
 
     _createNode() {
-        return createDOMElement("p", 'lyrics-line').data('lyric_id', this.id);
+        return createDOMElement({type: 'p', classNames: 'lyric'}).data('lyric_id', this.id);
     };
 
     updateNodeData() {
-        this.$element.html(this.content);
-        this.$element.attr('data-start', this.start);
-        this.$element.attr('data-end', this.end);
+        let htmlContent = this.content;
+        this.$element.html(htmlContent);
+        this.$element.attr('data-start', this._start);
+        this.$element.attr('data-end', this._end);
     }
 
     select() {
@@ -94,13 +95,21 @@ export default class Lyric {
     }
 
     set start(timestamp) {
-        this.start = timestamp;
+        this._start = timestamp;
         this.updateNodeData();
     }
 
+    get start() {
+        return this._start;
+    }
+
     set end(timestamp) {
-        this.start = timestamp;
+        this._end = timestamp;
         this.updateNodeData();
+    }
+
+    get end() {
+        return this._end;
     }
 
     set content(content) {

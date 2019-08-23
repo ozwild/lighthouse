@@ -1,0 +1,19 @@
+@import "../../variables";
+
+.lyrics-container {
+  position: relative;
+  z-index: 1;
+
+  .lyrics-content {
+    padding: 1em 0.5em;
+    transition: top map_get($animationSpeed, 'in');
+    user-select: none;
+    position: relative;
+
+    .lyric {
+      user-select: none;
+      min-height: 1em;
+    }
+
+  }
+}

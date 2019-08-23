@@ -2,14 +2,6 @@
 
 @push('styles')
     <style>
-        html, body {
-            background-color: black;
-            color: #636b6f;
-            font-family: 'Nunito', sans-serif;
-            font-weight: 200;
-            height: 100vh;
-            margin: 0;
-        }
 
         .record-selector {
             position: fixed;
@@ -23,47 +15,8 @@
             display: flex;
             flex-direction: column;
             max-height: 10em;
-            overflow-y: scroll;
-            z-index: 1;
-        }
-
-        .video-container {
-            position: fixed;
-            top: 0;
-            right: 0;
-            max-width: 50vw;
-            height: auto;
-            z-index: 1;
-        }
-
-        .lyrics-container {
-            position: fixed;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            transition: top 0.3s;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .lyrics-container .lyrics-block.active {
-            padding: 2em 0;
-        }
-
-        .lyrics-container p {
-            color: #444;
-            line-height: 1;
-            font-size: 2em;
-            font-weight: 500;
-            transition: color 0.3s, transform 0.3s;
-            transform: scale(0.85);
-        }
-
-        .lyrics-container p.active,
-        .lyrics-container .active p {
-            color: yellowgreen;
-            transform: scale(1);
+            overflow-y: auto;
+            z-index: 4;
         }
 
     </style>
@@ -95,7 +48,7 @@
 
     @if($record->youtube_id)
         <div class="video-timer"></div>
-        <div class="video-container">
+        <div class="player-container">
             <div id="player"></div>
         </div>
     @endif
@@ -106,6 +59,6 @@
         @endforeach
     </div>
 
-    <div class="lyrics-container col col-sm-12 col-md-8"></div>
+    <div class="lyrics-container display"></div>
 
 @endsection

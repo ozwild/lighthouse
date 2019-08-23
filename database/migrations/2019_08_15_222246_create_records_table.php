@@ -19,6 +19,7 @@ class CreateRecordsTable extends Migration
             $table->string('name');
             $table->string('youtube_id')->nullable();
             $table->integer('video_start')->default(0);
+            $table->integer('video_end')->default(0);
             $table->text('lyrics')->nullable();
             $table->timestamps();
         });

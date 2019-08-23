@@ -4,40 +4,47 @@
 
     {{ Breadcrumbs::render('records.index') }}
 
-    <div class="vertical-spacer"></div>
+    <br>
 
-    <div class="container">
-        <div class="spanner"></div>
-        <main>
+    <main>
 
-            <a href="{{ route('records.create') }}">Add New</a>
+        <div class="container">
 
-            <div class="card">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Song</th>
-                        <th>Artist</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($records as $record)
-                        <tr>
-                            <td>{{ $record->name }}</td>
-                            <td>{{ $record->artist }}</td>
-                            <td>
-                                <a href="{{ route('records.show', $record->id) }}">Show</a>
-                                <a href="{{ route('records.edit', $record->id) }}">Edit</a>
-                            </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </main>
-        <div class="spanner"></div>
-    </div>
-    <div class="vertical-spacer"></div>
+            <a class="btn btn-floating waves-ripple waves-light light-green appears right"
+               href="{{ route('records.create') }}"><i
+                        class="material-icons right">add</i></a>
+
+            <div class="clearfix"></div>
+
+            <br>
+
+            <ul class="record-list">
+
+                @foreach($records as $record)
+
+                    <li>
+
+                        <a href="{{ route('records.show', $record->id) }}" class="link play-link">
+                            <i class="material-icons tiny default-icon">audiotrack</i>
+                            <i class="material-icons tiny hover-icon">play_arrow</i>
+                        </a>
+
+                        <a href="{{ route('records.edit', $record->id) }}" class="link edit-link">
+                            <i class="material-icons tiny">edit</i>
+                        </a>
+
+                        <div>
+                            <div>{{ $record->name }}</div>
+                            <div class="secondary-line"><a href="#">{{ $record->artist }}</a></div>
+                        </div>
+
+                    </li>
+
+                @endforeach
+
+            </ul>
+
+        </div>
+    </main>
 
 @endsection

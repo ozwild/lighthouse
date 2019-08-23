@@ -5,8 +5,10 @@ export default class VideoApp extends Eventful {
     record;
     player;
     containerId;
-    shouldLoop = true;
     currentState;
+
+    shouldLoop = true;
+    shouldAutoStart = true;
 
     eventHandlers = {
         ready: [],
@@ -21,12 +23,6 @@ export default class VideoApp extends Eventful {
         tick: []
     };
 
-    #autoStartVideo = function () {
-        if (this.video_start) {
-            this.player.seekTo(this.video_start);
-        }
-    };
-
     constructor(record, containerId) {
 
         super();
@@ -34,6 +30,7 @@ export default class VideoApp extends Eventful {
         this.record = record;
         this.youtube_id = this.record.youtube_id;
         this.video_start = this.record.video_start;
+        this.video_end = this.record.video_end;
 
         if (!containerId) {
             throw "A valid DOM selector is required to initialize Lyrics Controls";
@@ -41,14 +38,14 @@ export default class VideoApp extends Eventful {
 
         this.containerId = containerId;
 
-        this._bindings();
-        this.initialize();
+        this.#setBindings();
+        this.#initialize();
 
     }
 
-    _bindings() {
-        this.on('ready', () => this.#autoStartVideo());
-        this.on('ended', () => this.shouldLoop ? this.restartVideo() : null);
+    #setBindings() {
+        this.on('playing', () => this.#adjustStart());
+        /*this.on('ended', () => this.shouldLoop ? this.restartVideo() : null);*/
         this.on('stateChange', e => {
 
             this.currentState = e.data;
@@ -71,16 +68,35 @@ export default class VideoApp extends Eventful {
         })
     }
 
-    initialize() {
-        this.player = new YT.Player(this.containerId, {
-            width: '426',
-            height: '240',
-            videoId: this.youtube_id,
+    #initialize() {
+
+        let options = {
+            width: '213',
+            height: '120',
+            playerVars: {
+                controls: 0,
+                rel: 0,
+                fs: 0,
+                disablekb: 1,
+                enablejsapi: 1,
+                modestbranding: 1,
+                origin: window.location.origin
+            },
             events: {
                 'onReady': e => this.trigger('ready', e),
                 'onStateChange': e => this.trigger('stateChange', e)
             }
-        });
+        };
+
+        options.videoId = this.youtube_id;
+        options.playerVars.autoplay = this.shouldAutoStart;
+        options.playerVars.loop = this.shouldLoop;
+
+        if (this.video_start) {
+            options.playerVars.start = this.video_start
+        }
+
+        this.player = new YT.Player(this.containerId, options);
         this.#heartbeat();
     }
 
@@ -109,12 +125,15 @@ export default class VideoApp extends Eventful {
         console.error("Record reassignment is forbidden. Can't assign `" + record.name + "`,  `" + this.name + "` already assigned.");
     }
 
-    restartVideo() {
-        if (this.video_start) {
+    #adjustStart() {
+        if (this.video_start && this.currentTimestamp < this.video_start) {
             this.player.seekTo(this.video_start);
-        } else {
-            this.player.seekTo(0);
         }
+
+        if (this.video_end && this.currentTimestamp > this.video_end) {
+            this.player.stop();
+        }
+
     }
 
     play() {

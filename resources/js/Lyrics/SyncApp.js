@@ -50,7 +50,7 @@ export default class SyncApp extends BaseApp {
             }
         });
 
-        this.$container.on("click", ".lyrics-line", event => {
+        this.$container.on("click", ".lyric", event => {
             instance.selectLyricByElement(event.currentTarget);
         });
 
@@ -77,9 +77,11 @@ export default class SyncApp extends BaseApp {
         }
 
         this.selectedLyric.updateTimestamp(timestamp);
+        this.repaintSelectionState();
 
         if (!this.selectedLyric.activeTimestampIdentifier) {
             this.selectNextLyric();
+            this.next(timestamp);
         }
 
     }

@@ -1,0 +1,17 @@
+@each $boxProperty in ('margin', 'padding') {
+
+  @each $step in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10) {
+
+    .#{ str_slice($boxProperty, 1, 1) }-#{$step} {
+      #{$boxProperty}: #{$step/2}em;
+    }
+
+    @each $edge in ('top', 'right', 'bottom', 'left') {
+      .#{ str_slice($boxProperty, 1, 1) }#{ str_slice($edge, 1, 1) }-#{$step} {
+        #{$boxProperty}-#{$edge}: #{$step/2}em;
+      }
+    }
+
+  }
+
+}

@@ -8,29 +8,7 @@
     <title>{{ config('app.name') }}</title>
 
     @section('styles')
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-        <style>
-            html, body {
-                background-color: #333;
-            }
-
-            .container {
-                display: flex;
-            }
-
-            .container > * {
-                flex: 2;
-            }
-
-            .container main {
-                flex: 5 auto;
-            }
-
-            .vertical-spacer {
-                height: 3em;
-            }
-        </style>
         @stack('styles')
     @endsection
 
@@ -39,7 +17,11 @@
 </head>
 <body>
 
-@yield('content')
+<div class="body-background"></div>
+
+<div class="body-content">
+    @yield('content')
+</div>
 
 @section('scripts')
     <script src="{{ asset('js/app.js') }}"></script>

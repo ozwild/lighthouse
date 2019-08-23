@@ -8,7 +8,7 @@ export function encode(lyric) {
     if (lyric.end) {
         end = "".concat("[", lyric.end, "]");
     }
-    return start + end + content + "\n";
+    return start + end + content;
 }
 
 export function decode(text) {
@@ -17,7 +17,7 @@ export function decode(text) {
 
     startTimestampMatches = text.match(timestampRX);
     if (startTimestampMatches) {
-        startTimestamp = startTimestampMatches[1];
+        startTimestamp = +startTimestampMatches[1];
     }
 
     text = text.replace(timestampRX, "");
@@ -27,7 +27,7 @@ export function decode(text) {
         endTimestamp = endTimestampMatches[1];
     }
 
-    content = text.replace(timestampRX, "");
+    content = text.replace(timestampRX, "").trim();
 
     return {
         content: content,

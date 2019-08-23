@@ -1,0 +1,71 @@
+@import 'variables';
+
+body, html {
+  font-family: Roboto, Nunito, sans-serif;
+  background-color: #333;
+  color: #eee;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+
+}
+
+.body-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #232526; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, #212335, #131516); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #212335, #131516); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  z-index: 0;
+}
+
+.body-content {
+  position: relative;
+  z-index: 1;
+}
+
+.breadcrumbs-nav {
+  @extend nav;
+  background-color: #232526; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, rgba(white, 0.1), #483348, rgba(black, 0.1)); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, rgba(white, 0.1), #483348, rgba(black, 0.1)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(45deg, #222, transparent);
+  position: fixed;
+  z-index: 5;
+  width: auto;
+  top: 0;
+
+  .breadcrumb {
+    user-select: none;
+  }
+
+}
+
+main {
+  position: relative;
+  z-index: 1;
+  margin: 6em 0;
+}
+
+a {
+  color: rgba(255, 255, 255, 0.7);
+  transition: color map-get($animationSpeed, "out");
+
+  &:hover {
+    color: white;
+    text-decoration: underline;
+    transition: color map-get($animationSpeed, "in");
+  }
+
+}
+
+input, textarea {
+  color: white;
+}
