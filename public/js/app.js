@@ -24914,6 +24914,122 @@ module.exports = g;
 
 /***/ }),
 
+/***/ "./resources/js/Apps/LyricsDisplayApp.js":
+/*!***********************************************!*\
+  !*** ./resources/js/Apps/LyricsDisplayApp.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return LyricsDisplayApp; });
+/* harmony import */ var _Video_VideoController__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Video/VideoController */ "./resources/js/Video/VideoController.js");
+/* harmony import */ var _Lyrics_LyricsDisplayController__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Lyrics/LyricsDisplayController */ "./resources/js/Lyrics/LyricsDisplayController.js");
+/* harmony import */ var _Video_YTAPI__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Video/YTAPI */ "./resources/js/Video/YTAPI.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+var LyricsDisplayApp = function LyricsDisplayApp(recordModel) {
+  _classCallCheck(this, LyricsDisplayApp);
+
+  _defineProperty(this, "videoController", void 0);
+
+  _defineProperty(this, "lyricsController", void 0);
+
+  this.videoController = _Video_VideoController__WEBPACK_IMPORTED_MODULE_0__["default"];
+  this.lyricsController = _Lyrics_LyricsDisplayController__WEBPACK_IMPORTED_MODULE_1__["default"];
+  _Video_YTAPI__WEBPACK_IMPORTED_MODULE_2__["default"].load().then(function () {
+    _Video_VideoController__WEBPACK_IMPORTED_MODULE_0__["default"].load(recordModel, 'player');
+    _Lyrics_LyricsDisplayController__WEBPACK_IMPORTED_MODULE_1__["default"].load(recordModel, '.lyrics-container');
+    _Video_VideoController__WEBPACK_IMPORTED_MODULE_0__["default"].service.on('tick', function (timestamp) {
+      _Lyrics_LyricsDisplayController__WEBPACK_IMPORTED_MODULE_1__["default"].service.showLyricsForTime(timestamp);
+    });
+  });
+};
+
+
+
+/***/ }),
+
+/***/ "./resources/js/Apps/LyricsSyncApp.js":
+/*!********************************************!*\
+  !*** ./resources/js/Apps/LyricsSyncApp.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return LyricsSyncApp; });
+/* harmony import */ var _Video_VideoController__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Video/VideoController */ "./resources/js/Video/VideoController.js");
+/* harmony import */ var _Lyrics_LyricsSyncController__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Lyrics/LyricsSyncController */ "./resources/js/Lyrics/LyricsSyncController.js");
+/* harmony import */ var _Video_YTAPI__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Video/YTAPI */ "./resources/js/Video/YTAPI.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+var LyricsSyncApp =
+/*#__PURE__*/
+function () {
+  function LyricsSyncApp(recordModel) {
+    _classCallCheck(this, LyricsSyncApp);
+
+    _defineProperty(this, "videoController", void 0);
+
+    _defineProperty(this, "lyricsController", void 0);
+
+    this.videoController = _Video_VideoController__WEBPACK_IMPORTED_MODULE_0__["default"];
+    this.lyricsController = _Lyrics_LyricsSyncController__WEBPACK_IMPORTED_MODULE_1__["default"];
+    _Video_YTAPI__WEBPACK_IMPORTED_MODULE_2__["default"].load().then(function () {
+      _Video_VideoController__WEBPACK_IMPORTED_MODULE_0__["default"].load(recordModel, 'player');
+      _Lyrics_LyricsSyncController__WEBPACK_IMPORTED_MODULE_1__["default"].load(recordModel, '.lyrics-container');
+      _Lyrics_LyricsSyncController__WEBPACK_IMPORTED_MODULE_1__["default"].pairVideoController(_Video_VideoController__WEBPACK_IMPORTED_MODULE_0__["default"]);
+    });
+  }
+
+  _createClass(LyricsSyncApp, [{
+    key: "save",
+    value: function save(route) {
+      if (!_Lyrics_LyricsSyncController__WEBPACK_IMPORTED_MODULE_1__["default"].app) {
+        return M.toast('No lyrics controller found');
+      }
+
+      var lyrics = _Lyrics_LyricsSyncController__WEBPACK_IMPORTED_MODULE_1__["default"].app.toString();
+      $.ajax(route, {
+        method: 'patch',
+        data: {
+          lyrics: lyrics
+        },
+        dataType: 'json'
+      }).done(function (e) {
+        M.toast("Lyrics saved!");
+      }).fail(function (e) {
+        M.toast("Something went wrong");
+      });
+    }
+  }]);
+
+  return LyricsSyncApp;
+}();
+
+
+
+/***/ }),
+
 /***/ "./resources/js/Helpers/DOM.js":
 /*!*************************************!*\
   !*** ./resources/js/Helpers/DOM.js ***!
@@ -25129,238 +25245,27 @@ function () {
 
 /***/ }),
 
-/***/ "./resources/js/Lyrics/BaseApp.js":
-/*!****************************************!*\
-  !*** ./resources/js/Lyrics/BaseApp.js ***!
-  \****************************************/
-/*! exports provided: default */
+/***/ "./resources/js/Helpers/functions.js":
+/*!*******************************************!*\
+  !*** ./resources/js/Helpers/functions.js ***!
+  \*******************************************/
+/*! exports provided: debounce */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return BaseApp; });
-/* harmony import */ var _Helpers_Eventful__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Helpers/Eventful */ "./resources/js/Helpers/Eventful.js");
-/* harmony import */ var _Helpers_DOM__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Helpers/DOM */ "./resources/js/Helpers/DOM.js");
-/* harmony import */ var _Lyric__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Lyric */ "./resources/js/Lyrics/Lyric.js");
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _classPrivateFieldGet(receiver, privateMap) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to get private field on non-instance"); } if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
-
-function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to set private field on non-instance"); } if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } return value; }
-
-
-
-
-
-var BaseApp =
-/*#__PURE__*/
-function (_Eventful) {
-  _inherits(BaseApp, _Eventful);
-
-  function BaseApp(record, selector) {
-    var _this;
-
-    _classCallCheck(this, BaseApp);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(BaseApp).call(this));
-
-    _record.set(_assertThisInitialized(_this), {
-      writable: true,
-      value: void 0
-    });
-
-    _defineProperty(_assertThisInitialized(_this), "$wrapper", void 0);
-
-    _defineProperty(_assertThisInitialized(_this), "$container", void 0);
-
-    _defineProperty(_assertThisInitialized(_this), "lyrics", []);
-
-    _defineProperty(_assertThisInitialized(_this), "selectedLyric", void 0);
-
-    _defineProperty(_assertThisInitialized(_this), "activeLyrics", []);
-
-    _classPrivateFieldSet(_assertThisInitialized(_this), _record, record);
-
-    if (!selector) {
-      throw "A valid DOM selector is required to initialize Lyrics Controls";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "debounce", function() { return debounce; });
+var debounce = function debounce(callback) {
+  var time = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 250;
+  var interval = arguments.length > 2 ? arguments[2] : undefined;
+  return function () {
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
     }
 
-    _this.$wrapper = $(selector);
-    _this.$container = $("<div>").addClass("lyrics-content");
-
-    _this.$wrapper.append(_this.$container);
-
-    return _this;
-  }
-
-  _createClass(BaseApp, [{
-    key: "process",
-    value: function process() {
-      this.lyrics = _classPrivateFieldGet(this, _record).lyrics.split("\n").map(function (lyricText) {
-        return new _Lyric__WEBPACK_IMPORTED_MODULE_2__["default"](lyricText);
-      });
-    }
-  }, {
-    key: "toString",
-    value: function toString() {
-      return this.lyrics.map(function (lyric) {
-        return lyric.toString();
-      }).join('\n');
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var content = this.lyrics.map(function (item) {
-        return item.$element;
-      });
-      this.$container.html(content);
-    }
-  }, {
-    key: "getLyricById",
-    value: function getLyricById(id) {
-      var result = this.lyrics.filter(function (item) {
-        return item.id === id;
-      }).slice(0, 1);
-      return result.length > 0 ? result[0] : null;
-    }
-  }, {
-    key: "getFirstLyric",
-    value: function getFirstLyric() {
-      return this.lyrics.length > 0 ? this.lyrics.slice(0, 1)[0] : null;
-    }
-  }, {
-    key: "getNextLyricForSelection",
-    value: function getNextLyricForSelection() {
-      if (!this.selectedLyric) {
-        return this.getFirstLyric();
-      }
-
-      var indexOfSelectedLyric = this.lyrics.indexOf(this.selectedLyric);
-      return this.lyrics[indexOfSelectedLyric + 1];
-    }
-  }, {
-    key: "getPreviousLyricForSelection",
-    value: function getPreviousLyricForSelection() {
-      if (!this.selectedLyric) {
-        return this.getFirstLyric();
-      }
-
-      var indexOfSelectedLyric = this.lyrics.indexOf(this.selectedLyric);
-      return this.lyrics[indexOfSelectedLyric - 1];
-    }
-  }, {
-    key: "selectLyricByElement",
-    value: function selectLyricByElement(element) {
-      this.selectLyricById(Object(_Helpers_DOM__WEBPACK_IMPORTED_MODULE_1__["retrieveElementId"])(element));
-    }
-  }, {
-    key: "selectLyricById",
-    value: function selectLyricById(id) {
-      this.holdSelection(this.getLyricById(id));
-    }
-  }, {
-    key: "selectNextLyric",
-    value: function selectNextLyric() {
-      this.holdSelection(this.getNextLyricForSelection());
-    }
-  }, {
-    key: "selectPreviousLyric",
-    value: function selectPreviousLyric() {
-      this.holdSelection(this.getPreviousLyricForSelection());
-    }
-  }, {
-    key: "holdSelection",
-    value: function holdSelection(lyric) {
-      this.releaseSelection(false);
-
-      if (lyric) {
-        lyric.select();
-        this.selectedLyric = lyric;
-      }
-
-      this.repaintSelectionState();
-    }
-  }, {
-    key: "releaseSelection",
-    value: function releaseSelection() {
-      var repaint = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-
-      if (this.selectedLyric) {
-        this.selectedLyric.deselect();
-        this.selectedLyric = null;
-      }
-
-      if (repaint) this.repaintSelectionState();
-    }
-  }, {
-    key: "holdActive",
-    value: function holdActive(lyrics) {
-      if (lyrics) {
-        lyrics.forEach(function (lyric) {
-          return lyric.activate();
-        });
-        this.activeLyrics = lyrics;
-      }
-
-      this.repaintActiveState();
-    }
-  }, {
-    key: "releaseActive",
-    value: function releaseActive() {
-      if (this.activeLyrics) {
-        this.activeLyrics.forEach(function (lyric) {
-          return lyric.deactivate();
-        });
-        this.activeLyrics = null;
-      }
-
-      this.repaintActiveState();
-    }
-  }, {
-    key: "repaintSelectionState",
-    value: function repaintSelectionState() {
-      this.lyrics.forEach(function (lyric) {
-        return lyric.repaintSelectionState();
-      });
-    }
-  }, {
-    key: "repaintActiveState",
-    value: function repaintActiveState() {
-      this.lyrics.forEach(function (lyric) {
-        return lyric.repaintActiveState();
-      });
-    }
-  }, {
-    key: "record",
-    get: function get() {
-      return _classPrivateFieldGet(this, _record);
-    }
-  }]);
-
-  return BaseApp;
-}(_Helpers_Eventful__WEBPACK_IMPORTED_MODULE_0__["default"]);
-
-var _record = new WeakMap();
-
-
+    return clearTimeout(interval, interval = setTimeout.apply(void 0, [callback, time].concat(args)));
+  };
+};
 
 /***/ }),
 
@@ -25384,139 +25289,6 @@ var TIMESTAMPS_IDENTIFIERS = {
   "START": Symbol('START'),
   "END": Symbol('END')
 };
-
-/***/ }),
-
-/***/ "./resources/js/Lyrics/DisplayApp.js":
-/*!*******************************************!*\
-  !*** ./resources/js/Lyrics/DisplayApp.js ***!
-  \*******************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return DisplayApp; });
-/* harmony import */ var _BaseApp__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BaseApp */ "./resources/js/Lyrics/BaseApp.js");
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
-
-function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
-
-
-
-var DisplayApp =
-/*#__PURE__*/
-function (_BaseApp) {
-  _inherits(DisplayApp, _BaseApp);
-
-  /**
-   * @todo Implement lyric display by groups
-   */
-  function DisplayApp(record, selector) {
-    var _this;
-
-    _classCallCheck(this, DisplayApp);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(DisplayApp).call(this, record, selector));
-
-    _repositionContainer.add(_assertThisInitialized(_this));
-
-    _defineProperty(_assertThisInitialized(_this), "eventHandlers", {
-      load: [],
-      ready: []
-    });
-
-    return _this;
-  }
-
-  _createClass(DisplayApp, [{
-    key: "getLyricsForTime",
-    value: function getLyricsForTime(timestamp) {
-      return this.lyrics.sort(function (a, b) {
-        return a.start - b.start;
-      }).filter(function (item) {
-        if (!item || item && (!item.start || !item.end)) {
-          return;
-        }
-
-        return timestamp > item.start && timestamp < item.end;
-      });
-    }
-  }, {
-    key: "showLyricsForTime",
-    value: function showLyricsForTime(timestamp) {
-      var lyrics = this.getLyricsForTime(timestamp);
-
-      if (!lyrics) {
-        return this.releaseActive();
-      }
-
-      if (!this.activeLyrics || this.activeLyrics.length !== lyrics.length || !this.activeLyrics.includes(lyrics)) {
-        this.releaseActive();
-        this.holdActive(lyrics);
-      }
-    }
-  }, {
-    key: "showLyric",
-    value: function showLyric(lyric) {
-      if (!lyric) {
-        return this.releaseActive();
-      }
-
-      if (!this.activeLyrics || this.activeLyrics.length > 1 || !this.activeLyrics.includes(lyric)) {
-        this.releaseActive();
-        this.holdActive([lyric]);
-      }
-    }
-  }, {
-    key: "repaintActiveState",
-    value: function repaintActiveState() {
-      _get(_getPrototypeOf(DisplayApp.prototype), "repaintActiveState", this).call(this);
-
-      _classPrivateMethodGet(this, _repositionContainer, _repositionContainer2).call(this);
-    }
-  }]);
-
-  return DisplayApp;
-}(_BaseApp__WEBPACK_IMPORTED_MODULE_0__["default"]);
-
-var _repositionContainer = new WeakSet();
-
-var _repositionContainer2 = function _repositionContainer2() {
-  if (!this.activeLyrics || this.activeLyrics.length === 0) {
-    return;
-  }
-
-  var verticalFix = this.activeLyrics.reduce(function (sum, lyric) {
-    return sum + lyric.verticalPosition;
-  }, 0);
-  verticalFix += window.innerHeight / 2;
-  this.$wrapper[0].scrollTo(0, verticalFix);
-};
-
-
 
 /***/ }),
 
@@ -25724,7 +25496,7 @@ function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return LyricsDisplayController; });
-/* harmony import */ var _DisplayApp__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DisplayApp */ "./resources/js/Lyrics/DisplayApp.js");
+/* harmony import */ var _LyricsDisplayService__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LyricsDisplayService */ "./resources/js/Lyrics/LyricsDisplayService.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -25745,16 +25517,379 @@ function () {
   _createClass(LyricsDisplayController, null, [{
     key: "load",
     value: function load(recordModel, selector) {
-      this.app = new _DisplayApp__WEBPACK_IMPORTED_MODULE_0__["default"](recordModel, selector);
-      this.app.process();
-      this.app.render();
+      this.service = new _LyricsDisplayService__WEBPACK_IMPORTED_MODULE_0__["default"](recordModel, selector);
+      this.service.process();
+      this.service.render();
     }
   }]);
 
   return LyricsDisplayController;
 }();
 
-_defineProperty(LyricsDisplayController, "app", void 0);
+_defineProperty(LyricsDisplayController, "service", void 0);
+
+
+
+/***/ }),
+
+/***/ "./resources/js/Lyrics/LyricsDisplayService.js":
+/*!*****************************************************!*\
+  !*** ./resources/js/Lyrics/LyricsDisplayService.js ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return LyricsDisplayService; });
+/* harmony import */ var _LyricsService__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LyricsService */ "./resources/js/Lyrics/LyricsService.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
+
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var LyricsDisplayService =
+/*#__PURE__*/
+function (_LyricsService) {
+  _inherits(LyricsDisplayService, _LyricsService);
+
+  /**
+   * @todo Implement lyric display by groups
+   */
+  function LyricsDisplayService(record, selector) {
+    var _this;
+
+    _classCallCheck(this, LyricsDisplayService);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(LyricsDisplayService).call(this, record, selector));
+
+    _defineProperty(_assertThisInitialized(_this), "eventHandlers", {
+      load: [],
+      ready: []
+    });
+
+    return _this;
+  }
+
+  _createClass(LyricsDisplayService, [{
+    key: "getLyricsForTime",
+    value: function getLyricsForTime(timestamp) {
+      return this.lyrics.sort(function (a, b) {
+        return a.start - b.start;
+      }).filter(function (item) {
+        if (!item || item && (!item.start || !item.end)) {
+          return;
+        }
+
+        return timestamp > item.start && timestamp < item.end;
+      });
+    }
+  }, {
+    key: "showLyricsForTime",
+    value: function showLyricsForTime(timestamp) {
+      var lyrics = this.getLyricsForTime(timestamp);
+
+      if (!lyrics) {
+        return this.releaseActive();
+      }
+
+      if (!this.activeLyrics || this.activeLyrics.length !== lyrics.length || !this.activeLyrics.includes(lyrics)) {
+        this.releaseActive();
+        this.holdActive(lyrics);
+      }
+    }
+  }, {
+    key: "showLyric",
+    value: function showLyric(lyric) {
+      if (!lyric) {
+        return this.releaseActive();
+      }
+
+      if (!this.activeLyrics || this.activeLyrics.length > 1 || !this.activeLyrics.includes(lyric)) {
+        this.releaseActive();
+        this.holdActive([lyric]);
+      }
+    }
+  }, {
+    key: "repaintActiveState",
+    value: function repaintActiveState() {
+      _get(_getPrototypeOf(LyricsDisplayService.prototype), "repaintActiveState", this).call(this);
+
+      this.repositionContainer();
+    }
+  }, {
+    key: "repositionContainer",
+    value: function repositionContainer() {
+      if (!this.activeLyrics || this.activeLyrics.length === 0) {
+        return;
+      }
+
+      var verticalFix = this.activeLyrics.reduce(function (sum, lyric) {
+        return sum + lyric.verticalPosition;
+      }, 0);
+      verticalFix += window.innerHeight / 2;
+      this.$wrapper[0].scrollTo(0, verticalFix);
+    }
+  }]);
+
+  return LyricsDisplayService;
+}(_LyricsService__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+
+
+/***/ }),
+
+/***/ "./resources/js/Lyrics/LyricsService.js":
+/*!**********************************************!*\
+  !*** ./resources/js/Lyrics/LyricsService.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return LyricsService; });
+/* harmony import */ var _Helpers_Eventful__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Helpers/Eventful */ "./resources/js/Helpers/Eventful.js");
+/* harmony import */ var _Helpers_DOM__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Helpers/DOM */ "./resources/js/Helpers/DOM.js");
+/* harmony import */ var _Lyric__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Lyric */ "./resources/js/Lyrics/Lyric.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to get private field on non-instance"); } if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to set private field on non-instance"); } if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } return value; }
+
+
+
+
+
+var LyricsService =
+/*#__PURE__*/
+function (_Eventful) {
+  _inherits(LyricsService, _Eventful);
+
+  function LyricsService(record, selector) {
+    var _this;
+
+    _classCallCheck(this, LyricsService);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(LyricsService).call(this));
+
+    _record.set(_assertThisInitialized(_this), {
+      writable: true,
+      value: void 0
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "$wrapper", void 0);
+
+    _defineProperty(_assertThisInitialized(_this), "$container", void 0);
+
+    _defineProperty(_assertThisInitialized(_this), "lyrics", []);
+
+    _defineProperty(_assertThisInitialized(_this), "selectedLyric", void 0);
+
+    _defineProperty(_assertThisInitialized(_this), "activeLyrics", []);
+
+    _classPrivateFieldSet(_assertThisInitialized(_this), _record, record);
+
+    if (!selector) {
+      throw "A valid DOM selector is required to initialize Lyrics Controls";
+    }
+
+    _this.$wrapper = $(selector);
+    _this.$container = $("<div>").addClass("lyrics-content");
+
+    _this.$wrapper.append(_this.$container);
+
+    return _this;
+  }
+
+  _createClass(LyricsService, [{
+    key: "process",
+    value: function process() {
+      this.lyrics = _classPrivateFieldGet(this, _record).lyrics.split("\n").map(function (lyricText) {
+        return new _Lyric__WEBPACK_IMPORTED_MODULE_2__["default"](lyricText);
+      });
+    }
+  }, {
+    key: "toString",
+    value: function toString() {
+      return this.lyrics.map(function (lyric) {
+        return lyric.toString();
+      }).join('\n');
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var content = this.lyrics.map(function (item) {
+        return item.$element;
+      });
+      this.$container.html(content);
+    }
+  }, {
+    key: "getLyricById",
+    value: function getLyricById(id) {
+      var result = this.lyrics.filter(function (item) {
+        return item.id === id;
+      }).slice(0, 1);
+      return result.length > 0 ? result[0] : null;
+    }
+  }, {
+    key: "getFirstLyric",
+    value: function getFirstLyric() {
+      return this.lyrics.length > 0 ? this.lyrics.slice(0, 1)[0] : null;
+    }
+  }, {
+    key: "getNextLyricForSelection",
+    value: function getNextLyricForSelection() {
+      if (!this.selectedLyric) {
+        return this.getFirstLyric();
+      }
+
+      var indexOfSelectedLyric = this.lyrics.indexOf(this.selectedLyric);
+      return this.lyrics[indexOfSelectedLyric + 1];
+    }
+  }, {
+    key: "getPreviousLyricForSelection",
+    value: function getPreviousLyricForSelection() {
+      if (!this.selectedLyric) {
+        return this.getFirstLyric();
+      }
+
+      var indexOfSelectedLyric = this.lyrics.indexOf(this.selectedLyric);
+      return this.lyrics[indexOfSelectedLyric - 1];
+    }
+  }, {
+    key: "selectLyricByElement",
+    value: function selectLyricByElement(element) {
+      this.selectLyricById(Object(_Helpers_DOM__WEBPACK_IMPORTED_MODULE_1__["retrieveElementId"])(element));
+    }
+  }, {
+    key: "selectLyricById",
+    value: function selectLyricById(id) {
+      this.holdSelection(this.getLyricById(id));
+    }
+  }, {
+    key: "selectNextLyric",
+    value: function selectNextLyric() {
+      this.holdSelection(this.getNextLyricForSelection());
+    }
+  }, {
+    key: "selectPreviousLyric",
+    value: function selectPreviousLyric() {
+      this.holdSelection(this.getPreviousLyricForSelection());
+    }
+  }, {
+    key: "holdSelection",
+    value: function holdSelection(lyric) {
+      this.releaseSelection(false);
+
+      if (lyric) {
+        lyric.select();
+        this.selectedLyric = lyric;
+      }
+
+      this.repaintSelectionState();
+    }
+  }, {
+    key: "releaseSelection",
+    value: function releaseSelection() {
+      var repaint = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+      if (this.selectedLyric) {
+        this.selectedLyric.deselect();
+        this.selectedLyric = null;
+      }
+
+      if (repaint) this.repaintSelectionState();
+    }
+  }, {
+    key: "holdActive",
+    value: function holdActive(lyrics) {
+      if (lyrics) {
+        lyrics.forEach(function (lyric) {
+          return lyric.activate();
+        });
+        this.activeLyrics = lyrics;
+      }
+
+      this.repaintActiveState();
+    }
+  }, {
+    key: "releaseActive",
+    value: function releaseActive() {
+      if (this.activeLyrics) {
+        this.activeLyrics.forEach(function (lyric) {
+          return lyric.deactivate();
+        });
+        this.activeLyrics = null;
+      }
+
+      this.repaintActiveState();
+    }
+  }, {
+    key: "repaintSelectionState",
+    value: function repaintSelectionState() {
+      this.lyrics.forEach(function (lyric) {
+        return lyric.repaintSelectionState();
+      });
+    }
+  }, {
+    key: "repaintActiveState",
+    value: function repaintActiveState() {
+      this.lyrics.forEach(function (lyric) {
+        return lyric.repaintActiveState();
+      });
+    }
+  }, {
+    key: "record",
+    get: function get() {
+      return _classPrivateFieldGet(this, _record);
+    }
+  }]);
+
+  return LyricsService;
+}(_Helpers_Eventful__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+var _record = new WeakMap();
 
 
 
@@ -25770,7 +25905,7 @@ _defineProperty(LyricsDisplayController, "app", void 0);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return LyricsSyncController; });
-/* harmony import */ var _SyncApp__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SyncApp */ "./resources/js/Lyrics/SyncApp.js");
+/* harmony import */ var _LyricsSyncService__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LyricsSyncService */ "./resources/js/Lyrics/LyricsSyncService.js");
 /* harmony import */ var _Video_VideoController__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Video/VideoController */ "./resources/js/Video/VideoController.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -25793,23 +25928,23 @@ function () {
   _createClass(LyricsSyncController, null, [{
     key: "load",
     value: function load(record, selector) {
-      this.app = new _SyncApp__WEBPACK_IMPORTED_MODULE_0__["default"](record, selector);
-      this.app.process();
-      this.app.render();
+      this.service = new _LyricsSyncService__WEBPACK_IMPORTED_MODULE_0__["default"](record, selector);
+      this.service.process();
+      this.service.render();
     }
   }, {
     key: "pairVideoController",
-    value: function pairVideoController(controller) {
+    value: function pairVideoController(videoController) {
       var _this = this;
 
-      if (controller.name !== "VideoController") {
+      if (videoController.name !== "VideoController") {
         throw "An instance of VideoController is expected";
       }
 
-      var videoApp = controller.app;
-      videoApp.on('ready', function () {});
-      this.app.on('step', function () {
-        _this.app.next(controller.app.currentTimestamp);
+      var videoService = videoController.service;
+      videoService.on('ready', function () {});
+      this.service.on('step', function () {
+        _this.service.next(videoService.currentTimestamp);
       });
     }
   }]);
@@ -25817,23 +25952,23 @@ function () {
   return LyricsSyncController;
 }();
 
-_defineProperty(LyricsSyncController, "app", void 0);
+_defineProperty(LyricsSyncController, "service", void 0);
 
 
 
 /***/ }),
 
-/***/ "./resources/js/Lyrics/SyncApp.js":
-/*!****************************************!*\
-  !*** ./resources/js/Lyrics/SyncApp.js ***!
-  \****************************************/
+/***/ "./resources/js/Lyrics/LyricsSyncService.js":
+/*!**************************************************!*\
+  !*** ./resources/js/Lyrics/LyricsSyncService.js ***!
+  \**************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SyncApp; });
-/* harmony import */ var _BaseApp__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BaseApp */ "./resources/js/Lyrics/BaseApp.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return LyricsSyncService; });
+/* harmony import */ var _LyricsService__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LyricsService */ "./resources/js/Lyrics/LyricsService.js");
 /* harmony import */ var _SyncLyric__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SyncLyric */ "./resources/js/Lyrics/SyncLyric.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -25855,66 +25990,35 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
 
 
 
-var SyncApp =
+
+var LyricsSyncService =
 /*#__PURE__*/
-function (_BaseApp) {
-  _inherits(SyncApp, _BaseApp);
+function (_LyricsService) {
+  _inherits(LyricsSyncService, _LyricsService);
 
-  function SyncApp(record, selector) {
+  function LyricsSyncService(record, selector) {
     var _this;
 
-    _classCallCheck(this, SyncApp);
+    _classCallCheck(this, LyricsSyncService);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(SyncApp).call(this, record, selector));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(LyricsSyncService).call(this, record, selector));
+
+    _bindings.add(_assertThisInitialized(_this));
 
     _defineProperty(_assertThisInitialized(_this), "eventHandlers", {
       step: []
     });
 
-    _defineProperty(_assertThisInitialized(_this), "_setKeyBindings", function () {
-      var _this2 = this;
-
-      var instance = this;
-      window.addEventListener("keydown", function (e) {
-        var keyCode = e.key.codePointAt(0);
-        /*** Space Bar Key **/
-
-        if (keyCode === 32 && e.target === document.body) {
-          e.preventDefault();
-        }
-      });
-      window.addEventListener("keyup", function (e) {
-        var keyCode = e.key.codePointAt(0);
-        /*** Space Bar Key **/
-
-        if (keyCode === 32) {
-          _this2.trigger("step");
-
-          if (!_this2.selectedLyric) {
-            instance.selectNextLyric();
-          }
-        }
-        /*** Esc Key **/
-
-
-        if (keyCode === 69) {
-          instance.releaseSelection();
-        }
-      });
-      this.$container.on("click", ".lyric", function (event) {
-        instance.selectLyricByElement(event.currentTarget);
-      });
-    });
-
-    _this._setKeyBindings();
+    _classPrivateMethodGet(_assertThisInitialized(_this), _bindings, _bindings2).call(_assertThisInitialized(_this));
 
     return _this;
   }
 
-  _createClass(SyncApp, [{
+  _createClass(LyricsSyncService, [{
     key: "process",
     value: function process() {
       this.lyrics = this.record.lyrics.split("\n").map(function (lyricText) {
@@ -25950,8 +26054,45 @@ function (_BaseApp) {
     }
   }]);
 
-  return SyncApp;
-}(_BaseApp__WEBPACK_IMPORTED_MODULE_0__["default"]);
+  return LyricsSyncService;
+}(_LyricsService__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+var _bindings = new WeakSet();
+
+var _bindings2 = function _bindings2() {
+  var _this2 = this;
+
+  var instance = this;
+  window.addEventListener("keydown", function (e) {
+    var keyCode = e.key.codePointAt(0);
+    /*** Space Bar Key **/
+
+    if (keyCode === 32 && e.target === document.body) {
+      e.preventDefault();
+    }
+  });
+  window.addEventListener("keyup", function (e) {
+    var keyCode = e.key.codePointAt(0);
+    /*** Space Bar Key **/
+
+    if (keyCode === 32) {
+      _this2.trigger("step");
+
+      if (!_this2.selectedLyric) {
+        instance.selectNextLyric();
+      }
+    }
+    /*** Esc Key **/
+
+
+    if (keyCode === 69) {
+      instance.releaseSelection();
+    }
+  });
+  this.$container.on("click", ".lyric", function (event) {
+    instance.selectLyricByElement(event.currentTarget);
+  });
+};
 
 
 
@@ -26043,16 +26184,487 @@ function (_Lyric) {
 
 /***/ }),
 
-/***/ "./resources/js/Video/VideoApp.js":
-/*!****************************************!*\
-  !*** ./resources/js/Video/VideoApp.js ***!
-  \****************************************/
+/***/ "./resources/js/Video/Controls/PauseUIControl.js":
+/*!*******************************************************!*\
+  !*** ./resources/js/Video/Controls/PauseUIControl.js ***!
+  \*******************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return VideoApp; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return PauseUIControl; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to get private field on non-instance"); } if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to set private field on non-instance"); } if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } return value; }
+
+var PauseUIControl =
+/*#__PURE__*/
+function () {
+  function PauseUIControl() {
+    var $html = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+    var videoService = arguments.length > 1 ? arguments[1] : undefined;
+
+    _classCallCheck(this, PauseUIControl);
+
+    _binds.add(this);
+
+    _videoService.set(this, {
+      writable: true,
+      value: void 0
+    });
+
+    _defineProperty(this, "$element", void 0);
+
+    this.$element = $html.find('.pause');
+
+    _classPrivateFieldSet(this, _videoService, videoService);
+
+    _classPrivateMethodGet(this, _binds, _binds2).call(this);
+  }
+
+  _createClass(PauseUIControl, [{
+    key: "action",
+    value: function action() {
+      _classPrivateFieldGet(this, _videoService).pause();
+    }
+  }]);
+
+  return PauseUIControl;
+}();
+
+var _videoService = new WeakMap();
+
+var _binds = new WeakSet();
+
+var _binds2 = function _binds2() {
+  var _this = this;
+
+  this.$element.on('click', function (e) {
+    return _this.action();
+  });
+};
+
+
+
+/***/ }),
+
+/***/ "./resources/js/Video/Controls/PlayUIControl.js":
+/*!******************************************************!*\
+  !*** ./resources/js/Video/Controls/PlayUIControl.js ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return PlayUIControl; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to get private field on non-instance"); } if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to set private field on non-instance"); } if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } return value; }
+
+var PlayUIControl =
+/*#__PURE__*/
+function () {
+  function PlayUIControl($html, videoService) {
+    _classCallCheck(this, PlayUIControl);
+
+    _binds.add(this);
+
+    _videoService.set(this, {
+      writable: true,
+      value: void 0
+    });
+
+    _defineProperty(this, "$element", void 0);
+
+    this.$element = $html.find('.play');
+
+    _classPrivateFieldSet(this, _videoService, videoService);
+
+    _classPrivateMethodGet(this, _binds, _binds2).call(this);
+  }
+
+  _createClass(PlayUIControl, [{
+    key: "action",
+    value: function action() {
+      _classPrivateFieldGet(this, _videoService).play();
+    }
+  }]);
+
+  return PlayUIControl;
+}();
+
+var _videoService = new WeakMap();
+
+var _binds = new WeakSet();
+
+var _binds2 = function _binds2() {
+  var _this = this;
+
+  this.$element.on('click', function (e) {
+    return _this.action();
+  });
+};
+
+
+
+/***/ }),
+
+/***/ "./resources/js/Video/Controls/SliderUIControl.js":
+/*!********************************************************!*\
+  !*** ./resources/js/Video/Controls/SliderUIControl.js ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SliderUIControl; });
+/* harmony import */ var _Helpers_functions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../Helpers/functions */ "./resources/js/Helpers/functions.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to get private field on non-instance"); } if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to set private field on non-instance"); } if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } return value; }
+
+
+
+var SliderUIControl =
+/*#__PURE__*/
+function () {
+  function SliderUIControl($html, videoService) {
+    _classCallCheck(this, SliderUIControl);
+
+    _setProgress.add(this);
+
+    _setTimestamp.add(this);
+
+    _binds.add(this);
+
+    _videoService.set(this, {
+      writable: true,
+      value: void 0
+    });
+
+    _defineProperty(this, "timestamp", 0);
+
+    _defineProperty(this, "progress", 0);
+
+    _defineProperty(this, "buffer", 0);
+
+    _playerUpdateTimeout.set(this, {
+      writable: true,
+      value: void 0
+    });
+
+    _defineProperty(this, "updatingPlayer", false);
+
+    _defineProperty(this, "$elements", {
+      $container: null,
+      $progressBar: null,
+      $bufferBar: null,
+      $input: null
+    });
+
+    _classPrivateFieldSet(this, _videoService, videoService);
+
+    this.$elements.$container = $html.find('.slider-control');
+    this.$elements.$progressBar = $html.find('.progress-bar');
+    this.$elements.$bufferBar = $html.find('.buffer-bar');
+    this.$elements.$input = $html.find('input');
+    this.$elements.$input.val(0);
+
+    _classPrivateMethodGet(this, _binds, _binds2).call(this);
+  }
+
+  _createClass(SliderUIControl, [{
+    key: "getInputValue",
+    value: function getInputValue() {
+      return Number(this.$elements.$input[0].value) / 10;
+    }
+  }, {
+    key: "progressToTimestamp",
+    value: function progressToTimestamp(progress) {
+      var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.duration;
+      return progress * duration / 100;
+    }
+  }, {
+    key: "timestampToProgress",
+    value: function timestampToProgress(timestamp) {
+      var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.duration;
+      return timestamp * 100 / duration;
+    }
+  }, {
+    key: "updatePlayer",
+    value: function updatePlayer() {
+      console.log('update player');
+
+      _classPrivateFieldGet(this, _videoService).seekTo(this.timestamp);
+
+      this.updatingPlayer = false;
+    }
+  }, {
+    key: "updateProgress",
+    value: function updateProgress() {
+      this.$elements.$progressBar[0].style.width = this.progress.toFixed(2) + "%";
+    }
+  }, {
+    key: "updateBuffer",
+    value: function updateBuffer() {
+      this.$elements.$bufferBar[0].style.width = this.buffer.toFixed(2) + "%";
+    }
+  }, {
+    key: "timestamp",
+    set: function set(timestamp) {
+      _classPrivateMethodGet(this, _setTimestamp, _setTimestamp2).call(this, timestamp);
+    }
+  }, {
+    key: "progress",
+    set: function set(progress) {
+      _classPrivateMethodGet(this, _setProgress, _setProgress2).call(this, progress);
+    }
+  }, {
+    key: "duration",
+    get: function get() {
+      return _classPrivateFieldGet(this, _videoService).duration;
+    }
+  }, {
+    key: "buffer",
+    get: function get() {
+      if (this.buffer > 1000) {
+        return 100;
+      }
+
+      return this.buffer / 10;
+    }
+  }]);
+
+  return SliderUIControl;
+}();
+
+var _videoService = new WeakMap();
+
+var _playerUpdateTimeout = new WeakMap();
+
+var _binds = new WeakSet();
+
+var _setTimestamp = new WeakSet();
+
+var _setProgress = new WeakSet();
+
+var _binds2 = function _binds2() {
+  var _this2 = this;
+
+  _classPrivateFieldGet(this, _videoService).on('tick', function (e) {
+    if (!_this2.updatingPlayer) _classPrivateMethodGet(_this2, _setTimestamp, _setTimestamp2).call(_this2, _classPrivateFieldGet(_this2, _videoService).currentTimestamp);
+  });
+
+  this.$elements.$input.on('change', function (e) {
+    _classPrivateMethodGet(_this2, _setProgress, _setProgress2).call(_this2, _this2.getInputValue());
+  });
+  this.$elements.$input.on('input', function (e) {
+    _classPrivateMethodGet(_this2, _setProgress, _setProgress2).call(_this2, _this2.getInputValue());
+  });
+};
+
+var _setTimestamp2 = function _setTimestamp2(timestamp) {
+  if (timestamp < 0 || timestamp > this.duration) {
+    return;
+  }
+
+  this.timestamp = timestamp;
+  this.progress = this.timestampToProgress(this.timestamp);
+  this.updateProgress();
+};
+
+var _setProgress2 = function _setProgress2(progress) {
+  if (progress < 0 || progress > 100) {
+    return;
+  }
+
+  this.progress = progress;
+  this.timestamp = this.progressToTimestamp(this.progress);
+  this.updateProgress();
+  console.log('bouncing');
+
+  var _this = this;
+
+  clearTimeout(_classPrivateFieldGet(_this, _playerUpdateTimeout));
+  this.updatingPlayer = true;
+
+  _classPrivateFieldSet(this, _playerUpdateTimeout, setTimeout(function () {
+    console.log('debounced');
+
+    _this.updatePlayer();
+  }, 250));
+};
+
+
+
+/***/ }),
+
+/***/ "./resources/js/Video/Controls/StopUIControl.js":
+/*!******************************************************!*\
+  !*** ./resources/js/Video/Controls/StopUIControl.js ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return StopUIControl; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to get private field on non-instance"); } if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to set private field on non-instance"); } if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } return value; }
+
+var StopUIControl =
+/*#__PURE__*/
+function () {
+  function StopUIControl($html, videoService) {
+    _classCallCheck(this, StopUIControl);
+
+    _binds.add(this);
+
+    _videoService.set(this, {
+      writable: true,
+      value: void 0
+    });
+
+    _defineProperty(this, "$element", void 0);
+
+    this.$element = $html.find('.stop');
+
+    _classPrivateFieldSet(this, _videoService, videoService);
+
+    _classPrivateMethodGet(this, _binds, _binds2).call(this);
+  }
+
+  _createClass(StopUIControl, [{
+    key: "action",
+    value: function action() {
+      _classPrivateFieldGet(this, _videoService).stop();
+    }
+  }]);
+
+  return StopUIControl;
+}();
+
+var _videoService = new WeakMap();
+
+var _binds = new WeakSet();
+
+var _binds2 = function _binds2() {
+  var _this = this;
+
+  this.$element.on('click', function (e) {
+    return _this.action();
+  });
+};
+
+
+
+/***/ }),
+
+/***/ "./resources/js/Video/VideoController.js":
+/*!***********************************************!*\
+  !*** ./resources/js/Video/VideoController.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return VideoController; });
+/* harmony import */ var _VideoService__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VideoService */ "./resources/js/Video/VideoService.js");
+/* harmony import */ var _VideoUIControl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VideoUIControl */ "./resources/js/Video/VideoUIControl.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+var VideoController =
+/*#__PURE__*/
+function () {
+  function VideoController() {
+    _classCallCheck(this, VideoController);
+  }
+
+  _createClass(VideoController, null, [{
+    key: "load",
+    value: function load(record, selector) {
+      this.service = new _VideoService__WEBPACK_IMPORTED_MODULE_0__["default"](record, selector);
+      this.service.shouldAutoStart = false;
+      this.service.initialize();
+      this.UIControl = new _VideoUIControl__WEBPACK_IMPORTED_MODULE_1__["default"](this.service);
+    }
+  }]);
+
+  return VideoController;
+}();
+
+_defineProperty(VideoController, "service", void 0);
+
+_defineProperty(VideoController, "UIControl", void 0);
+
+
+
+/***/ }),
+
+/***/ "./resources/js/Video/VideoService.js":
+/*!********************************************!*\
+  !*** ./resources/js/Video/VideoService.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return VideoService; });
 /* harmony import */ var _Helpers_Eventful__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Helpers/Eventful */ "./resources/js/Helpers/Eventful.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -26080,21 +26692,19 @@ function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(
 
 
 
-var VideoApp =
+var VideoService =
 /*#__PURE__*/
 function (_Eventful) {
-  _inherits(VideoApp, _Eventful);
+  _inherits(VideoService, _Eventful);
 
-  function VideoApp(record, containerId) {
+  function VideoService(record, containerId) {
     var _this;
 
-    _classCallCheck(this, VideoApp);
+    _classCallCheck(this, VideoService);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(VideoApp).call(this));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(VideoService).call(this));
 
     _adjustStart.add(_assertThisInitialized(_this));
-
-    _initialize.add(_assertThisInitialized(_this));
 
     _setBindings.add(_assertThisInitialized(_this));
 
@@ -26132,13 +26742,13 @@ function (_Eventful) {
           if (!start) start = timestamp;
           var progress = timestamp - start;
 
-          if (progress > 250 && instance.isPlaying) {
+          if (progress > 250) {
             start = null;
             var videoTimestamp = instance.currentTimestamp;
             instance.trigger('tick', videoTimestamp);
           }
 
-          window.requestAnimationFrame(tick);
+          if (instance.isPlaying) window.requestAnimationFrame(tick);
         });
       }
     });
@@ -26156,12 +26766,46 @@ function (_Eventful) {
 
     _classPrivateMethodGet(_assertThisInitialized(_this), _setBindings, _setBindings2).call(_assertThisInitialized(_this));
 
-    _classPrivateMethodGet(_assertThisInitialized(_this), _initialize, _initialize2).call(_assertThisInitialized(_this));
-
     return _this;
   }
 
-  _createClass(VideoApp, [{
+  _createClass(VideoService, [{
+    key: "initialize",
+    value: function initialize() {
+      var _this2 = this;
+
+      var options = {
+        width: '213',
+        height: '120',
+        playerVars: {
+          controls: 0,
+          rel: 0,
+          fs: 0,
+          disablekb: 1,
+          enablejsapi: 1,
+          modestbranding: 1,
+          origin: window.location.origin
+        },
+        events: {
+          'onReady': function onReady(e) {
+            return _this2.trigger('ready', e);
+          },
+          'onStateChange': function onStateChange(e) {
+            return _this2.trigger('stateChange', e);
+          }
+        }
+      };
+      options.videoId = this.youtube_id;
+      options.playerVars.autoplay = this.shouldAutoStart;
+      options.playerVars.loop = this.shouldLoop;
+
+      if (this.video_start) {
+        options.playerVars.start = this.video_start;
+      }
+
+      this.player = new YT.Player(this.containerId, options);
+    }
+  }, {
     key: "play",
     value: function play() {
       this.player.playVideo();
@@ -26187,9 +26831,20 @@ function (_Eventful) {
       this.player.unmute();
     }
   }, {
+    key: "seekTo",
+    value: function seekTo(timestamp) {
+      console.log(timestamp);
+      this.player.seekTo(timestamp);
+    }
+  }, {
     key: "record",
     set: function set(record) {
       console.error("Record reassignment is forbidden. Can't assign `" + record.name + "`,  `" + this.name + "` already assigned.");
+    }
+  }, {
+    key: "duration",
+    get: function get() {
+      return this.player.getDuration();
     }
   }, {
     key: "isMuted",
@@ -26208,85 +26863,47 @@ function (_Eventful) {
     }
   }]);
 
-  return VideoApp;
+  return VideoService;
 }(_Helpers_Eventful__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 var _setBindings = new WeakSet();
-
-var _initialize = new WeakSet();
 
 var _heartbeat = new WeakMap();
 
 var _adjustStart = new WeakSet();
 
 var _setBindings2 = function _setBindings2() {
-  var _this2 = this;
+  var _this3 = this;
 
   this.on('playing', function () {
-    return _classPrivateMethodGet(_this2, _adjustStart, _adjustStart2).call(_this2);
+    return _classPrivateMethodGet(_this3, _adjustStart, _adjustStart2).call(_this3);
   });
-  /*this.on('ended', () => this.shouldLoop ? this.restartVideo() : null);*/
-
+  this.on('playing', function () {
+    return _classPrivateFieldGet(_this3, _heartbeat).call(_this3);
+  });
   this.on('stateChange', function (e) {
-    _this2.currentState = e.data;
+    _this3.currentState = e.data;
 
     switch (e.data) {
       case YT.PlayerState.UNSTARTED:
-        return _this2.trigger(['unstarted', 'stopped'], e);
+        return _this3.trigger(['unstarted', 'stopped'], e);
 
       case YT.PlayerState.ENDED:
-        return _this2.trigger(['ended', 'stopped'], e);
+        return _this3.trigger(['ended', 'stopped'], e);
 
       case YT.PlayerState.PLAYING:
-        return _this2.trigger('playing', e);
+        return _this3.trigger('playing', e);
 
       case YT.PlayerState.PAUSED:
-        return _this2.trigger(['paused', 'stopped'], e);
+        return _this3.trigger(['paused', 'stopped'], e);
 
       case YT.PlayerState.BUFFERING:
-        return _this2.trigger(['buffering', 'stopped'], e);
+        return _this3.trigger(['buffering', 'stopped'], e);
 
       case YT.PlayerState.CUED:
-        return _this2.trigger(['cued', 'stopped'], e);
+        return _this3.trigger(['cued', 'stopped'], e);
     }
   });
-};
-
-var _initialize2 = function _initialize2() {
-  var _this3 = this;
-
-  var options = {
-    width: '213',
-    height: '120',
-    playerVars: {
-      controls: 0,
-      rel: 0,
-      fs: 0,
-      disablekb: 1,
-      enablejsapi: 1,
-      modestbranding: 1,
-      origin: window.location.origin
-    },
-    events: {
-      'onReady': function onReady(e) {
-        return _this3.trigger('ready', e);
-      },
-      'onStateChange': function onStateChange(e) {
-        return _this3.trigger('stateChange', e);
-      }
-    }
-  };
-  options.videoId = this.youtube_id;
-  options.playerVars.autoplay = this.shouldAutoStart;
-  options.playerVars.loop = this.shouldLoop;
-
-  if (this.video_start) {
-    options.playerVars.start = this.video_start;
-  }
-
-  this.player = new YT.Player(this.containerId, options);
-
-  _classPrivateFieldGet(this, _heartbeat).call(this);
 };
 
 var _adjustStart2 = function _adjustStart2() {
@@ -26303,18 +26920,20 @@ var _adjustStart2 = function _adjustStart2() {
 
 /***/ }),
 
-/***/ "./resources/js/Video/VideoController.js":
-/*!***********************************************!*\
-  !*** ./resources/js/Video/VideoController.js ***!
-  \***********************************************/
+/***/ "./resources/js/Video/VideoUIControl.js":
+/*!**********************************************!*\
+  !*** ./resources/js/Video/VideoUIControl.js ***!
+  \**********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return VideoController; });
-/* harmony import */ var _VideoApp__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VideoApp */ "./resources/js/Video/VideoApp.js");
-/* harmony import */ var _Helpers_DOM__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Helpers/DOM */ "./resources/js/Helpers/DOM.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return VideoUIControl; });
+/* harmony import */ var _Controls_SliderUIControl__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Controls/SliderUIControl */ "./resources/js/Video/Controls/SliderUIControl.js");
+/* harmony import */ var _Controls_PlayUIControl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Controls/PlayUIControl */ "./resources/js/Video/Controls/PlayUIControl.js");
+/* harmony import */ var _Controls_PauseUIControl__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Controls/PauseUIControl */ "./resources/js/Video/Controls/PauseUIControl.js");
+/* harmony import */ var _Controls_StopUIControl__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Controls/StopUIControl */ "./resources/js/Video/Controls/StopUIControl.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -26323,97 +26942,95 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _classStaticPrivateMethodGet(receiver, classConstructor, method) { if (receiver !== classConstructor) { throw new TypeError("Private static access of wrong provenance"); } return method; }
+function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
+
+function _classPrivateFieldGet(receiver, privateMap) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to get private field on non-instance"); } if (descriptor.get) { return descriptor.get.call(receiver); } return descriptor.value; }
+
+function _classPrivateFieldSet(receiver, privateMap, value) { var descriptor = privateMap.get(receiver); if (!descriptor) { throw new TypeError("attempted to set private field on non-instance"); } if (descriptor.set) { descriptor.set.call(receiver, value); } else { if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; } return value; }
 
 
 
 
-var VideoController =
+
+
+var VideoUIControl =
 /*#__PURE__*/
 function () {
-  function VideoController() {
-    _classCallCheck(this, VideoController);
+  function VideoUIControl(videoService) {
+    _classCallCheck(this, VideoUIControl);
+
+    _bindings.add(this);
+
+    _videoService.set(this, {
+      writable: true,
+      value: void 0
+    });
+
+    _defineProperty(this, "UIControls", {
+      play: null,
+      pause: null,
+      stop: null,
+      slider: null
+    });
+
+    _classPrivateFieldSet(this, _videoService, videoService);
+
+    this.initialize();
   }
 
-  _createClass(VideoController, null, [{
-    key: "load",
-    value: function load(record, selector) {
-      this.app = new _VideoApp__WEBPACK_IMPORTED_MODULE_0__["default"](record, selector);
-      this.app.shouldAutoStart = false;
+  _createClass(VideoUIControl, [{
+    key: "initialize",
+    value: function initialize() {
+      var _this = this;
 
-      _classStaticPrivateMethodGet(this, VideoController, _initializeControls).call(this);
+      return new Promise(function (resolve, reject) {
+        $.get('/api/video-controls').done(function (html) {
+          var $html = $(html);
+          _this.UIControls.play = new _Controls_PlayUIControl__WEBPACK_IMPORTED_MODULE_1__["default"]($html, _classPrivateFieldGet(_this, _videoService));
+          _this.UIControls.pause = new _Controls_PauseUIControl__WEBPACK_IMPORTED_MODULE_2__["default"]($html, _classPrivateFieldGet(_this, _videoService));
+          _this.UIControls.stop = new _Controls_StopUIControl__WEBPACK_IMPORTED_MODULE_3__["default"]($html, _classPrivateFieldGet(_this, _videoService));
+          _this.UIControls.slider = new _Controls_SliderUIControl__WEBPACK_IMPORTED_MODULE_0__["default"]($html, _classPrivateFieldGet(_this, _videoService));
+          $html.appendTo(".body-content");
 
-      this.isReady = true;
+          _classPrivateMethodGet(_this, _bindings, _bindings2).call(_this);
+
+          resolve();
+        }).fail(function (error) {
+          return reject(error);
+        });
+      });
     }
   }]);
 
-  return VideoController;
+  return VideoUIControl;
 }();
 
-_defineProperty(VideoController, "app", void 0);
+var _videoService = new WeakMap();
 
-_defineProperty(VideoController, "isReady", false);
+var _bindings = new WeakSet();
 
-_defineProperty(VideoController, "control", {
-  $container: null,
-  buttons: {}
-});
+var _bindings2 = function _bindings2() {
+  var _this2 = this;
 
-var _initializeControls = function _initializeControls() {
-  var $container = Object(_Helpers_DOM__WEBPACK_IMPORTED_MODULE_1__["createDOMElement"])({
-    classNames: ['player-controls'],
-    type: 'footer'
+  _classPrivateFieldGet(this, _videoService).on('playing', function () {
+    _this2.UIControls.pause.$element.show();
+
+    _this2.UIControls.play.$element.hide();
   });
 
-  var $buttons = _classStaticPrivateMethodGet(this, VideoController, _createButtons).call(this);
+  _classPrivateFieldGet(this, _videoService).on('paused', function () {
+    _this2.UIControls.play.$element.show();
 
-  $container.append(Object.values($buttons));
-  $container.appendTo(".body-content");
-  this.control.$container = $container;
-  this.control.buttons = $buttons;
-};
+    _this2.UIControls.pause.$element.hide();
+  });
 
-var _createButtons = function _createButtons() {
-  var _this = this;
+  _classPrivateFieldGet(this, _videoService).on('stopped', function () {
+    _this2.UIControls.play.$element.show();
 
-  var $play = Object(_Helpers_DOM__WEBPACK_IMPORTED_MODULE_1__["createDOMButton"])({
-    icon: 'play_arrow',
-    classNames: ['player-control', 'play'],
-    handler: function handler() {
-      return _this.app.play();
-    }
+    _this2.UIControls.pause.$element.hide();
+
+    _this2.UIControls.stop.$element.hide();
   });
-  var $pause = Object(_Helpers_DOM__WEBPACK_IMPORTED_MODULE_1__["createDOMButton"])({
-    icon: "pause",
-    classNames: ['player-control', 'pause'],
-    handler: function handler() {
-      return _this.app.pause();
-    }
-  });
-  var $stop = Object(_Helpers_DOM__WEBPACK_IMPORTED_MODULE_1__["createDOMButton"])({
-    icon: "stop",
-    classNames: ['player-control', 'stop'],
-    handler: function handler() {
-      return _this.app.stop();
-    }
-  });
-  this.app.on('playing', function () {
-    $pause.show();
-    $play.hide();
-  });
-  this.app.on('paused', function () {
-    $play.show();
-    $pause.hide();
-  });
-  this.app.on('stopped', function () {
-    $play.show();
-    $pause.hide();
-  });
-  return {
-    $play: $play,
-    $pause: $pause,
-    $stop: $stop
-  };
 };
 
 
@@ -26487,26 +27104,16 @@ function () {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Video_YTAPI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Video/YTAPI */ "./resources/js/Video/YTAPI.js");
-/* harmony import */ var _Video_VideoController__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Video/VideoController */ "./resources/js/Video/VideoController.js");
-/* harmony import */ var _Lyrics_LyricsDisplayController__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Lyrics/LyricsDisplayController */ "./resources/js/Lyrics/LyricsDisplayController.js");
-/* harmony import */ var _Lyrics_LyricsSyncController__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Lyrics/LyricsSyncController */ "./resources/js/Lyrics/LyricsSyncController.js");
+/* harmony import */ var _Apps_LyricsDisplayApp__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Apps/LyricsDisplayApp */ "./resources/js/Apps/LyricsDisplayApp.js");
+/* harmony import */ var _Apps_LyricsSyncApp__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Apps/LyricsSyncApp */ "./resources/js/Apps/LyricsSyncApp.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 
-
-
-window.app = {
-  YTAPILoader: _Video_YTAPI__WEBPACK_IMPORTED_MODULE_0__["default"],
-  controllers: {
-    VideoController: _Video_VideoController__WEBPACK_IMPORTED_MODULE_1__["default"],
-    LyricsDisplayController: _Lyrics_LyricsDisplayController__WEBPACK_IMPORTED_MODULE_2__["default"],
-    LyricsSyncController: _Lyrics_LyricsSyncController__WEBPACK_IMPORTED_MODULE_3__["default"]
-  }
+window.apps = {
+  LyricsDisplayApp: _Apps_LyricsDisplayApp__WEBPACK_IMPORTED_MODULE_0__["default"],
+  LyricsSyncApp: _Apps_LyricsSyncApp__WEBPACK_IMPORTED_MODULE_1__["default"]
 };
-/*LyricsSyncController: LyricsSyncController*/
-
 /*window.Vue = require('vue');*/
 
 /**

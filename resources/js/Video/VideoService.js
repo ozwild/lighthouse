@@ -1,6 +1,6 @@
 import Eventful from '../Helpers/Eventful';
 
-export default class VideoApp extends Eventful {
+export default class VideoService extends Eventful {
 
     record;
     player;
@@ -39,13 +39,13 @@ export default class VideoApp extends Eventful {
         this.containerId = containerId;
 
         this.#setBindings();
-        this.#initialize();
 
     }
 
     #setBindings() {
+
         this.on('playing', () => this.#adjustStart());
-        /*this.on('ended', () => this.shouldLoop ? this.restartVideo() : null);*/
+        this.on('playing', () => this.#heartbeat());
         this.on('stateChange', e => {
 
             this.currentState = e.data;
@@ -68,7 +68,7 @@ export default class VideoApp extends Eventful {
         })
     }
 
-    #initialize() {
+    initialize() {
 
         let options = {
             width: '213',
@@ -97,7 +97,7 @@ export default class VideoApp extends Eventful {
         }
 
         this.player = new YT.Player(this.containerId, options);
-        this.#heartbeat();
+
     }
 
     #heartbeat = function () {
@@ -109,13 +109,14 @@ export default class VideoApp extends Eventful {
             if (!start) start = timestamp;
             let progress = timestamp - start;
 
-            if (progress > 250 && instance.isPlaying) {
+            if (progress > 250) {
                 start = null;
                 let videoTimestamp = instance.currentTimestamp;
                 instance.trigger('tick', videoTimestamp);
             }
 
-            window.requestAnimationFrame(tick);
+            if (instance.isPlaying)
+                window.requestAnimationFrame(tick);
 
         });
 
@@ -154,6 +155,15 @@ export default class VideoApp extends Eventful {
 
     unmute() {
         this.player.unmute();
+    }
+
+    seekTo(timestamp) {
+        console.log(timestamp);
+        this.player.seekTo(timestamp);
+    }
+
+    get duration() {
+        return this.player.getDuration();
     }
 
     get isMuted() {

@@ -24,20 +24,8 @@
 
 @push('scripts')
     <script>
-        const app = window.app;
-        const recordModel = @json($record);
-        const VideoController = app.controllers.VideoController;
-        const LyricsController = app.controllers.LyricsDisplayController;
 
-        app.YTAPILoader.load().then(() => {
-            VideoController.load(recordModel, 'player');
-            LyricsController.load(recordModel, '.lyrics-container');
-
-            VideoController.app.on('tick', timestamp => {
-                LyricsController.app.showLyricsForTime(timestamp);
-            });
-
-        });
+        const app = new apps.LyricsDisplayApp(@json($record));
 
     </script>
 @endpush
@@ -46,18 +34,7 @@
 
     {{ Breadcrumbs::render('records.show', $record) }}
 
-    @if($record->youtube_id)
-        <div class="video-timer"></div>
-        <div class="player-container">
-            <div id="player"></div>
-        </div>
-    @endif
-
-    <div class="record-selector">
-        @foreach($available_records as $item)
-            <div><a href="{{ route('records.show', $item->id) }}">{{ $item->name }}</a></div>
-        @endforeach
-    </div>
+    @include('components.video.source')
 
     <div class="lyrics-container display"></div>
 

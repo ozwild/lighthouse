@@ -2,7 +2,7 @@ import Eventful from '../Helpers/Eventful';
 import {retrieveElementId} from "../Helpers/DOM";
 import Lyric from "./Lyric";
 
-export default class BaseApp extends Eventful {
+export default class LyricsService extends Eventful {
 
     #record;
     $wrapper;

@@ -2,37 +2,8 @@
 
 @push('scripts')
     <script>
-        const app = window.app;
-        const recordModel = @json($record);
-        const VideoController = app.controllers.VideoController;
-        const LyricsController = app.controllers.LyricsSyncController;
 
-        app.YTAPILoader.load().then(() => {
-            VideoController.load(recordModel, 'player');
-            LyricsController.load(recordModel, '.lyrics-container');
-            LyricsController.pairVideoController(VideoController);
-        });
-
-        function save() {
-            if (!LyricsController.app) {
-                return M.toast('No lyrics controller found');
-            }
-
-            let lyrics = LyricsController.app.toString();
-
-            $.ajax('{{ route('records.update', $record->id) }}', {
-                method: 'patch',
-                data: {
-                    lyrics
-                },
-                dataType: 'json',
-            }).done(e => {
-                M.toast("Lyrics saved!")
-            }).fail(e => {
-                M.toast("Something went wrong")
-            });
-
-        }
+        const app = new apps.LyricsSyncApp(@json($record));
 
     </script>
 @endpush
@@ -43,7 +14,9 @@
 
     <main>
         <section>
+
             <h1>Lyrics Sync</h1>
+
             <div class="row">
                 <div class="col s12">
                     <div class="flex">
@@ -52,7 +25,7 @@
                         </div>
                         <div class="flex-1">
                             <button class="save-lyrics btn btn-floating waves-effect waves-light right stick top-6"
-                                    onclick="save()">
+                                    onclick="save('{{ route('records.update', $record->id) }}')">
                                 <i class="material-icons">save</i></button>
                             <div class="clearfix"></div>
                         </div>
@@ -63,8 +36,9 @@
         </section>
     </main>
 
-    <div class="player-container">
-        <div id="player"></div>
-    </div>
+    @if($record->youtube_id)
+        @include('components.video.source')
+        @include('components.video.controls')
+    @endif
 
 @endsection

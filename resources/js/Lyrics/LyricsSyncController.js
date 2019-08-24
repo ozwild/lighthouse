@@ -1,27 +1,27 @@
-import app from './SyncApp';
+import Service from './LyricsSyncService';
 import VideoController from "../Video/VideoController";
 
 export default class LyricsSyncController {
 
-    static app;
+    static service;
 
     static load(record, selector) {
-        this.app = new app(record, selector);
-        this.app.process();
-        this.app.render();
+        this.service = new Service(record, selector);
+        this.service.process();
+        this.service.render();
     }
 
-    static pairVideoController(controller) {
+    static pairVideoController(videoController) {
 
-        if (controller.name !== "VideoController") {
+        if (videoController.name !== "VideoController") {
             throw "An instance of VideoController is expected";
         }
 
-        let videoApp = controller.app;
-        videoApp.on('ready', () => {
+        let videoService = videoController.service;
+        videoService.on('ready', () => {
         });
-        this.app.on('step', () => {
-            this.app.next(controller.app.currentTimestamp);
+        this.service.on('step', () => {
+            this.service.next(videoService.currentTimestamp);
         });
     }
 

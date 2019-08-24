@@ -1,20 +1,13 @@
 require('./bootstrap');
 
-import YTAPILoader from "./Video/YTAPI";
-import VideoController from "./Video/VideoController";
-import LyricsDisplayController from "./Lyrics/LyricsDisplayController";
-import LyricsSyncController from "./Lyrics/LyricsSyncController";
+import LyricsDisplayApp from './Apps/LyricsDisplayApp';
+import LyricsSyncApp from './Apps/LyricsSyncApp';
 
-window.app = {
-    YTAPILoader: YTAPILoader,
-    controllers: {
-        VideoController: VideoController,
-        LyricsDisplayController: LyricsDisplayController,
-        LyricsSyncController: LyricsSyncController
-    }
+window.apps = {
+    LyricsDisplayApp: LyricsDisplayApp,
+    LyricsSyncApp: LyricsSyncApp
 };
 
-/*LyricsSyncController: LyricsSyncController*/
 /*window.Vue = require('vue');*/
 
 /**

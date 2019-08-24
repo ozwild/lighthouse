@@ -1,6 +1,6 @@
-import BaseApp from './BaseApp';
+import LyricsService from './LyricsService';
 
-export default class DisplayApp extends BaseApp {
+export default class LyricsDisplayService extends LyricsService {
 
     /**
      * @todo Implement lyric display by groups
@@ -63,10 +63,10 @@ export default class DisplayApp extends BaseApp {
 
     repaintActiveState() {
         super.repaintActiveState();
-        this.#repositionContainer();
+        this.repositionContainer();
     }
 
-    #repositionContainer() {
+    repositionContainer() {
         if (!this.activeLyrics || this.activeLyrics.length === 0) {
             return;
         }

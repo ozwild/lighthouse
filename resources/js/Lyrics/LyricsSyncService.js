@@ -1,7 +1,7 @@
-import BaseApp from './BaseApp';
+import LyricsService from './LyricsService';
 import SyncLyric from "./SyncLyric";
 
-export default class SyncApp extends BaseApp {
+export default class LyricsSyncService extends LyricsService {
 
     eventHandlers = {
         step: []
@@ -9,10 +9,10 @@ export default class SyncApp extends BaseApp {
 
     constructor(record, selector) {
         super(record, selector);
-        this._setKeyBindings();
+        this.#bindings();
     }
 
-    _setKeyBindings = function () {
+    #bindings() {
 
         let instance = this;
 

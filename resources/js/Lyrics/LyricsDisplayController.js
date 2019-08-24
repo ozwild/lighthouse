@@ -1,12 +1,12 @@
-import app from './DisplayApp';
+import Service from './LyricsDisplayService';
 
 export default class LyricsDisplayController {
 
-    static app;
+    static service;
 
     static load(recordModel, selector) {
-        this.app = new app(recordModel, selector);
-        this.app.process();
-        this.app.render();
+        this.service = new Service(recordModel, selector);
+        this.service.process();
+        this.service.render();
     }
 }
