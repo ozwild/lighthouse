@@ -7,18 +7,21 @@ export default class LyricsDisplayApp {
     videoController;
     lyricsController;
 
-    constructor(recordModel) {
+    static load(selector = '.body-content') {
+        let $container = $(selector);
+        VideoController.load($container);
+        LyricsController.load($container);
+    }
 
-        this.videoController = VideoController;
-        this.lyricsController = LyricsController;
+    constructor(recordModel) {
 
         YTAPILoader.load().then(() => {
 
-            VideoController.load(recordModel, 'player');
-            LyricsController.load(recordModel, '.lyrics-container');
+            this.videoController = VideoController.instance(recordModel);
+            this.lyricsController = LyricsController.instance(recordModel);
 
-            VideoController.service.on('tick', timestamp => {
-                LyricsController.service.showLyricsForTime(timestamp);
+            this.videoController.on('tick', timestamp => {
+                this.lyricsController.service.showLyricsForTime(timestamp);
             });
 
         });

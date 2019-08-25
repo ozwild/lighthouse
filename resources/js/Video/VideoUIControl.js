@@ -33,7 +33,7 @@ export default class VideoUIControl {
                     this.UIControls.stop = new StopUIControl($html, this.#videoService);
                     this.UIControls.slider = new ProgressSlider($html, this.#videoService);
 
-                    $html.appendTo(".body-content");
+                    $html.appendTo(this.#videoService.$container);
 
                     this.#bindings();
 
@@ -48,21 +48,7 @@ export default class VideoUIControl {
 
     #bindings() {
 
-        this.#videoService.on('playing', () => {
-            this.UIControls.pause.$element.show();
-            this.UIControls.play.$element.hide();
-        });
-
-        this.#videoService.on('paused', () => {
-            this.UIControls.play.$element.show();
-            this.UIControls.pause.$element.hide();
-        });
-
-        this.#videoService.on('stopped', () => {
-            this.UIControls.play.$element.show();
-            this.UIControls.pause.$element.hide();
-            this.UIControls.stop.$element.hide();
-        });
+        
     }
 
 }

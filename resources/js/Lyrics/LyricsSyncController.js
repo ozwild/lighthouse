@@ -3,26 +3,40 @@ import VideoController from "../Video/VideoController";
 
 export default class LyricsSyncController {
 
-    static service;
+    static _instance;
+    static _$container;
+    service;
+    $container;
 
-    static load(record, selector) {
-        this.service = new Service(record, selector);
+    static load($container) {
+        this._$container = $("<div>").addClass(["lyrics-container", "sync"]);
+        this._$container.appendTo($container);
+    }
+
+    static instance(record) {
+        if (!this._instance) {
+            if (!record) {
+                /**
+                 * Implement record service and controller
+                 * to provide with record data on demand
+                 */
+                throw "Can't initialize without a record";
+            }
+            this._instance = new LyricsSyncController(record, this._$container);
+        }
+        return this._instance;
+    }
+
+    constructor(record, $container) {
+        this.service = new Service(record, $container);
         this.service.process();
         this.service.render();
     }
 
-    static pairVideoController(videoController) {
-
-        if (videoController.name !== "VideoController") {
-            throw "An instance of VideoController is expected";
-        }
-
-        let videoService = videoController.service;
-        videoService.on('ready', () => {
-        });
-        this.service.on('step', () => {
-            this.service.next(videoService.currentTimestamp);
-        });
+    on(event, handler) {
+        this.service.on(event, handler);
+        return this;
     }
+
 
 }

@@ -12,7 +12,8 @@
             <div class="buffer-bar"></div>
             <div class="progress-bar"></div>
 
-            <input class="slider-input browser-default" type="range" max="1000" aria-label="Video progress control">
+            <input class="slider-input browser-default" type="range" min="0" max="1000"
+                   aria-label="Video progress control" tabindex="-1">
 
         </div>
     </div>

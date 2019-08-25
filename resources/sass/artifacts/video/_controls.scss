@@ -1,63 +1,109 @@
 @import '../../variables';
+@import '../../keyframes';
 
-.player-controls {
-  height: 70px;
-  padding: 0.5em;
-  position: fixed;
-  bottom: 14px;
-  right: 0;
-  background: linear-gradient(-45deg, #222, transparent);
-  width: 560px;
-  display: flex;
-  z-index: 2;
-  max-width: 100%;
+.player-container {
 
-  .player-control {
-    background: transparent;
-    border: none;
-    padding: 0;
-    color: rgba(white, 0.7);
-    transition: color map-get($animationSpeed, "out");
+  &.playing {
+    .player-controls {
+      .pause, .stop {
+        transform: scale(1);
+      }
 
-    &:hover {
-      color: white;
-      transition: color map-get($animationSpeed, "in");
+      .play {
+        transform: scale(0);
+      }
+    }
+  }
+
+  &:not(.playing) {
+    .player-controls {
+      .pause, .stop {
+        transform: scale(0);
+      }
+
+      .play {
+        transform: scale(1);
+      }
+    }
+  }
+
+  .player-controls {
+    height: 70px;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(45deg, #090810, rgba(150, 45, 155, 0.1));
+    z-index: 2;
+    width: 100%;
+    border-top-left-radius: 0;
+    transition: right map_get($animationSpeed, 'in-slow');
+    position: relative;
+    @extend .z-depth-1;
+
+    @media screen and (min-width: 640px) {
+      border-top-left-radius: 14px;
+      transition: right map_get($animationSpeed, 'out-slow');
     }
 
-    &.pause {
-      display: none;
-      background: #FB8B24;
+    .player-control {
+      background: transparent;
+      border: none;
+      padding: 0;
+      color: rgba(white, 0.7);
+      transform: scale(1);
+      transition: color map-get($animationSpeed, "out"), transform map-get($animationSpeed, "in");
+      cursor: pointer;
+      user-select: none;
+      position: absolute;
 
       &:hover {
-        background: lighten(#FB8B24, 5%);
-      }
-    }
-
-    &.play {
-      background: #D90368;
-
-      &:hover {
-        background: lighten(#D90368, 5%);
-      }
-    }
-
-    &.play, &.pause {
-      border-radius: 50%;
-      height: 56px;
-      width: 56px;
-      box-shadow: 0px 1px 16px -1px black;
-
-      i {
-        font-size: 56px;
+        color: white;
+        transition: color map-get($animationSpeed, "in");
       }
 
-    }
+      &.pause {
+        background: #FB8B24;
 
-    &.stop {
-      margin-left: 7px;
+        &:hover {
+          background: lighten(#FB8B24, 5%);
+        }
 
-      i {
-        font-size: 35px;
+        i {
+          font-size: 40px;
+        }
+
+      }
+
+      &.play {
+        background: #D90368;
+
+        &:hover {
+          background: lighten(#D90368, 5%);
+        }
+
+        i {
+          font-size: 56px;
+        }
+
+      }
+
+      &.play, &.pause {
+        border-radius: 50%;
+        height: 56px;
+        width: 56px;
+        box-shadow: 0 1px 16px -1px black;
+        right: 14px;
+        top: -10px;
+
+      }
+
+      &.stop {
+        right: 84px;
+        top: 16px;
+
+        i {
+          font-size: 35px;
+        }
+
       }
 
     }

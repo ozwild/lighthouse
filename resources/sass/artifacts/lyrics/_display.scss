@@ -5,9 +5,7 @@ $lyricColor: map_get($palette, 'pale');
 $selectionColor: map_get($palette, 'contrast');
 
 .lyrics-container.display {
-  height: 100vh;
-  overflow: auto;
-  padding-top: 100vh;
+  font-size: 1.25em;
 
   .lyrics-content {
 

@@ -3,6 +3,7 @@
 @push('scripts')
     <script>
 
+        apps.LyricsSyncApp.load('#lyrics-sync-container');
         const app = new apps.LyricsSyncApp(@json($record));
 
     </script>
@@ -14,18 +15,25 @@
 
     <main>
         <section>
-
-            <h1>Lyrics Sync</h1>
+            <header class="pl-3">
+                <h1>
+                    {{ $record->name }}
+                    @if($record->artist)
+                        <br>
+                        &gt;<span class="cyan-text text-darken-1">{{ $record->artist }} </span>&lt;
+                    @endif
+                </h1>
+            </header>
 
             <div class="row">
                 <div class="col s12">
                     <div class="flex">
-                        <div class="flex-2">
-                            <div class="lyrics-container sync"></div>
+                        <div id="lyrics-sync-container" class="flex-2">
+
                         </div>
                         <div class="flex-1">
                             <button class="save-lyrics btn btn-floating waves-effect waves-light right stick top-6"
-                                    onclick="save('{{ route('records.update', $record->id) }}')">
+                                    onclick="app.save('{{ route('records.update', $record->id) }}')">
                                 <i class="material-icons">save</i></button>
                             <div class="clearfix"></div>
                         </div>
@@ -35,10 +43,5 @@
 
         </section>
     </main>
-
-    @if($record->youtube_id)
-        @include('components.video.source')
-        @include('components.video.controls')
-    @endif
 
 @endsection

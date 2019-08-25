@@ -5,25 +5,21 @@ import Lyric from "./Lyric";
 export default class LyricsService extends Eventful {
 
     #record;
-    $wrapper;
     $container;
+    $content;
     lyrics = [];
     selectedLyric;
     activeLyrics = [];
 
-    constructor(record, selector) {
+    constructor(record, $container) {
 
         super();
 
         this.#record = record;
 
-        if (!selector) {
-            throw "A valid DOM selector is required to initialize Lyrics Controls";
-        }
-
-        this.$wrapper = $(selector);
-        this.$container = $("<div>").addClass("lyrics-content");
-        this.$wrapper.append(this.$container);
+        this.$container = $container;
+        this.$content = $("<div>").addClass("lyrics-content")
+            .appendTo(this.$container);
 
     }
 
@@ -42,7 +38,7 @@ export default class LyricsService extends Eventful {
 
     render() {
         let content = this.lyrics.map(item => item.$element);
-        this.$container.html(content);
+        this.$content.html(content);
     }
 
     getLyricById(id) {

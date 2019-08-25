@@ -25,6 +25,7 @@
 @push('scripts')
     <script>
 
+        apps.LyricsDisplayApp.load();
         const app = new apps.LyricsDisplayApp(@json($record));
 
     </script>
@@ -33,9 +34,5 @@
 @section('content')
 
     {{ Breadcrumbs::render('records.show', $record) }}
-
-    @include('components.video.source')
-
-    <div class="lyrics-container display"></div>
 
 @endsection

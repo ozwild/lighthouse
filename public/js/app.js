@@ -24929,29 +24929,50 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Video_YTAPI__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Video/YTAPI */ "./resources/js/Video/YTAPI.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
 
 
-var LyricsDisplayApp = function LyricsDisplayApp(recordModel) {
-  _classCallCheck(this, LyricsDisplayApp);
+var LyricsDisplayApp =
+/*#__PURE__*/
+function () {
+  _createClass(LyricsDisplayApp, null, [{
+    key: "load",
+    value: function load() {
+      var selector = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '.body-content';
+      var $container = $(selector);
+      _Video_VideoController__WEBPACK_IMPORTED_MODULE_0__["default"].load($container);
+      _Lyrics_LyricsDisplayController__WEBPACK_IMPORTED_MODULE_1__["default"].load($container);
+    }
+  }]);
 
-  _defineProperty(this, "videoController", void 0);
+  function LyricsDisplayApp(recordModel) {
+    var _this = this;
 
-  _defineProperty(this, "lyricsController", void 0);
+    _classCallCheck(this, LyricsDisplayApp);
 
-  this.videoController = _Video_VideoController__WEBPACK_IMPORTED_MODULE_0__["default"];
-  this.lyricsController = _Lyrics_LyricsDisplayController__WEBPACK_IMPORTED_MODULE_1__["default"];
-  _Video_YTAPI__WEBPACK_IMPORTED_MODULE_2__["default"].load().then(function () {
-    _Video_VideoController__WEBPACK_IMPORTED_MODULE_0__["default"].load(recordModel, 'player');
-    _Lyrics_LyricsDisplayController__WEBPACK_IMPORTED_MODULE_1__["default"].load(recordModel, '.lyrics-container');
-    _Video_VideoController__WEBPACK_IMPORTED_MODULE_0__["default"].service.on('tick', function (timestamp) {
-      _Lyrics_LyricsDisplayController__WEBPACK_IMPORTED_MODULE_1__["default"].service.showLyricsForTime(timestamp);
+    _defineProperty(this, "videoController", void 0);
+
+    _defineProperty(this, "lyricsController", void 0);
+
+    _Video_YTAPI__WEBPACK_IMPORTED_MODULE_2__["default"].load().then(function () {
+      _this.videoController = _Video_VideoController__WEBPACK_IMPORTED_MODULE_0__["default"].instance(recordModel);
+      _this.lyricsController = _Lyrics_LyricsDisplayController__WEBPACK_IMPORTED_MODULE_1__["default"].instance(recordModel);
+
+      _this.videoController.on('tick', function (timestamp) {
+        _this.lyricsController.service.showLyricsForTime(timestamp);
+      });
     });
-  });
-};
+  }
+
+  return LyricsDisplayApp;
+}();
 
 
 
@@ -24985,30 +25006,46 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var LyricsSyncApp =
 /*#__PURE__*/
 function () {
+  _createClass(LyricsSyncApp, null, [{
+    key: "load",
+    value: function load() {
+      var selector = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '.body-content';
+      var $container = $(selector);
+      _Video_VideoController__WEBPACK_IMPORTED_MODULE_0__["default"].load($container);
+      _Lyrics_LyricsSyncController__WEBPACK_IMPORTED_MODULE_1__["default"].load($container);
+    }
+  }]);
+
   function LyricsSyncApp(recordModel) {
+    var _this = this;
+
     _classCallCheck(this, LyricsSyncApp);
 
     _defineProperty(this, "videoController", void 0);
 
     _defineProperty(this, "lyricsController", void 0);
 
-    this.videoController = _Video_VideoController__WEBPACK_IMPORTED_MODULE_0__["default"];
-    this.lyricsController = _Lyrics_LyricsSyncController__WEBPACK_IMPORTED_MODULE_1__["default"];
     _Video_YTAPI__WEBPACK_IMPORTED_MODULE_2__["default"].load().then(function () {
-      _Video_VideoController__WEBPACK_IMPORTED_MODULE_0__["default"].load(recordModel, 'player');
-      _Lyrics_LyricsSyncController__WEBPACK_IMPORTED_MODULE_1__["default"].load(recordModel, '.lyrics-container');
-      _Lyrics_LyricsSyncController__WEBPACK_IMPORTED_MODULE_1__["default"].pairVideoController(_Video_VideoController__WEBPACK_IMPORTED_MODULE_0__["default"]);
+      _this.videoController = _Video_VideoController__WEBPACK_IMPORTED_MODULE_0__["default"].instance(recordModel);
+      _this.lyricsController = _Lyrics_LyricsSyncController__WEBPACK_IMPORTED_MODULE_1__["default"].instance(recordModel);
+
+      _this.lyricsController.on('step', function () {
+        _this.lyricsController.service.next(_this.videoController.service.currentTimestamp);
+      });
     });
   }
 
   _createClass(LyricsSyncApp, [{
     key: "save",
     value: function save(route) {
-      if (!_Lyrics_LyricsSyncController__WEBPACK_IMPORTED_MODULE_1__["default"].app) {
-        return M.toast('No lyrics controller found');
+      if (!this.lyricsController) {
+        return M.toast({
+          html: "No lyrics controller found",
+          classes: "fail"
+        });
       }
 
-      var lyrics = _Lyrics_LyricsSyncController__WEBPACK_IMPORTED_MODULE_1__["default"].app.toString();
+      var lyrics = this.lyricsController.service.toString();
       $.ajax(route, {
         method: 'patch',
         data: {
@@ -25016,9 +25053,15 @@ function () {
         },
         dataType: 'json'
       }).done(function (e) {
-        M.toast("Lyrics saved!");
+        M.toast({
+          html: "Lyrics saved!",
+          classes: "success"
+        });
       }).fail(function (e) {
-        M.toast("Something went wrong");
+        M.toast({
+          html: "Something went wrong",
+          classes: "alert"
+        });
       });
     }
   }]);
@@ -25052,9 +25095,23 @@ function createDOMElement() {
       _ref$content = _ref.content,
       content = _ref$content === void 0 ? "" : _ref$content,
       _ref$type = _ref.type,
-      type = _ref$type === void 0 ? 'div' : _ref$type;
+      type = _ref$type === void 0 ? 'div' : _ref$type,
+      _ref$editable = _ref.editable,
+      editable = _ref$editable === void 0 ? false : _ref$editable,
+      _ref$$container = _ref.$container,
+      $container = _ref$$container === void 0 ? null : _ref$$container;
 
-  return jquery__WEBPACK_IMPORTED_MODULE_0___default()("<" + type + ">").addClass(classNames).html(content);
+  var $element = jquery__WEBPACK_IMPORTED_MODULE_0___default()("<" + type + ">").addClass(classNames).html(content);
+
+  if (editable) {
+    $element.attr('contenteditable', true);
+  }
+
+  if ($container) {
+    $element.appendTo($container);
+  }
+
+  return $element;
 }
 function createDOMButton() {
   var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
@@ -25337,6 +25394,12 @@ function () {
 
     _defineProperty(this, "$element", void 0);
 
+    _defineProperty(this, "$nodes", {
+      $content: null,
+      $start: null,
+      $end: null
+    });
+
     _defineProperty(this, "isSelected", void 0);
 
     _defineProperty(this, "isActive", void 0);
@@ -25348,21 +25411,22 @@ function () {
     this.content = decoded.content;
     this._start = decoded.start;
     this._end = decoded.end;
-    this.$element = this._createNode();
-    this.updateNodeData();
+
+    this._createNodes();
   }
 
   _createClass(Lyric, [{
-    key: "_createNode",
-    value: function _createNode() {
-      return Object(_Helpers_DOM__WEBPACK_IMPORTED_MODULE_2__["createDOMElement"])({
+    key: "_createNodes",
+    value: function _createNodes() {
+      this.$element = Object(_Helpers_DOM__WEBPACK_IMPORTED_MODULE_2__["createDOMElement"])({
         type: 'p',
         classNames: 'lyric'
       }).data('lyric_id', this.id);
+      this.updateNodesData();
     }
   }, {
-    key: "updateNodeData",
-    value: function updateNodeData() {
+    key: "updateNodesData",
+    value: function updateNodesData() {
       var htmlContent = this.content;
       this.$element.html(htmlContent);
       this.$element.attr('data-start', this._start);
@@ -25393,8 +25457,6 @@ function () {
   }, {
     key: "updateTimestamp",
     value: function updateTimestamp(timestamp) {
-      timestamp = +timestamp.toFixed(2);
-
       switch (this.activeTimestampIdentifier) {
         case _Constants__WEBPACK_IMPORTED_MODULE_1__["TIMESTAMPS_IDENTIFIERS"].START:
           this.start = timestamp;
@@ -25440,10 +25502,8 @@ function () {
   }, {
     key: "verticalPosition",
     get: function get() {
-      var height = this.$element.height() / 2;
-      var offset = this.$element[0].offsetTop;
-      var correction = 0;
-      return height + offset + correction;
+      var element = this.$element[0];
+      return element.offsetHeight + element.offsetTop;
     }
   }, {
     key: "id",
@@ -25456,8 +25516,9 @@ function () {
   }, {
     key: "start",
     set: function set(timestamp) {
+      timestamp = +Number(timestamp).toFixed(2);
       this._start = timestamp;
-      this.updateNodeData();
+      this.updateNodesData();
     },
     get: function get() {
       return this._start;
@@ -25465,8 +25526,9 @@ function () {
   }, {
     key: "end",
     set: function set(timestamp) {
+      timestamp = +Number(timestamp).toFixed(2);
       this._end = timestamp;
-      this.updateNodeData();
+      this.updateNodesData();
     },
     get: function get() {
       return this._end;
@@ -25475,7 +25537,7 @@ function () {
     key: "content",
     set: function set(content) {
       this.content = content;
-      this.updateNodeData();
+      this.updateNodesData();
     }
   }]);
 
@@ -25510,23 +25572,56 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var LyricsDisplayController =
 /*#__PURE__*/
 function () {
-  function LyricsDisplayController() {
-    _classCallCheck(this, LyricsDisplayController);
-  }
-
   _createClass(LyricsDisplayController, null, [{
     key: "load",
-    value: function load(recordModel, selector) {
-      this.service = new _LyricsDisplayService__WEBPACK_IMPORTED_MODULE_0__["default"](recordModel, selector);
-      this.service.process();
-      this.service.render();
+    value: function load($container) {
+      this._$container = $("<div>").addClass(["lyrics-container", "display"]);
+
+      this._$container.appendTo($container);
+    }
+  }, {
+    key: "instance",
+    value: function instance(record) {
+      if (!this._instance) {
+        if (!record) {
+          /**
+           * Implement record service and controller
+           * to provide with record data on demand
+           */
+          throw "Can't initialize without a record";
+        }
+
+        this._instance = new LyricsDisplayController(record, this._$container);
+      }
+
+      return this._instance;
+    }
+  }]);
+
+  function LyricsDisplayController(record, $container) {
+    _classCallCheck(this, LyricsDisplayController);
+
+    _defineProperty(this, "service", void 0);
+
+    this.service = new _LyricsDisplayService__WEBPACK_IMPORTED_MODULE_0__["default"](record, $container);
+    this.service.process();
+    this.service.render();
+  }
+
+  _createClass(LyricsDisplayController, [{
+    key: "on",
+    value: function on(event, handler) {
+      this.service.on(event, handler);
+      return this;
     }
   }]);
 
   return LyricsDisplayController;
 }();
 
-_defineProperty(LyricsDisplayController, "service", void 0);
+_defineProperty(LyricsDisplayController, "_instance", void 0);
+
+_defineProperty(LyricsDisplayController, "_$container", void 0);
 
 
 
@@ -25577,17 +25672,21 @@ function (_LyricsService) {
   /**
    * @todo Implement lyric display by groups
    */
-  function LyricsDisplayService(record, selector) {
+  function LyricsDisplayService(record, $container) {
     var _this;
 
     _classCallCheck(this, LyricsDisplayService);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(LyricsDisplayService).call(this, record, selector));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(LyricsDisplayService).call(this, record, $container));
+
+    _defineProperty(_assertThisInitialized(_this), "scrollingCorrection", 0);
 
     _defineProperty(_assertThisInitialized(_this), "eventHandlers", {
       load: [],
       ready: []
     });
+
+    _this.trigger('load');
 
     return _this;
   }
@@ -25639,17 +25738,21 @@ function (_LyricsService) {
       this.repositionContainer();
     }
   }, {
+    key: "getVerticalFixForActiveLyrics",
+    value: function getVerticalFixForActiveLyrics() {
+      var activeLyricsFix = this.activeLyrics.reduce(function (sum, lyric) {
+        return sum + lyric.verticalPosition;
+      }, 0);
+      return activeLyricsFix - window.innerHeight / 2 + this.scrollingCorrection;
+    }
+  }, {
     key: "repositionContainer",
     value: function repositionContainer() {
       if (!this.activeLyrics || this.activeLyrics.length === 0) {
         return;
       }
 
-      var verticalFix = this.activeLyrics.reduce(function (sum, lyric) {
-        return sum + lyric.verticalPosition;
-      }, 0);
-      verticalFix += window.innerHeight / 2;
-      this.$wrapper[0].scrollTo(0, verticalFix);
+      window.scrollTo(0, this.getVerticalFixForActiveLyrics());
     }
   }]);
 
@@ -25706,7 +25809,7 @@ var LyricsService =
 function (_Eventful) {
   _inherits(LyricsService, _Eventful);
 
-  function LyricsService(record, selector) {
+  function LyricsService(record, $container) {
     var _this;
 
     _classCallCheck(this, LyricsService);
@@ -25718,9 +25821,9 @@ function (_Eventful) {
       value: void 0
     });
 
-    _defineProperty(_assertThisInitialized(_this), "$wrapper", void 0);
-
     _defineProperty(_assertThisInitialized(_this), "$container", void 0);
+
+    _defineProperty(_assertThisInitialized(_this), "$content", void 0);
 
     _defineProperty(_assertThisInitialized(_this), "lyrics", []);
 
@@ -25730,15 +25833,8 @@ function (_Eventful) {
 
     _classPrivateFieldSet(_assertThisInitialized(_this), _record, record);
 
-    if (!selector) {
-      throw "A valid DOM selector is required to initialize Lyrics Controls";
-    }
-
-    _this.$wrapper = $(selector);
-    _this.$container = $("<div>").addClass("lyrics-content");
-
-    _this.$wrapper.append(_this.$container);
-
+    _this.$container = $container;
+    _this.$content = $("<div>").addClass("lyrics-content").appendTo(_this.$container);
     return _this;
   }
 
@@ -25762,7 +25858,7 @@ function (_Eventful) {
       var content = this.lyrics.map(function (item) {
         return item.$element;
       });
-      this.$container.html(content);
+      this.$content.html(content);
     }
   }, {
     key: "getLyricById",
@@ -25921,38 +26017,58 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var LyricsSyncController =
 /*#__PURE__*/
 function () {
-  function LyricsSyncController() {
-    _classCallCheck(this, LyricsSyncController);
-  }
-
   _createClass(LyricsSyncController, null, [{
     key: "load",
-    value: function load(record, selector) {
-      this.service = new _LyricsSyncService__WEBPACK_IMPORTED_MODULE_0__["default"](record, selector);
-      this.service.process();
-      this.service.render();
+    value: function load($container) {
+      this._$container = $("<div>").addClass(["lyrics-container", "sync"]);
+
+      this._$container.appendTo($container);
     }
   }, {
-    key: "pairVideoController",
-    value: function pairVideoController(videoController) {
-      var _this = this;
+    key: "instance",
+    value: function instance(record) {
+      if (!this._instance) {
+        if (!record) {
+          /**
+           * Implement record service and controller
+           * to provide with record data on demand
+           */
+          throw "Can't initialize without a record";
+        }
 
-      if (videoController.name !== "VideoController") {
-        throw "An instance of VideoController is expected";
+        this._instance = new LyricsSyncController(record, this._$container);
       }
 
-      var videoService = videoController.service;
-      videoService.on('ready', function () {});
-      this.service.on('step', function () {
-        _this.service.next(videoService.currentTimestamp);
-      });
+      return this._instance;
+    }
+  }]);
+
+  function LyricsSyncController(record, $container) {
+    _classCallCheck(this, LyricsSyncController);
+
+    _defineProperty(this, "service", void 0);
+
+    _defineProperty(this, "$container", void 0);
+
+    this.service = new _LyricsSyncService__WEBPACK_IMPORTED_MODULE_0__["default"](record, $container);
+    this.service.process();
+    this.service.render();
+  }
+
+  _createClass(LyricsSyncController, [{
+    key: "on",
+    value: function on(event, handler) {
+      this.service.on(event, handler);
+      return this;
     }
   }]);
 
   return LyricsSyncController;
 }();
 
-_defineProperty(LyricsSyncController, "service", void 0);
+_defineProperty(LyricsSyncController, "_instance", void 0);
+
+_defineProperty(LyricsSyncController, "_$container", void 0);
 
 
 
@@ -26000,20 +26116,24 @@ var LyricsSyncService =
 function (_LyricsService) {
   _inherits(LyricsSyncService, _LyricsService);
 
-  function LyricsSyncService(record, selector) {
+  function LyricsSyncService(record, $container) {
     var _this;
 
     _classCallCheck(this, LyricsSyncService);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(LyricsSyncService).call(this, record, selector));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(LyricsSyncService).call(this, record, $container));
 
     _bindings.add(_assertThisInitialized(_this));
 
     _defineProperty(_assertThisInitialized(_this), "eventHandlers", {
+      load: [],
+      ready: [],
       step: []
     });
 
     _classPrivateMethodGet(_assertThisInitialized(_this), _bindings, _bindings2).call(_assertThisInitialized(_this));
+
+    _this.trigger('load');
 
     return _this;
   }
@@ -26120,13 +26240,19 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _classStaticPrivateFieldSpecSet(receiver, classConstructor, descriptor, value) { if (receiver !== classConstructor) { throw new TypeError("Private static access of wrong provenance"); } if (!descriptor.writable) { throw new TypeError("attempted to set read only private field"); } descriptor.value = value; return value; }
+
+function _classStaticPrivateFieldSpecGet(receiver, classConstructor, descriptor) { if (receiver !== classConstructor) { throw new TypeError("Private static access of wrong provenance"); } return descriptor.value; }
+
+function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
 
 
 
@@ -26136,49 +26262,155 @@ var SyncLyric =
 function (_Lyric) {
   _inherits(SyncLyric, _Lyric);
 
-  function SyncLyric(record, selector) {
+  function SyncLyric(text) {
     var _this;
 
     _classCallCheck(this, SyncLyric);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(SyncLyric).call(this, record, selector));
-    _this.$element = _this._createNode();
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(SyncLyric).call(this, text));
+
+    _binds.add(_assertThisInitialized(_this));
+
+    _classPrivateMethodGet(_assertThisInitialized(_this), _binds, _binds2).call(_assertThisInitialized(_this));
+
     return _this;
   }
 
   _createClass(SyncLyric, [{
-    key: "_createNode",
-    value: function _createNode() {
-      var $contentBlock = Object(_Helpers_DOM__WEBPACK_IMPORTED_MODULE_1__["createDOMElement"])({
-        classNames: 'lyric-content',
-        content: this.content
-      });
-      var $startBlock = Object(_Helpers_DOM__WEBPACK_IMPORTED_MODULE_1__["createDOMElement"])({
-        classNames: ['timestamp', 'lyric-start'],
-        content: this._start
-      });
-      var $endBlock = Object(_Helpers_DOM__WEBPACK_IMPORTED_MODULE_1__["createDOMElement"])({
-        classNames: ['timestamp', 'lyric-end'],
-        content: this._end
-      });
-      return Object(_Helpers_DOM__WEBPACK_IMPORTED_MODULE_1__["createDOMElement"])({
-        classNames: 'lyric',
-        content: [$startBlock, $endBlock, $contentBlock]
+    key: "_createNodes",
+    value: function _createNodes() {
+      this.$element = Object(_Helpers_DOM__WEBPACK_IMPORTED_MODULE_1__["createDOMElement"])({
+        type: 'p',
+        classNames: 'lyric'
       }).data('lyric_id', this.id);
+      this.$nodes.$start = Object(_Helpers_DOM__WEBPACK_IMPORTED_MODULE_1__["createDOMElement"])({
+        type: 'span',
+        classNames: ['timestamp', 'lyric-start'],
+        content: this._start,
+        editable: true,
+        $container: this.$element
+      });
+      this.$nodes.$end = Object(_Helpers_DOM__WEBPACK_IMPORTED_MODULE_1__["createDOMElement"])({
+        type: 'span',
+        classNames: ['timestamp', 'lyric-end'],
+        content: this._end,
+        editable: true,
+        $container: this.$element
+      });
+      this.$nodes.$content = Object(_Helpers_DOM__WEBPACK_IMPORTED_MODULE_1__["createDOMElement"])({
+        type: 'span',
+        classNames: 'lyric-content',
+        content: this.content,
+        $container: this.$element
+      });
+      this.updateNodesData();
     }
   }, {
-    key: "updateNodeData",
-    value: function updateNodeData() {
+    key: "updateNodesData",
+    value: function updateNodesData() {
       this.$element.attr('data-start', this._start);
       this.$element.attr('data-end', this._end);
-      this.$element.find(".lyric-content").html(this.content);
-      this.$element.find(".lyric-start").html(this._start);
-      this.$element.find(".lyric-end").html(this._end);
+      this.$nodes.$content.html(this.content);
+      this.$nodes.$start.html(this._start);
+      this.$nodes.$end.html(this._end);
+    }
+  }], [{
+    key: "_notifyValidationFailure",
+    value: function _notifyValidationFailure() {
+      clearTimeout(_classStaticPrivateFieldSpecGet(this, SyncLyric, _userNotificationTimeout));
+
+      _classStaticPrivateFieldSpecSet(this, SyncLyric, _userNotificationTimeout, setTimeout(function () {
+        return M.toast({
+          html: "Numbers accepted only",
+          classes: "info"
+        });
+      }, 450));
+    }
+  }, {
+    key: "_validateKeyboardStrokes",
+    value: function _validateKeyboardStrokes(event) {
+      var shouldStopPropagation = false;
+      var shouldPreventDefault = false;
+      var shouldValidate = true;
+
+      if (["ArrowRight", "ArrowRight", "End", "Home", "Tab"].includes(event.key)) {
+        shouldStopPropagation = true;
+        shouldValidate = false;
+      }
+
+      if (event.key === "Enter") {
+        shouldStopPropagation = true;
+        shouldValidate = false;
+        event.currentTarget.blur();
+      }
+
+      var keyCode = event.key.codePointAt(0);
+      console.log(keyCode);
+
+      if (keyCode === 32) {
+        // Space bar key
+        shouldStopPropagation = true;
+        shouldValidate = false;
+      }
+
+      if (shouldValidate && !/^[0-9.]+$/.test(event.key)) {
+        shouldPreventDefault = true;
+
+        SyncLyric._notifyValidationFailure();
+      }
+
+      if (shouldStopPropagation) event.stopPropagation();
+      if (shouldPreventDefault) event.preventDefault();
+    }
+  }, {
+    key: "_validatePastedData",
+    value: function _validatePastedData(event) {
+      var clipboardData = event.originalEvent.clipboardData.getData('text/plain');
+
+      if (!/^[0-9.]+$/.test(clipboardData)) {
+        event.preventDefault();
+
+        SyncLyric._notifyValidationFailure();
+      }
     }
   }]);
 
   return SyncLyric;
 }(_Lyric__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+var _binds = new WeakSet();
+
+var _userNotificationTimeout = {
+  writable: true,
+  value: void 0
+};
+
+var _binds2 = function _binds2() {
+  var _this2 = this;
+
+  this.$nodes.$start.on('click', function (e) {
+    return e.stopPropagation();
+  }).on('keypress', SyncLyric._validateKeyboardStrokes).on('paste', SyncLyric._validatePastedData).on('keyup', function (e) {
+    if (e.key === "Escape") {
+      e.stopPropagation();
+      e.currentTarget.innerHtml = _this2._start;
+      e.currentTarget.blur();
+    }
+  }).on('blur', function (e) {
+    _this2.start = _this2.$nodes.$start.text();
+  });
+  this.$nodes.$end.on('click', function (e) {
+    return e.stopPropagation();
+  }).on('keypress', SyncLyric._validateKeyboardStrokes).on('paste', SyncLyric._validatePastedData).on('keyup', function (e) {
+    if (e.key === "Escape") {
+      e.stopPropagation();
+      e.currentTarget.innerHtml = _this2._end;
+      e.currentTarget.blur();
+    }
+  }).on('blur', function (e) {
+    _this2.start = _this2.$nodes.$start.text();
+  });
+};
 
 
 
@@ -26426,8 +26658,6 @@ function () {
   }, {
     key: "updatePlayer",
     value: function updatePlayer() {
-      console.log('update player');
-
       _classPrivateFieldGet(this, _videoService).seekTo(this.timestamp);
 
       this.updatingPlayer = false;
@@ -26511,21 +26741,17 @@ var _setProgress2 = function _setProgress2(progress) {
     return;
   }
 
-  this.progress = progress;
-  this.timestamp = this.progressToTimestamp(this.progress);
-  this.updateProgress();
-  console.log('bouncing');
-
   var _this = this;
 
-  clearTimeout(_classPrivateFieldGet(_this, _playerUpdateTimeout));
+  this.progress = progress;
+  this.timestamp = this.progressToTimestamp(this.progress);
   this.updatingPlayer = true;
+  this.updateProgress();
+  clearTimeout(_classPrivateFieldGet(_this, _playerUpdateTimeout));
 
   _classPrivateFieldSet(this, _playerUpdateTimeout, setTimeout(function () {
-    console.log('debounced');
-
     _this.updatePlayer();
-  }, 250));
+  }, 450));
 };
 
 
@@ -26630,26 +26856,61 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var VideoController =
 /*#__PURE__*/
 function () {
-  function VideoController() {
-    _classCallCheck(this, VideoController);
-  }
-
   _createClass(VideoController, null, [{
     key: "load",
-    value: function load(record, selector) {
-      this.service = new _VideoService__WEBPACK_IMPORTED_MODULE_0__["default"](record, selector);
-      this.service.shouldAutoStart = false;
-      this.service.initialize();
-      this.UIControl = new _VideoUIControl__WEBPACK_IMPORTED_MODULE_1__["default"](this.service);
+    value: function load($container) {
+      this._$container = $("<div>").addClass("player-container");
+
+      this._$container.appendTo($container);
+    }
+  }, {
+    key: "instance",
+    value: function instance(record) {
+      if (!this._instance) {
+        if (!record) {
+          /**
+           * Implement record service and controller
+           * to provide with record data on demand
+           */
+          throw "Can't initialize without a record";
+        }
+
+        this._instance = new VideoController(record, this._$container);
+      }
+
+      return this._instance;
+    }
+  }]);
+
+  function VideoController(record, $container) {
+    _classCallCheck(this, VideoController);
+
+    _defineProperty(this, "service", void 0);
+
+    _defineProperty(this, "UIControl", void 0);
+
+    _defineProperty(this, "$container", void 0);
+
+    this.service = new _VideoService__WEBPACK_IMPORTED_MODULE_0__["default"](record, $container);
+    this.service.shouldAutoStart = false;
+    this.service.initialize();
+    this.UIControl = new _VideoUIControl__WEBPACK_IMPORTED_MODULE_1__["default"](this.service);
+  }
+
+  _createClass(VideoController, [{
+    key: "on",
+    value: function on(event, handler) {
+      this.service.on(event, handler);
+      return this;
     }
   }]);
 
   return VideoController;
 }();
 
-_defineProperty(VideoController, "service", void 0);
+_defineProperty(VideoController, "_instance", void 0);
 
-_defineProperty(VideoController, "UIControl", void 0);
+_defineProperty(VideoController, "_$container", void 0);
 
 
 
@@ -26697,7 +26958,7 @@ var VideoService =
 function (_Eventful) {
   _inherits(VideoService, _Eventful);
 
-  function VideoService(record, containerId) {
+  function VideoService(record, $container) {
     var _this;
 
     _classCallCheck(this, VideoService);
@@ -26712,15 +26973,16 @@ function (_Eventful) {
 
     _defineProperty(_assertThisInitialized(_this), "player", void 0);
 
-    _defineProperty(_assertThisInitialized(_this), "containerId", void 0);
-
     _defineProperty(_assertThisInitialized(_this), "currentState", void 0);
+
+    _defineProperty(_assertThisInitialized(_this), "$container", void 0);
 
     _defineProperty(_assertThisInitialized(_this), "shouldLoop", true);
 
     _defineProperty(_assertThisInitialized(_this), "shouldAutoStart", true);
 
     _defineProperty(_assertThisInitialized(_this), "eventHandlers", {
+      load: [],
       ready: [],
       stateChange: [],
       unstarted: [],
@@ -26757,14 +27019,13 @@ function (_Eventful) {
     _this.youtube_id = _this.record.youtube_id;
     _this.video_start = _this.record.video_start;
     _this.video_end = _this.record.video_end;
+    _this.$container = $container;
 
-    if (!containerId) {
-      throw "A valid DOM selector is required to initialize Lyrics Controls";
-    }
-
-    _this.containerId = containerId;
+    _this.$container.append($("<div>").attr("id", 'player').attr('tabindex', '-1'));
 
     _classPrivateMethodGet(_assertThisInitialized(_this), _setBindings, _setBindings2).call(_assertThisInitialized(_this));
+
+    _this.trigger('load');
 
     return _this;
   }
@@ -26775,8 +27036,8 @@ function (_Eventful) {
       var _this2 = this;
 
       var options = {
-        width: '213',
-        height: '120',
+        width: '426',
+        height: '240',
         playerVars: {
           controls: 0,
           rel: 0,
@@ -26803,7 +27064,7 @@ function (_Eventful) {
         options.playerVars.start = this.video_start;
       }
 
-      this.player = new YT.Player(this.containerId, options);
+      this.player = new YT.Player('player', options);
     }
   }, {
     key: "play",
@@ -26833,7 +27094,6 @@ function (_Eventful) {
   }, {
     key: "seekTo",
     value: function seekTo(timestamp) {
-      console.log(timestamp);
       this.player.seekTo(timestamp);
     }
   }, {
@@ -26880,6 +27140,12 @@ var _setBindings2 = function _setBindings2() {
   });
   this.on('playing', function () {
     return _classPrivateFieldGet(_this3, _heartbeat).call(_this3);
+  });
+  this.on('playing', function () {
+    return _this3.$container.addClass("playing");
+  });
+  this.on('stopped', function () {
+    return _this3.$container.removeClass("playing");
   });
   this.on('stateChange', function (e) {
     _this3.currentState = e.data;
@@ -26990,7 +27256,7 @@ function () {
           _this.UIControls.pause = new _Controls_PauseUIControl__WEBPACK_IMPORTED_MODULE_2__["default"]($html, _classPrivateFieldGet(_this, _videoService));
           _this.UIControls.stop = new _Controls_StopUIControl__WEBPACK_IMPORTED_MODULE_3__["default"]($html, _classPrivateFieldGet(_this, _videoService));
           _this.UIControls.slider = new _Controls_SliderUIControl__WEBPACK_IMPORTED_MODULE_0__["default"]($html, _classPrivateFieldGet(_this, _videoService));
-          $html.appendTo(".body-content");
+          $html.appendTo(_classPrivateFieldGet(_this, _videoService).$container);
 
           _classPrivateMethodGet(_this, _bindings, _bindings2).call(_this);
 
@@ -27009,29 +27275,7 @@ var _videoService = new WeakMap();
 
 var _bindings = new WeakSet();
 
-var _bindings2 = function _bindings2() {
-  var _this2 = this;
-
-  _classPrivateFieldGet(this, _videoService).on('playing', function () {
-    _this2.UIControls.pause.$element.show();
-
-    _this2.UIControls.play.$element.hide();
-  });
-
-  _classPrivateFieldGet(this, _videoService).on('paused', function () {
-    _this2.UIControls.play.$element.show();
-
-    _this2.UIControls.pause.$element.hide();
-  });
-
-  _classPrivateFieldGet(this, _videoService).on('stopped', function () {
-    _this2.UIControls.play.$element.show();
-
-    _this2.UIControls.pause.$element.hide();
-
-    _this2.UIControls.stop.$element.hide();
-  });
-};
+var _bindings2 = function _bindings2() {};
 
 
 

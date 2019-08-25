@@ -4,12 +4,15 @@ import SyncLyric from "./SyncLyric";
 export default class LyricsSyncService extends LyricsService {
 
     eventHandlers = {
+        load: [],
+        ready: [],
         step: []
     };
 
-    constructor(record, selector) {
-        super(record, selector);
+    constructor(record, $container) {
+        super(record, $container);
         this.#bindings();
+        this.trigger('load');
     }
 
     #bindings() {

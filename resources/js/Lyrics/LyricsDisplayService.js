@@ -6,13 +6,16 @@ export default class LyricsDisplayService extends LyricsService {
      * @todo Implement lyric display by groups
      */
 
+    scrollingCorrection = 0;
+
     eventHandlers = {
         load: [],
         ready: []
     };
 
-    constructor(record, selector) {
-        super(record, selector);
+    constructor(record, $container) {
+        super(record, $container);
+        this.trigger('load');
     }
 
     getLyricsForTime(timestamp) {
@@ -66,15 +69,18 @@ export default class LyricsDisplayService extends LyricsService {
         this.repositionContainer();
     }
 
+    getVerticalFixForActiveLyrics() {
+        let activeLyricsFix = this.activeLyrics
+            .reduce((sum, lyric) => sum + lyric.verticalPosition, 0);
+        return activeLyricsFix - (window.innerHeight / 2) + this.scrollingCorrection;
+    }
+
     repositionContainer() {
         if (!this.activeLyrics || this.activeLyrics.length === 0) {
             return;
         }
 
-        let verticalFix = this.activeLyrics.reduce((sum, lyric) => sum + lyric.verticalPosition, 0);
-        verticalFix += window.innerHeight / 2;
-
-        this.$wrapper[0].scrollTo(0, verticalFix)
+        window.scrollTo(0, this.getVerticalFixForActiveLyrics())
 
     }
 

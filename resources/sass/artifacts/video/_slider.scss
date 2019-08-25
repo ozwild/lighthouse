@@ -1,258 +1,269 @@
 $bufferColor: linear-gradient(to right, rgba(white, 0.15), rgba(white, 0.2));
 $progressColor: linear-gradient(to right, #ee0979, #ff6a00);
 
-.slider-control {
+.player-controls {
+  display: flex;
 
-  width: 560px;
-  max-width: 100%;
-
-  .progress-monitor,
-  .buffer-monitor {
-    font-size: 35px
-  }
-
-  .slider-container {
-    background: rgba(black, 0.65);
-    border-radius: 6px;
-    height: 6px;
+  .slider-control {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 140px 0 21px;
     position: relative;
-    padding: 0;
-    margin: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    flex: 1 auto;
+    height: 6px;
+    box-shadow: 0 1px 3px -1px rgba(175, 94, 155, 0.3);
 
-    .progress-bar {
-      background: $progressColor
+    .progress-monitor,
+    .buffer-monitor {
+      font-size: 35px
     }
 
-    .buffer-bar {
-      background: $bufferColor;
-      transition: width 75ms
-    }
-
-    .progress-bar, .buffer-bar {
-      position: absolute;
-      z-index: 1;
-      left: 0;
-      top: 0;
-      width: 0;
-      max-width: 100%;
-      background-attachment: fixed;
-      height: 6px;
+    .slider-container {
+      background: rgba(black, 0.65);
       border-radius: 6px;
+      height: 6px;
+      position: relative;
+      padding: 0;
+      margin: 0;
 
-    }
+      .progress-bar {
+        background: $progressColor
+      }
 
-    input[type=range].slider-input {
-      z-index: 2;
-      top: -6px;
-      height: 14px;
+      .buffer-bar {
+        background: $bufferColor;
+        transition: width 75ms
+      }
 
-      &:focus {
-        outline: none;
+      .progress-bar, .buffer-bar {
+        position: absolute;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 0;
+        max-width: 100%;
+        background-attachment: fixed;
+        height: 6px;
+        border-radius: 6px;
 
-        &::-webkit-slider-runnable-track {
+      }
+
+      input[type=range].slider-input {
+        z-index: 2;
+        top: -6px;
+        height: 14px;
+
+        &:focus {
+          outline: none;
+
+          &::-webkit-slider-runnable-track {
+            background: transparent !important;
+          }
+
+          &::-ms-fill-lower,
+          &::-ms-fill-upper {
+            background: transparent;
+          }
+
+        }
+
+        &::-webkit-slider-runnable-track,
+        &::-moz-range-track,
+        &::-ms-track {
+          width: 100%;
+          box-shadow: none;
+          height: 14px;
+          cursor: pointer;
+          animate: 0.2s;
           background: transparent !important;
+          border-radius: 0;
+          border: none !important;
+
+        }
+
+        &::-webkit-slider-thumb,
+        &::-moz-range-thumb,
+        &::-ms-thumb {
+          border: none;
+          box-shadow: none;
+          height: 14px;
+          width: 2px;
+          border-radius: 0;
+          background: transparent;
+          cursor: pointer;
+          margin: 0;
+          -webkit-appearance: none;
         }
 
         &::-ms-fill-lower,
         &::-ms-fill-upper {
           background: transparent;
+          border: none;
+          border-radius: 0;
+          box-shadow: none;
+        }
+
+        &::-ms-fill-upper {
+          background: transparent;
+          border: none;
+          border-radius: 0;
+          box-shadow: none;
         }
 
       }
 
-      &::-webkit-slider-runnable-track,
-      &::-moz-range-track,
-      &::-ms-track {
+      input[type=range] {
+        position: relative;
+        background-color: transparent;
+        border: none;
+        outline: none;
         width: 100%;
-        box-shadow: none;
-        height: 14px;
-        cursor: pointer;
-        animate: 0.2s;
-        background: transparent !important;
-        border-radius: 0;
-        border: none !important;
+        margin: 0;
+        padding: 0;
+
+        &:focus {
+          outline: none;
+        }
 
       }
 
-      &::-webkit-slider-thumb,
-      &::-moz-range-thumb,
-      &::-ms-thumb {
+      input[type=range] + .thumb {
+        position: initial;
+        top: 0;
+        left: 0;
         border: none;
-        box-shadow: none;
+        height: 0;
+        width: 0;
+        border-radius: 0;
+        background-color: transparent;
+        margin-left: 0;
+
+        transform-origin: 50% 50%;
+        transform: none;
+
+        .value {
+          display: block;
+          width: 30px;
+          text-align: center;
+          color: $radio-fill-color;
+          font-size: 0;
+          transform: rotate(45deg);
+        }
+
+        &.active {
+          border-radius: 50% 50% 50% 0;
+
+          .value {
+            color: $input-background;
+            margin-left: -1px;
+            margin-top: 8px;
+            font-size: 10px;
+          }
+        }
+      }
+
+      // Shared
+      @mixin range-track {
         height: 14px;
-        width: 2px;
+        background: transparent;
+        border: none;
+      }
+
+      @mixin range-thumb {
+        border: none;
+        height: 14px;
+        width: 0;
         border-radius: 0;
         background: transparent;
-        cursor: pointer;
-        margin: 0;
+        transition: none;
+      }
+
+      // WebKit
+      input[type=range] {
         -webkit-appearance: none;
       }
 
-      &::-ms-fill-lower,
-      &::-ms-fill-upper {
-        background: transparent;
-        border: none;
-        border-radius: 0;
+      input[type=range]::-webkit-slider-runnable-track {
+        @include range-track;
+      }
+
+      input[type=range]::-webkit-slider-thumb {
+        @include range-thumb;
+        -webkit-appearance: none;
+        background-color: transparent;
+        transform-origin: 50% 50%;
+        margin: 0;
+
+      }
+
+      .keyboard-focused input[type=range]:focus:not(.active)::-webkit-slider-thumb {
         box-shadow: none;
       }
 
-      &::-ms-fill-upper {
-        background: transparent;
-        border: none;
-        border-radius: 0;
+      // FireFox
+      input[type=range] {
+        /* fix for FF unable to apply focus style bug  */
+        border: 1px solid transparent;
+
+        /*required for proper track sizing in FF*/
+      }
+
+      input[type=range]::-moz-range-track {
+        @include range-track;
+      }
+
+      input[type=range]::-moz-focus-inner {
+        border: 0;
+      }
+
+      input[type=range]::-moz-range-thumb {
+        @include range-thumb;
+        margin-top: 0;
+      }
+
+      // hide the outline behind the border
+      input[type=range]:-moz-focusring {
+        outline: 1px solid transparent;
+        outline-offset: -1px;
+      }
+
+      .keyboard-focused input[type=range]:focus:not(.active)::-moz-range-thumb {
         box-shadow: none;
       }
 
-    }
+      // IE 10+
+      input[type=range]::-ms-track {
+        height: 14px;
 
-    input[type=range] {
-      position: relative;
-      background-color: transparent;
-      border: none;
-      outline: none;
-      width: 100%;
-      margin: 0;
-      padding: 0;
+        // remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead
+        background: transparent;
 
-      &:focus {
-        outline: none;
+        // leave room for the larger thumb to overflow with a transparent border */
+        border-color: transparent;
+        border-width: 0 0;
+
+        /*remove default tick marks*/
+        color: transparent;
       }
 
-    }
-
-    input[type=range] + .thumb {
-      position: initial;
-      top: 0;
-      left: 0;
-      border: none;
-      height: 0;
-      width: 0;
-      border-radius: 0;
-      background-color: transparent;
-      margin-left: 0;
-
-      transform-origin: 50% 50%;
-      transform: none;
-
-      .value {
-        display: block;
-        width: 30px;
-        text-align: center;
-        color: $radio-fill-color;
-        font-size: 0;
-        transform: rotate(45deg);
+      input[type=range]::-ms-fill-lower {
+        background: transparent;
       }
 
-      &.active {
-        border-radius: 50% 50% 50% 0;
-
-        .value {
-          color: $input-background;
-          margin-left: -1px;
-          margin-top: 8px;
-          font-size: 10px;
-        }
+      input[type=range]::-ms-fill-upper {
+        background: transparent;
       }
-    }
 
-    // Shared
-    @mixin range-track {
-      height: 14px;
-      background: transparent;
-      border: none;
-    }
+      input[type=range]::-ms-thumb {
+        @include range-thumb;
+      }
 
-    @mixin range-thumb {
-      border: none;
-      height: 14px;
-      width: 0;
-      border-radius: 0;
-      background: transparent;
-      transition: none;
-    }
+      .keyboard-focused input[type=range]:focus:not(.active)::-ms-thumb {
+        box-shadow: none;
+      }
 
-    // WebKit
-    input[type=range] {
-      -webkit-appearance: none;
-    }
-
-    input[type=range]::-webkit-slider-runnable-track {
-      @include range-track;
-    }
-
-    input[type=range]::-webkit-slider-thumb {
-      @include range-thumb;
-      -webkit-appearance: none;
-      background-color: transparent;
-      transform-origin: 50% 50%;
-      margin: 0;
-
-    }
-
-    .keyboard-focused input[type=range]:focus:not(.active)::-webkit-slider-thumb {
-      box-shadow: none;
-    }
-
-    // FireFox
-    input[type=range] {
-      /* fix for FF unable to apply focus style bug  */
-      border: 1px solid transparent;
-
-      /*required for proper track sizing in FF*/
-    }
-
-    input[type=range]::-moz-range-track {
-      @include range-track;
-    }
-
-    input[type=range]::-moz-focus-inner {
-      border: 0;
-    }
-
-    input[type=range]::-moz-range-thumb {
-      @include range-thumb;
-      margin-top: 0;
-    }
-
-    // hide the outline behind the border
-    input[type=range]:-moz-focusring {
-      outline: 1px solid transparent;
-      outline-offset: -1px;
-    }
-
-    .keyboard-focused input[type=range]:focus:not(.active)::-moz-range-thumb {
-      box-shadow: none;
-    }
-
-    // IE 10+
-    input[type=range]::-ms-track {
-      height: 14px;
-
-      // remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead
-      background: transparent;
-
-      // leave room for the larger thumb to overflow with a transparent border */
-      border-color: transparent;
-      border-width: 0 0;
-
-      /*remove default tick marks*/
-      color: transparent;
-    }
-
-    input[type=range]::-ms-fill-lower {
-      background: transparent;
-    }
-
-    input[type=range]::-ms-fill-upper {
-      background: transparent;
-    }
-
-    input[type=range]::-ms-thumb {
-      @include range-thumb;
-    }
-
-    .keyboard-focused input[type=range]:focus:not(.active)::-ms-thumb {
-      box-shadow: none;
     }
 
   }

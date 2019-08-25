@@ -11,6 +11,11 @@ export default class Lyric {
     _start;
     _end;
     $element;
+    $nodes = {
+        $content: null,
+        $start: null,
+        $end: null
+    };
 
     isSelected;
     isActive;
@@ -24,15 +29,16 @@ export default class Lyric {
         this.content = decoded.content;
         this._start = decoded.start;
         this._end = decoded.end;
-        this.$element = this._createNode();
-        this.updateNodeData();
+        this._createNodes();
     }
 
-    _createNode() {
-        return createDOMElement({type: 'p', classNames: 'lyric'}).data('lyric_id', this.id);
+    _createNodes() {
+        this.$element = createDOMElement({type: 'p', classNames: 'lyric'})
+            .data('lyric_id', this.id);
+        this.updateNodesData();
     };
 
-    updateNodeData() {
+    updateNodesData() {
         let htmlContent = this.content;
         this.$element.html(htmlContent);
         this.$element.attr('data-start', this._start);
@@ -58,10 +64,9 @@ export default class Lyric {
     }
 
     get verticalPosition() {
-        let height = this.$element.height() / 2;
-        let offset = this.$element[0].offsetTop;
-        let correction = 0;
-        return height + offset + correction;
+        let element = this.$element[0];
+        return (element.offsetHeight) + (element.offsetTop);
+
     }
 
     get id() {
@@ -73,8 +78,6 @@ export default class Lyric {
     }
 
     updateTimestamp(timestamp) {
-
-        timestamp = +timestamp.toFixed(2);
 
         switch (this.activeTimestampIdentifier) {
 
@@ -95,8 +98,9 @@ export default class Lyric {
     }
 
     set start(timestamp) {
+        timestamp = +Number(timestamp).toFixed(2);
         this._start = timestamp;
-        this.updateNodeData();
+        this.updateNodesData();
     }
 
     get start() {
@@ -104,8 +108,9 @@ export default class Lyric {
     }
 
     set end(timestamp) {
+        timestamp = +Number(timestamp).toFixed(2);
         this._end = timestamp;
-        this.updateNodeData();
+        this.updateNodesData();
     }
 
     get end() {
@@ -114,7 +119,7 @@ export default class Lyric {
 
     set content(content) {
         this.content = content;
-        this.updateNodeData();
+        this.updateNodesData();
     }
 
     repaintSelectionState() {

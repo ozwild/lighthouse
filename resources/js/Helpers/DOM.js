@@ -1,10 +1,20 @@
 import $ from 'jquery';
 
-export function createDOMElement({classNames = [] | '', content = "", type = 'div'} = {}) {
+export function createDOMElement({classNames = [] | '', content = "", type = 'div', editable = false, $container = null} = {}) {
 
-    return $("<" + type + ">")
+    let $element = $("<" + type + ">")
         .addClass(classNames)
         .html(content);
+
+    if (editable) {
+        $element.attr('contenteditable', true);
+    }
+
+    if ($container) {
+        $element.appendTo($container);
+    }
+
+    return $element;
 
 }
 

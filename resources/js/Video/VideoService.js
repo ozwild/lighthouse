@@ -4,13 +4,15 @@ export default class VideoService extends Eventful {
 
     record;
     player;
-    containerId;
     currentState;
+
+    $container;
 
     shouldLoop = true;
     shouldAutoStart = true;
 
     eventHandlers = {
+        load: [],
         ready: [],
         stateChange: [],
         unstarted: [],
@@ -23,7 +25,7 @@ export default class VideoService extends Eventful {
         tick: []
     };
 
-    constructor(record, containerId) {
+    constructor(record, $container) {
 
         super();
 
@@ -32,47 +34,20 @@ export default class VideoService extends Eventful {
         this.video_start = this.record.video_start;
         this.video_end = this.record.video_end;
 
-        if (!containerId) {
-            throw "A valid DOM selector is required to initialize Lyrics Controls";
-        }
-
-        this.containerId = containerId;
+        this.$container = $container;
+        this.$container.append($("<div>").attr("id", 'player').attr('tabindex', '-1'));
 
         this.#setBindings();
 
-    }
+        this.trigger('load');
 
-    #setBindings() {
-
-        this.on('playing', () => this.#adjustStart());
-        this.on('playing', () => this.#heartbeat());
-        this.on('stateChange', e => {
-
-            this.currentState = e.data;
-
-            switch (e.data) {
-                case YT.PlayerState.UNSTARTED:
-                    return this.trigger(['unstarted', 'stopped'], e);
-                case YT.PlayerState.ENDED:
-                    return this.trigger(['ended', 'stopped'], e);
-                case YT.PlayerState.PLAYING:
-                    return this.trigger('playing', e);
-                case YT.PlayerState.PAUSED:
-                    return this.trigger(['paused', 'stopped'], e);
-                case YT.PlayerState.BUFFERING:
-                    return this.trigger(['buffering', 'stopped'], e);
-                case YT.PlayerState.CUED:
-                    return this.trigger(['cued', 'stopped'], e);
-            }
-
-        })
     }
 
     initialize() {
 
         let options = {
-            width: '213',
-            height: '120',
+            width: '426',
+            height: '240',
             playerVars: {
                 controls: 0,
                 rel: 0,
@@ -96,8 +71,36 @@ export default class VideoService extends Eventful {
             options.playerVars.start = this.video_start
         }
 
-        this.player = new YT.Player(this.containerId, options);
+        this.player = new YT.Player('player', options);
 
+    }
+
+    #setBindings() {
+
+        this.on('playing', () => this.#adjustStart());
+        this.on('playing', () => this.#heartbeat());
+        this.on('playing', () => this.$container.addClass("playing"));
+        this.on('stopped', () => this.$container.removeClass("playing"));
+        this.on('stateChange', e => {
+
+            this.currentState = e.data;
+
+            switch (e.data) {
+                case YT.PlayerState.UNSTARTED:
+                    return this.trigger(['unstarted', 'stopped'], e);
+                case YT.PlayerState.ENDED:
+                    return this.trigger(['ended', 'stopped'], e);
+                case YT.PlayerState.PLAYING:
+                    return this.trigger('playing', e);
+                case YT.PlayerState.PAUSED:
+                    return this.trigger(['paused', 'stopped'], e);
+                case YT.PlayerState.BUFFERING:
+                    return this.trigger(['buffering', 'stopped'], e);
+                case YT.PlayerState.CUED:
+                    return this.trigger(['cued', 'stopped'], e);
+            }
+
+        })
     }
 
     #heartbeat = function () {
@@ -158,7 +161,6 @@ export default class VideoService extends Eventful {
     }
 
     seekTo(timestamp) {
-        console.log(timestamp);
         this.player.seekTo(timestamp);
     }
 

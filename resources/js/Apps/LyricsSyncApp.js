@@ -7,16 +7,22 @@ export default class LyricsSyncApp {
     videoController;
     lyricsController;
 
-    constructor(recordModel) {
+    static load(selector = '.body-content') {
+        let $container = $(selector);
+        VideoController.load($container);
+        LyricsController.load($container);
+    }
 
-        this.videoController = VideoController;
-        this.lyricsController = LyricsController;
+    constructor(recordModel) {
 
         YTAPILoader.load().then(() => {
 
-            VideoController.load(recordModel, 'player');
-            LyricsController.load(recordModel, '.lyrics-container');
-            LyricsController.pairVideoController(VideoController);
+            this.videoController = VideoController.instance(recordModel);
+            this.lyricsController = LyricsController.instance(recordModel);
+
+            this.lyricsController.on('step', () => {
+                this.lyricsController.service.next(this.videoController.service.currentTimestamp);
+            });
 
         });
 
@@ -24,22 +30,21 @@ export default class LyricsSyncApp {
 
     save(route) {
 
-        if (!LyricsController.app) {
-            return M.toast('No lyrics controller found');
+        if (!this.lyricsController) {
+            return M.toast({html: "No lyrics controller found", classes: "fail"});
         }
 
-        let lyrics = LyricsController.app.toString();
+        let lyrics = this.lyricsController
+            .service.toString();
 
         $.ajax(route, {
             method: 'patch',
-            data: {
-                lyrics
-            },
+            data: {lyrics},
             dataType: 'json',
         }).done(e => {
-            M.toast("Lyrics saved!");
+            M.toast({html: "Lyrics saved!", classes: "success"});
         }).fail(e => {
-            M.toast("Something went wrong");
+            M.toast({html: "Something went wrong", classes: "alert"});
         });
 
     }

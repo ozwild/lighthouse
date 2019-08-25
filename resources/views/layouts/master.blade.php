@@ -17,8 +17,6 @@
 </head>
 <body>
 
-<div class="body-background"></div>
-
 <div class="body-content">
     @yield('content')
 </div>
