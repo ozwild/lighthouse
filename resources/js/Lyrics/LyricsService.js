@@ -28,8 +28,12 @@ export default class LyricsService extends Eventful {
     }
 
     process() {
-        this.lyrics = this.#record.lyrics.split("\n")
-            .map(lyricText => new Lyric(lyricText));
+        if (!this.#record.lyrics) {
+            this.lyrics.push(new Lyric("No lyrics available"));
+        } else {
+            this.lyrics = this.#record.lyrics.split("\n")
+                .map(lyricText => new Lyric(lyricText));
+        }
     }
 
     toString() {

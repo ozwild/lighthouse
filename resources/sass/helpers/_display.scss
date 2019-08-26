@@ -6,4 +6,8 @@
   .flex-#{$flex} {
     flex: $flex;
   }
+  .flex-#{$flex}-auto {
+    flex: $flex auto;
+  }
+
 }

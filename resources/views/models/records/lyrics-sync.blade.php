@@ -25,17 +25,19 @@
                 </h1>
             </header>
 
-            <div class="row">
-                <div class="col s12">
-                    <div class="flex">
-                        <div id="lyrics-sync-container" class="flex-2">
+            <div class="container" style="margin: 0;">
+                <div class="row">
+                    <div class="col s12">
+                        <div class="flex">
+                            <div id="lyrics-sync-container" class="flex-1-auto">
 
-                        </div>
-                        <div class="flex-1">
-                            <button class="save-lyrics btn btn-floating waves-effect waves-light right stick top-6"
-                                    onclick="app.save('{{ route('records.update', $record->id) }}')">
-                                <i class="material-icons">save</i></button>
-                            <div class="clearfix"></div>
+                            </div>
+                            <div style="flex: 1 1; width: 14px; padding-top: 3em;">
+                                <button class="save-lyrics btn btn-floating waves-effect waves-light right stick top-6"
+                                        onclick="app.save('{{ route('records.update', $record->id) }}')">
+                                    <i class="material-icons">save</i></button>
+                                <div class="clearfix"></div>
+                            </div>
                         </div>
                     </div>
                 </div>

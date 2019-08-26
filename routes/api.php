@@ -20,3 +20,23 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('video-controls', function () {
     return view('components.video.controls')->render();
 });
+
+Route::prefix('metadata')
+    ->group(function () {
+
+        Route::prefix('artist')
+            ->group(function () {
+                Route::get('search', 'SpotifyAPIController@searchArtist');
+            });
+
+        Route::prefix('album')
+            ->group(function () {
+                Route::get('search', 'SpotifyAPIController@searchAlbum');
+            });
+
+        Route::prefix('song')
+            ->group(function () {
+                Route::get('search', 'SpotifyAPIController@searchSong');
+            });
+
+    });

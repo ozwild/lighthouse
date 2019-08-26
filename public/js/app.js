@@ -24965,9 +24965,11 @@ function () {
       _this.videoController = _Video_VideoController__WEBPACK_IMPORTED_MODULE_0__["default"].instance(recordModel);
       _this.lyricsController = _Lyrics_LyricsDisplayController__WEBPACK_IMPORTED_MODULE_1__["default"].instance(recordModel);
 
-      _this.videoController.on('tick', function (timestamp) {
-        _this.lyricsController.service.showLyricsForTime(timestamp);
-      });
+      if (_this.lyricsController.canBeDisplayed) {
+        _this.videoController.on('tick', function (timestamp) {
+          _this.lyricsController.service.showLyricsForTime(timestamp);
+        });
+      }
     });
   }
 
@@ -25603,7 +25605,10 @@ function () {
 
     _defineProperty(this, "service", void 0);
 
+    _defineProperty(this, "canBeDisplayed", void 0);
+
     this.service = new _LyricsDisplayService__WEBPACK_IMPORTED_MODULE_0__["default"](record, $container);
+    this.canBeDisplayed = !!record.lyrics;
     this.service.process();
     this.service.render();
   }
@@ -25841,9 +25846,13 @@ function (_Eventful) {
   _createClass(LyricsService, [{
     key: "process",
     value: function process() {
-      this.lyrics = _classPrivateFieldGet(this, _record).lyrics.split("\n").map(function (lyricText) {
-        return new _Lyric__WEBPACK_IMPORTED_MODULE_2__["default"](lyricText);
-      });
+      if (!_classPrivateFieldGet(this, _record).lyrics) {
+        this.lyrics.push(new _Lyric__WEBPACK_IMPORTED_MODULE_2__["default"]("No lyrics available"));
+      } else {
+        this.lyrics = _classPrivateFieldGet(this, _record).lyrics.split("\n").map(function (lyricText) {
+          return new _Lyric__WEBPACK_IMPORTED_MODULE_2__["default"](lyricText);
+        });
+      }
     }
   }, {
     key: "toString",
@@ -26345,7 +26354,6 @@ function (_Lyric) {
       }
 
       var keyCode = event.key.codePointAt(0);
-      console.log(keyCode);
 
       if (keyCode === 32) {
         // Space bar key
@@ -26408,7 +26416,7 @@ var _binds2 = function _binds2() {
       e.currentTarget.blur();
     }
   }).on('blur', function (e) {
-    _this2.start = _this2.$nodes.$start.text();
+    _this2.end = _this2.$nodes.$end.text();
   });
 };
 

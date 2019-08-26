@@ -1,0 +1,22 @@
+@import "../mixins";
+
+.breadcrumbs-nav {
+  @extend nav;
+  background-color: #382338; /* fallback for old browsers */
+  background: radial-gradient(ellipse 40% 100% at 50% 0%, #083234, transparent 100%), radial-gradient(circle 410px at 0% 0%, #382338, transparent 71%);
+  position: relative;
+  display: table;
+  z-index: 5;
+  width: auto;
+  top: 0;
+  box-shadow: none !important;
+  
+  @include respond-to('medium') {
+    display: inherit;
+  }
+
+  .breadcrumb {
+    user-select: none;
+  }
+
+}

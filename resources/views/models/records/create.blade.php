@@ -8,54 +8,75 @@
     <div class="container">
         <div class="spanner"></div>
         <main>
-            <div class="card">
-                <div class="card-body">
+            <article class="container">
 
-                    <h1>Create new song record</h1>
+                <header class="pl-3">
+                    <h1>New Song</h1>
+                </header>
 
-                    <br>
+                <form action="{{ route('records.store') }}" class="form" method="post">
 
-                    <form action="{{ route('records.store') }}" class="form" method="post">
+                    {!! csrf_field() !!}
 
-                        {!! csrf_field() !!}
+                    <section class="row">
 
-                        <div class="form-group">
+                        <div class="input-field col s12 m6">
+                            <input id="name" class="validate" type="text" name="name">
                             <label for="name">Name</label>
-                            <input id="name" class="form-control" type="text" name="name"
-                                   placeholder="Name of the song">
                         </div>
 
-                        <div class="form-group">
+                        <div class="input-field col s12 m6">
+                            <input id="artist" class="validate" type="text" name="artist">
                             <label for="artist">Artist</label>
-                            <input id="artist" class="form-control" type="text" name="artist" placeholder="Artist">
                         </div>
 
-                        <div class="form-group">
+                        <div class="input-field col s12 m6">
+                            <input id="youtube_id" class="validate" type="text" name="youtube_id">
                             <label for="youtube_id">Youtube Video Id</label>
-                            <input id="youtube_id" class="form-control" type="text" name="youtube_id"
-                                   placeholder="Youtube embed code">
                         </div>
 
-                        <div class="form-group">
+                        <div class="input-field col s12 m6">
+                            <input id="video_start" class="validate" type="number" step="1" name="video_start">
                             <label for="video_start">Video Start</label>
-                            <input id="video_start" class="form-control" type="number" step="1" name="video_start"
-                                   placeholder="Video start time in seconds">
                         </div>
 
-                        <div class="form-group">
-                            <label for="lyrics">Lyrics</label>
-                            <textarea id="lyrics" class="form-control" type="text" name="lyrics"
-                                      placeholder="Song lyrics"
-                                      rows="15"></textarea>
+                        <div class="input-field col s12 m6">
+                            <input id="video_end" class="validate" type="number" step="1" name="video_end">
+                            <label for="video_end">Video End</label>
                         </div>
 
-                        <div class="form-group">
-                            <input type="submit" class="btn btn-primary">
-                        </div>
+                    </section>
 
-                    </form>
-                </div>
-            </div>
+                    <section class="row">
+                        <div class="col s12">
+                            <div class="flex">
+                                <div class="input-field flex-2">
+                                <textarea id="lyrics" class="materialize-textarea" type="text" name="lyrics"
+                                          rows="15"></textarea>
+                                    <label for="lyrics">Lyrics</label>
+                                </div>
+                                <div class="flex-1">
+                                    {{--<a class="btn btn-floating waves-effect waves-light right stick top-6"
+                                       href="{{ route('records.lyrics.sync', $record->id) }}"><i
+                                                class="material-icons">sync</i></a>--}}
+
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <footer class="row">
+                        <div class="input-field col s12">
+                            <button type="submit" class="btn btn-large waves-effect waves-light right">Save
+                                <i class="material-icons left">send</i></button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </footer>
+
+                </form>
+
+            </article>
         </main>
         <div class="spanner"></div>
     </div>

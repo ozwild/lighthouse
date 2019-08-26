@@ -1,17 +1,15 @@
-// Body
-$body-bg: #f8fafc;
-
-// Typography
-$font-family-sans-serif: 'Nunito', sans-serif;
-$font-size-base: 0.9rem;
-$line-height-base: 1.6;
-
 $palette: (
         'base': #31B78F,
         'pale': #483348,
         'contrast': #FB8B24,
         'accent': #D90368,
         'complement': #98307F,
+);
+
+$breakpoints: (
+        'small': 640px,
+        'medium': 1024px,
+        'large': 1280px
 );
 
 $animationSpeed: (

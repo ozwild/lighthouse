@@ -9598,20 +9598,40 @@ input[type=range]::-ms-thumb {
   flex: 1;
 }
 
+.flex-1-auto {
+  flex: 1 auto;
+}
+
 .flex-2 {
   flex: 2;
+}
+
+.flex-2-auto {
+  flex: 2 auto;
 }
 
 .flex-3 {
   flex: 3;
 }
 
+.flex-3-auto {
+  flex: 3 auto;
+}
+
 .flex-5 {
   flex: 5;
 }
 
+.flex-5-auto {
+  flex: 5 auto;
+}
+
 .flex-7 {
   flex: 7;
+}
+
+.flex-7-auto {
+  flex: 7 auto;
 }
 
 .m-1 {
@@ -10016,7 +10036,7 @@ input[type=range]::-ms-thumb {
 
 body,
 html {
-  font-family: Roboto, Nunito, sans-serif;
+  font-family: Roboto, sans-serif;
   color: #eee;
 }
 
@@ -10033,30 +10053,10 @@ body {
   z-index: 1;
 }
 
-.breadcrumbs-nav {
-  background-color: #232526;
-  /* fallback for old browsers */
-  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to left, rgba(255, 255, 255, 0.1), #483348, rgba(0, 0, 0, 0.1));
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: linear-gradient(45deg, #222, transparent);
-  position: fixed;
-  z-index: 5;
-  width: auto;
-  top: 0;
-}
-
-.breadcrumbs-nav .breadcrumb {
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-}
-
 main {
   position: relative;
   z-index: 1;
-  margin: 6em 0;
+  margin: 84px 0;
 }
 
 a {
@@ -10073,6 +10073,42 @@ a:hover {
 input,
 textarea {
   color: white;
+}
+
+.appears {
+  transform: scale(0);
+  -webkit-animation: appearKF cubic-bezier(0, 0, 0.2, 1) 300ms forwards;
+          animation: appearKF cubic-bezier(0, 0, 0.2, 1) 300ms forwards;
+}
+
+.disappears {
+  transform: scale(1);
+  animation: appearKF cubic-bezier(0.4, 0, 1, 1) 150ms reverse forwards;
+}
+
+.breadcrumbs-nav {
+  background-color: #382338;
+  /* fallback for old browsers */
+  background: radial-gradient(ellipse 40% 100% at 50% 0%, #083234, transparent 100%), radial-gradient(circle 410px at 0% 0%, #382338, transparent 71%);
+  position: relative;
+  display: table;
+  z-index: 5;
+  width: auto;
+  top: 0;
+  box-shadow: none !important;
+}
+
+@media (min-width: 1024px) {
+  .breadcrumbs-nav {
+    display: inherit;
+  }
+}
+
+.breadcrumbs-nav .breadcrumb {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
 .appears {
@@ -10146,6 +10182,7 @@ ul.record-list li:hover .play-link .material-icons.default-icon {
 
 .lyrics-container {
   position: relative;
+  padding: 3em 0 50vh 0;
   z-index: 1;
 }
 

@@ -1,7 +1,7 @@
 @import 'variables';
 
 body, html {
-  font-family: Roboto, Nunito, sans-serif;
+  font-family: Roboto, sans-serif;
   color: #eee;
 }
 
@@ -18,27 +18,10 @@ body {
   z-index: 1;
 }
 
-.breadcrumbs-nav {
-  @extend nav;
-  background-color: #232526; /* fallback for old browsers */
-  background: -webkit-linear-gradient(to left, rgba(white, 0.1), #483348, rgba(black, 0.1)); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to left, rgba(white, 0.1), #483348, rgba(black, 0.1)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: linear-gradient(45deg, #222, transparent);
-  position: fixed;
-  z-index: 5;
-  width: auto;
-  top: 0;
-
-  .breadcrumb {
-    user-select: none;
-  }
-
-}
-
 main {
   position: relative;
   z-index: 1;
-  margin: 6em 0;
+  margin: 84px 0;
 }
 
 a {
@@ -55,32 +38,4 @@ a {
 
 input, textarea {
   color: white;
-}
-
-.toast {
-  @extend .rounded;
-
-  &.success, &.info, &.alert {
-    @extend .black;
-  }
-
-  &.success {
-    @extend .light-green-text;
-    @extend .text-accent-3;
-  }
-
-  &.fail {
-    @extend .red;
-    @extend .darken-1;
-  }
-
-  &.info {
-    @extend .cyan-text;
-  }
-
-  &.alert {
-    @extend .yellow-text;
-    @extend .text-accent-2;
-  }
-
 }

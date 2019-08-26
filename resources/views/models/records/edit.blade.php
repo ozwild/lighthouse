@@ -6,16 +6,18 @@
 
     <main>
 
-        <section class="container">
-
-            <h1>Update Song</h1>
+        <article class="container">
 
             <form action="{{ route('records.update', $record->id) }}" class="form" method="post">
+
+                <header class="pl-3">
+                    <h1>Update Song</h1>
+                </header>
 
                 {!! csrf_field() !!}
                 {!! method_field('patch') !!}
 
-                <div class="row">
+                <section class="row">
 
                     <div class="input-field col s12 m6">
                         <input id="name" class="validate" type="text" name="name"
@@ -47,9 +49,9 @@
                         <label for="video_end">Video End</label>
                     </div>
 
-                </div>
+                </section>
 
-                <div class="row">
+                <section class="row">
                     <div class="col s12">
                         <div class="flex">
                             <div class="input-field flex-2">
@@ -58,7 +60,7 @@
                                 <label for="lyrics">Lyrics</label>
                             </div>
                             <div class="flex-1">
-                                <a class="btn btn-floating waves-effect waves-light right stick top-6"
+                                <a class="btn btn-large btn-floating waves-effect waves-light right stick top-6"
                                    href="{{ route('records.lyrics.sync', $record->id) }}"><i
                                             class="material-icons">sync</i></a>
 
@@ -66,19 +68,19 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </section>
 
-                <div class="row">
+                <footer class="row">
                     <div class="input-field col s12">
-                        <button type="submit" class="btn waves-effect waves-light right">Save
+                        <button type="submit" class="btn btn-large waves-effect waves-light right">Save
                             <i class="material-icons left">send</i></button>
                         <div class="clearfix"></div>
                     </div>
-                </div>
+                </footer>
 
             </form>
 
-        </section>
+        </article>
     </main>
 
 @endsection

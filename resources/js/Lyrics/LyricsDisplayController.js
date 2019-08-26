@@ -5,6 +5,7 @@ export default class LyricsDisplayController {
     static _instance;
     static _$container;
     service;
+    canBeDisplayed;
 
     static load($container) {
         this._$container = $("<div>").addClass(["lyrics-container", "display"]);
@@ -27,6 +28,7 @@ export default class LyricsDisplayController {
 
     constructor(record, $container) {
         this.service = new Service(record, $container);
+        this.canBeDisplayed = !!record.lyrics;
         this.service.process();
         this.service.render();
     }

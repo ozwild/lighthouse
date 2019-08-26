@@ -1,0 +1,27 @@
+.toast {
+  @extend .rounded;
+
+  &.success, &.info, &.alert {
+    @extend .black;
+  }
+
+  &.success {
+    @extend .light-green-text;
+    @extend .text-accent-3;
+  }
+
+  &.fail {
+    @extend .red;
+    @extend .darken-1;
+  }
+
+  &.info {
+    @extend .cyan-text;
+  }
+
+  &.alert {
+    @extend .yellow-text;
+    @extend .text-accent-2;
+  }
+
+}

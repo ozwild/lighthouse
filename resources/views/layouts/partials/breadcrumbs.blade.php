@@ -1,6 +1,6 @@
 @if (count($breadcrumbs))
 
-    <nav class="breadcrumbs-nav z-depth-0">
+    <nav class="breadcrumbs-nav">
         <div class="nav-wrapper">
             <div style="padding: 0 1em">
                 <div class="col s12">

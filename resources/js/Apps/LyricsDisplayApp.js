@@ -20,9 +20,11 @@ export default class LyricsDisplayApp {
             this.videoController = VideoController.instance(recordModel);
             this.lyricsController = LyricsController.instance(recordModel);
 
-            this.videoController.on('tick', timestamp => {
-                this.lyricsController.service.showLyricsForTime(timestamp);
-            });
+            if (this.lyricsController.canBeDisplayed) {
+                this.videoController.on('tick', timestamp => {
+                    this.lyricsController.service.showLyricsForTime(timestamp);
+                });
+            }
 
         });
     }
