@@ -10165,6 +10165,10 @@ ul.record-list li .link.edit-link {
   right: 0.5em;
 }
 
+ul.record-list li .link.sync-link {
+  right: 2em;
+}
+
 ul.record-list li:hover {
   background: rgba(0, 0, 0, 0.125);
 }
@@ -10202,6 +10206,7 @@ ul.record-list li:hover .play-link .material-icons.default-icon {
       -ms-user-select: none;
           user-select: none;
   min-height: 1em;
+  white-space: pre;
 }
 
 .lyrics-container.display {
@@ -10263,6 +10268,10 @@ ul.record-list li:hover .play-link .material-icons.default-icon {
   padding: 2px 3px;
   line-height: 1;
   font-size: 0.8em;
+  position: absolute;
+  top: 0.4em;
+  width: 3.5em;
+  text-align: center;
 }
 
 .lyrics-container.sync .lyrics-content .lyric .timestamp.active {
@@ -10278,15 +10287,17 @@ ul.record-list li:hover .play-link .material-icons.default-icon {
 
 .lyrics-container.sync .lyrics-content .lyric .lyric-content {
   font-weight: 500;
-  margin-left: 0.5em;
+  margin-left: 5em;
 }
 
 .lyrics-container.sync .lyrics-content .lyric .lyric-start {
   color: #74dabb;
+  left: 0;
 }
 
 .lyrics-container.sync .lyrics-content .lyric .lyric-end {
   color: #fc469c;
+  left: 3em;
 }
 
 @-webkit-keyframes lineSelection {

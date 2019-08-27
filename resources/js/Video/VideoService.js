@@ -81,6 +81,15 @@ export default class VideoService extends Eventful {
         this.on('playing', () => this.#heartbeat());
         this.on('playing', () => this.$container.addClass("playing"));
         this.on('stopped', () => this.$container.removeClass("playing"));
+        this.on('ended', () => {
+            let _this = this;
+            setTimeout(function () {
+                if (_this.shouldLoop && _this.video_start) {
+                    _this.seekTo(_this.video_start);
+                    _this.play();
+                }
+            }, 500);
+        });
         this.on('stateChange', e => {
 
             this.currentState = e.data;

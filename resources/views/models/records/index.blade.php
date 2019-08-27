@@ -33,6 +33,9 @@
                             <i class="material-icons tiny">edit</i>
                         </a>
 
+                        <a href="{{ route('records.lyrics.sync', $record->id) }}" class="link sync-link">
+                            <i class="material-icons">sync</i></a>
+
                         <div>
                             <div>{{ $record->name }}</div>
                             <div class="secondary-line"><a href="#">{{ $record->artist }}</a></div>

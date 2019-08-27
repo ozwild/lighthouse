@@ -44,7 +44,7 @@ class RecordController extends Controller
         $record = new Record();
         $record->fill($request->all());
         $record->save();
-        return redirect()->route('records.show', $record->id);
+        return redirect()->route('records.edit', $record->id);
     }
 
     /**

@@ -33,6 +33,10 @@ $selectionColor: map_get($palette, 'contrast');
         padding: 2px 3px;
         line-height: 1;
         font-size: 0.8em;
+        position: absolute;
+        top: 0.4em;
+        width: 3.5em;
+        text-align: center;
 
         &.active {
           color: #ccc;
@@ -49,15 +53,17 @@ $selectionColor: map_get($palette, 'contrast');
 
       .lyric-content {
         font-weight: 500;
-        margin-left: 0.5em;
+        margin-left: 5em;
       }
 
       .lyric-start {
         color: $startColor;
+        left: 0;
       }
 
       .lyric-end {
         color: $endColor;
+        left: 3em;
       }
 
     }

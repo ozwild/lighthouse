@@ -26967,29 +26967,29 @@ function (_Eventful) {
   _inherits(VideoService, _Eventful);
 
   function VideoService(record, $container) {
-    var _this;
+    var _this2;
 
     _classCallCheck(this, VideoService);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(VideoService).call(this));
+    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(VideoService).call(this));
 
-    _adjustStart.add(_assertThisInitialized(_this));
+    _adjustStart.add(_assertThisInitialized(_this2));
 
-    _setBindings.add(_assertThisInitialized(_this));
+    _setBindings.add(_assertThisInitialized(_this2));
 
-    _defineProperty(_assertThisInitialized(_this), "record", void 0);
+    _defineProperty(_assertThisInitialized(_this2), "record", void 0);
 
-    _defineProperty(_assertThisInitialized(_this), "player", void 0);
+    _defineProperty(_assertThisInitialized(_this2), "player", void 0);
 
-    _defineProperty(_assertThisInitialized(_this), "currentState", void 0);
+    _defineProperty(_assertThisInitialized(_this2), "currentState", void 0);
 
-    _defineProperty(_assertThisInitialized(_this), "$container", void 0);
+    _defineProperty(_assertThisInitialized(_this2), "$container", void 0);
 
-    _defineProperty(_assertThisInitialized(_this), "shouldLoop", true);
+    _defineProperty(_assertThisInitialized(_this2), "shouldLoop", true);
 
-    _defineProperty(_assertThisInitialized(_this), "shouldAutoStart", true);
+    _defineProperty(_assertThisInitialized(_this2), "shouldAutoStart", true);
 
-    _defineProperty(_assertThisInitialized(_this), "eventHandlers", {
+    _defineProperty(_assertThisInitialized(_this2), "eventHandlers", {
       load: [],
       ready: [],
       stateChange: [],
@@ -27003,7 +27003,7 @@ function (_Eventful) {
       tick: []
     });
 
-    _heartbeat.set(_assertThisInitialized(_this), {
+    _heartbeat.set(_assertThisInitialized(_this2), {
       writable: true,
       value: function value() {
         var instance = this;
@@ -27023,25 +27023,25 @@ function (_Eventful) {
       }
     });
 
-    _this.record = record;
-    _this.youtube_id = _this.record.youtube_id;
-    _this.video_start = _this.record.video_start;
-    _this.video_end = _this.record.video_end;
-    _this.$container = $container;
+    _this2.record = record;
+    _this2.youtube_id = _this2.record.youtube_id;
+    _this2.video_start = _this2.record.video_start;
+    _this2.video_end = _this2.record.video_end;
+    _this2.$container = $container;
 
-    _this.$container.append($("<div>").attr("id", 'player').attr('tabindex', '-1'));
+    _this2.$container.append($("<div>").attr("id", 'player').attr('tabindex', '-1'));
 
-    _classPrivateMethodGet(_assertThisInitialized(_this), _setBindings, _setBindings2).call(_assertThisInitialized(_this));
+    _classPrivateMethodGet(_assertThisInitialized(_this2), _setBindings, _setBindings2).call(_assertThisInitialized(_this2));
 
-    _this.trigger('load');
+    _this2.trigger('load');
 
-    return _this;
+    return _this2;
   }
 
   _createClass(VideoService, [{
     key: "initialize",
     value: function initialize() {
-      var _this2 = this;
+      var _this3 = this;
 
       var options = {
         width: '426',
@@ -27057,10 +27057,10 @@ function (_Eventful) {
         },
         events: {
           'onReady': function onReady(e) {
-            return _this2.trigger('ready', e);
+            return _this3.trigger('ready', e);
           },
           'onStateChange': function onStateChange(e) {
-            return _this2.trigger('stateChange', e);
+            return _this3.trigger('stateChange', e);
           }
         }
       };
@@ -27141,41 +27141,51 @@ var _heartbeat = new WeakMap();
 var _adjustStart = new WeakSet();
 
 var _setBindings2 = function _setBindings2() {
-  var _this3 = this;
+  var _this4 = this;
 
   this.on('playing', function () {
-    return _classPrivateMethodGet(_this3, _adjustStart, _adjustStart2).call(_this3);
+    return _classPrivateMethodGet(_this4, _adjustStart, _adjustStart2).call(_this4);
   });
   this.on('playing', function () {
-    return _classPrivateFieldGet(_this3, _heartbeat).call(_this3);
+    return _classPrivateFieldGet(_this4, _heartbeat).call(_this4);
   });
   this.on('playing', function () {
-    return _this3.$container.addClass("playing");
+    return _this4.$container.addClass("playing");
   });
   this.on('stopped', function () {
-    return _this3.$container.removeClass("playing");
+    return _this4.$container.removeClass("playing");
+  });
+  this.on('ended', function () {
+    var _this = _this4;
+    setTimeout(function () {
+      if (_this.shouldLoop && _this.video_start) {
+        _this.seekTo(_this.video_start);
+
+        _this.play();
+      }
+    }, 500);
   });
   this.on('stateChange', function (e) {
-    _this3.currentState = e.data;
+    _this4.currentState = e.data;
 
     switch (e.data) {
       case YT.PlayerState.UNSTARTED:
-        return _this3.trigger(['unstarted', 'stopped'], e);
+        return _this4.trigger(['unstarted', 'stopped'], e);
 
       case YT.PlayerState.ENDED:
-        return _this3.trigger(['ended', 'stopped'], e);
+        return _this4.trigger(['ended', 'stopped'], e);
 
       case YT.PlayerState.PLAYING:
-        return _this3.trigger('playing', e);
+        return _this4.trigger('playing', e);
 
       case YT.PlayerState.PAUSED:
-        return _this3.trigger(['paused', 'stopped'], e);
+        return _this4.trigger(['paused', 'stopped'], e);
 
       case YT.PlayerState.BUFFERING:
-        return _this3.trigger(['buffering', 'stopped'], e);
+        return _this4.trigger(['buffering', 'stopped'], e);
 
       case YT.PlayerState.CUED:
-        return _this3.trigger(['cued', 'stopped'], e);
+        return _this4.trigger(['cued', 'stopped'], e);
     }
   });
 };
