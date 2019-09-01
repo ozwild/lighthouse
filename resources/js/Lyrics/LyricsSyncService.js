@@ -9,8 +9,8 @@ export default class LyricsSyncService extends LyricsService {
         step: []
     };
 
-    constructor(record, $container) {
-        super(record, $container);
+    constructor(song, $container) {
+        super(song, $container);
         this.#bindings();
         this.trigger('load');
     }
@@ -60,7 +60,7 @@ export default class LyricsSyncService extends LyricsService {
     };
 
     process() {
-        this.lyrics = this.record.lyrics.split("\n")
+        this.lyrics = this.song.lyrics.split("\n")
             .map(lyricText => new SyncLyric(lyricText));
     }
 

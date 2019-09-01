@@ -13,8 +13,8 @@ export default class LyricsDisplayService extends LyricsService {
         ready: []
     };
 
-    constructor(record, $container) {
-        super(record, $container);
+    constructor(song, $container) {
+        super(song, $container);
         this.trigger('load');
     }
 

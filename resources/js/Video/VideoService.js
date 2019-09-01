@@ -2,7 +2,7 @@ import Eventful from '../Helpers/Eventful';
 
 export default class VideoService extends Eventful {
 
-    record;
+    song;
     player;
     currentState;
 
@@ -25,14 +25,14 @@ export default class VideoService extends Eventful {
         tick: []
     };
 
-    constructor(record, $container) {
+    constructor(song, $container) {
 
         super();
 
-        this.record = record;
-        this.youtube_id = this.record.youtube_id;
-        this.video_start = this.record.video_start;
-        this.video_end = this.record.video_end;
+        this.song = song;
+        this.youtube_id = this.song.youtube_id;
+        this.video_start = this.song.video_start;
+        this.video_end = this.song.video_end;
 
         this.$container = $container;
         this.$container.append($("<div>").attr("id", 'player').attr('tabindex', '-1'));
@@ -134,8 +134,8 @@ export default class VideoService extends Eventful {
 
     };
 
-    set record(record) {
-        console.error("Record reassignment is forbidden. Can't assign `" + record.name + "`,  `" + this.name + "` already assigned.");
+    set song(song) {
+        console.error("song reassignment is forbidden. Can't assign `" + song.name + "`,  `" + this.name + "` already assigned.");
     }
 
     #adjustStart() {

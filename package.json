@@ -12,16 +12,21 @@
     "devDependencies": {
         "@babel/plugin-proposal-class-properties": "^7.5.5",
         "@babel/plugin-proposal-private-methods": "^7.4.4",
+        "@babel/preset-react": "^7.0.0",
+        "awesome-debounce-promise": "^2.1.0",
         "axios": "^0.18",
         "cross-env": "^5.1",
         "jquery": "^3.2",
         "laravel-mix": "^4.0.7",
         "lodash": "^4.17.5",
         "materialize-css": "^1.0.0-rc.2",
+        "react": "^16.2.0",
+        "react-async-hook": "^3.4.0",
+        "react-dom": "^16.2.0",
         "resolve-url-loader": "^2.3.1",
         "sass": "^1.15.2",
         "sass-loader": "^7.1.0",
-        "vue-template-compiler": "^2.6.10"
+        "use-constant": "^1.0.0"
     },
-    "dependencies": {}
+    "dependencies": []
 }

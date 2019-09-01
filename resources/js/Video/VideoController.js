@@ -15,22 +15,22 @@ export default class VideoController {
         this._$container.appendTo($container);
     }
 
-    static instance(record) {
+    static instance(song) {
         if (!this._instance) {
-            if (!record) {
+            if (!song) {
                 /**
-                 * Implement record service and controller
-                 * to provide with record data on demand
+                 * Implement song service and controller
+                 * to provide with song data on demand
                  */
-                throw "Can't initialize without a record";
+                throw "Can't initialize without a song";
             }
-            this._instance = new VideoController(record, this._$container);
+            this._instance = new VideoController(song, this._$container);
         }
         return this._instance;
     }
 
-    constructor(record, $container) {
-        this.service = new Service(record, $container);
+    constructor(song, $container) {
+        this.service = new Service(song, $container);
         this.service.shouldAutoStart = false;
         this.service.initialize();
         this.UIControl = new VideoUIControl(this.service);

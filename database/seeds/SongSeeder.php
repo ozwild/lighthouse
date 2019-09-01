@@ -1,10 +1,10 @@
 <?php
 
-use App\Record;
+use App\Song;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
-class RecordSeeder extends Seeder
+class SongSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,9 +15,9 @@ class RecordSeeder extends Seeder
     {
         $now = Carbon::now()->toDateTimeString();
 
-        $recordsData = [
+        $songsData = [
             [
-                "name" => "Deja te conecto",
+                "title" => "Deja te conecto",
                 "youtube_id" => 'PJr0gJ__BPk',
                 "video_start" => 9,
                 "lyrics" => '[17.5] No me pidas que llore por ti,
@@ -62,7 +62,7 @@ Try to make it right, love is the way.)',
                 "created_at" => $now,
                 "updated_at" => $now
             ], [
-                "name" => "azul",
+                "title" => "azul",
                 "youtube_id" => '<e4ANL_JebVg',
                 "video_start" => 0,
                 "lyrics" => 'Tú, qué manera de aferrarte, tú 
@@ -96,7 +96,7 @@ Ya tienes otro',
                 "created_at" => $now,
                 "updated_at" => $now
             ], [
-                "name" => "No hay mal que dure",
+                "title" => "No hay mal que dure",
                 "youtube_id" => 'LI_xR-RNvOc',
                 "video_start" => 0,
                 "lyrics" => 'No tienes remedio
@@ -140,7 +140,7 @@ Pri Chinga tu madre',
 
         ];
 
-        Record::insert($recordsData);
+        Song::insert($songsData);
 
     }
 }

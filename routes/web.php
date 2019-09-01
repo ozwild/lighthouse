@@ -15,6 +15,10 @@ Route::get('/', function () {
     return redirect()->to('records');
 })->name('home');
 
+Route::get('/app',function(){
+    return view('app');
+});
+
 Route::resource('records', 'RecordController');
 
 Route::prefix("records")

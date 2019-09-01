@@ -21,6 +21,15 @@ Route::get('video-controls', function () {
     return view('components.video.controls')->render();
 });
 
+Route::prefix('songs')
+    ->namespace('Api')
+    ->group(function () {
+
+        Route::get('search', 'SongController@searchSong');
+        Route::get('{record}', 'SongController@getSong');
+
+    });
+
 Route::prefix('metadata')
     ->group(function () {
 

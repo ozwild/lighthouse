@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Record;
+use App\Song;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 
-class RecordController extends Controller
+class SongController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +18,7 @@ class RecordController extends Controller
     public function index()
     {
 
-        $records = Record::all();
+        $records = Song::all();
 
         return view('models.records.index', compact('records', 'loadedRecord'));
     }
@@ -41,7 +41,7 @@ class RecordController extends Controller
      */
     public function store(Request $request)
     {
-        $record = new Record();
+        $record = new Song();
         $record->fill($request->all());
         $record->save();
         return redirect()->route('records.edit', $record->id);
@@ -50,22 +50,22 @@ class RecordController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Record $record
+     * @param Song $record
      * @return Response
      */
-    public function show(Record $record)
+    public function show(Song $record)
     {
-        $available_records = Record::all();
+        $available_records = Song::all();
         return view('models.records.show', compact('record', 'available_records'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Record $record
+     * @param Song $record
      * @return Response
      */
-    public function edit(Record $record)
+    public function edit(Song $record)
     {
         return view('models.records.edit', compact('record'));
     }
@@ -74,10 +74,10 @@ class RecordController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param Record $record
+     * @param Song $record
      * @return Response
      */
-    public function update(Request $request, Record $record)
+    public function update(Request $request, Song $record)
     {
         $record->update($request->all());
 
@@ -91,19 +91,19 @@ class RecordController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Record $record
+     * @param Song $record
      * @return Response
      */
-    public function destroy(Record $record)
+    public function destroy(Song $record)
     {
         //
     }
 
     /**
-     * @param Record $record
+     * @param Song $record
      * @return Factory|View
      */
-    public function getSync(Record $record)
+    public function getSync(Song $record)
     {
         return view('models.records.lyrics-sync', compact('record'));
     }

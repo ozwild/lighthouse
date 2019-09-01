@@ -4,18 +4,18 @@ import Lyric from "./Lyric";
 
 export default class LyricsService extends Eventful {
 
-    #record;
+    #song;
     $container;
     $content;
     lyrics = [];
     selectedLyric;
     activeLyrics = [];
 
-    constructor(record, $container) {
+    constructor(song, $container) {
 
         super();
 
-        this.#record = record;
+        this.#song = song;
 
         this.$container = $container;
         this.$content = $("<div>").addClass("lyrics-content")
@@ -23,15 +23,15 @@ export default class LyricsService extends Eventful {
 
     }
 
-    get record() {
-        return this.#record;
+    get song() {
+        return this.#song;
     }
 
     process() {
-        if (!this.#record.lyrics) {
+        if (!this.#song.lyrics) {
             this.lyrics.push(new Lyric("No lyrics available"));
         } else {
-            this.lyrics = this.#record.lyrics.split("\n")
+            this.lyrics = this.#song.lyrics.split("\n")
                 .map(lyricText => new Lyric(lyricText));
         }
     }

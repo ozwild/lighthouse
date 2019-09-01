@@ -12,23 +12,23 @@ export default class LyricsDisplayController {
         this._$container.appendTo($container);
     }
 
-    static instance(record) {
+    static instance(song) {
         if (!this._instance) {
-            if (!record) {
+            if (!song) {
                 /**
-                 * Implement record service and controller
-                 * to provide with record data on demand
+                 * Implement song service and controller
+                 * to provide with song data on demand
                  */
-                throw "Can't initialize without a record";
+                throw "Can't initialize without a song";
             }
-            this._instance = new LyricsDisplayController(record, this._$container);
+            this._instance = new LyricsDisplayController(song, this._$container);
         }
         return this._instance;
     }
 
-    constructor(record, $container) {
-        this.service = new Service(record, $container);
-        this.canBeDisplayed = !!record.lyrics;
+    constructor(song, $container) {
+        this.service = new Service(song, $container);
+        this.canBeDisplayed = !!song.lyrics;
         this.service.process();
         this.service.render();
     }
