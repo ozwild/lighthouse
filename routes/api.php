@@ -26,7 +26,9 @@ Route::prefix('songs')
     ->group(function () {
 
         Route::get('search', 'SongController@searchSong');
-        Route::get('{record}', 'SongController@getSong');
+        Route::get('{song}', 'SongController@getSong');
+        Route::post('', 'SongController@store');
+        Route::put('{song}', 'SongController@update');
 
     });
 

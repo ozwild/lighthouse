@@ -17,6 +17,7 @@ class CreateSongsTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->string('artist')->nullable();
+            $table->string('album')->nullable();
             $table->string('key')->nullable();
             $table->string('youtube_id')->nullable();
             $table->integer('video_start')->nullable();

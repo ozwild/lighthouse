@@ -34,7 +34,10 @@ use Illuminate\Support\Carbon;
 class Song extends Model
 {
     protected $fillable = [
-        'name', 'artist', 'youtube_id', 'video_start', 'lyrics'
+        'title', 'artist', 'album', 'artist_id', 'album_id',
+        'key', 'lyrics',
+        'youtube_id', 'video_start', 'video_end',
+        'spotify_id', 'spotify_album_id', 'spotify_artist_id', 'spotify_uri', 'spotify_href'
     ];
 
 }

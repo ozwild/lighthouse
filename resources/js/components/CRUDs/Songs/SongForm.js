@@ -3,16 +3,19 @@ import {SectionTitle} from '../../Partials/Titles';
 import SongModel from '../../../Models/SongModel';
 import SongSearch from "./SearchSong";
 import useForm from '../../Hooks/useForm';
+import {toast} from 'materialize-css';
 
 const SongForm = () => {
 
-    const {values, handleChange, handleSubmit} = useForm({
+    const {values, handleChange, handleSubmit, setValues} = useForm({
         initialValues: new SongModel(),
-        onSubmit(values, e) {
-            console.log(values);
-        },
-        validate(values) {
-
+        onSubmit({values}) {
+            SongModel.newFromData(values)
+                .save()
+                .then(response => {
+                    toast({html: "Song saved!", classes: "success"});
+                    setValues(response);
+                });
         }
     });
 
@@ -26,6 +29,8 @@ const SongForm = () => {
             </section>
 
             <form id="song_form" className="form" onSubmit={handleSubmit}>
+
+                <input type="hidden" value={values.id} onChange={handleChange}/>
 
                 <section className="row">
 

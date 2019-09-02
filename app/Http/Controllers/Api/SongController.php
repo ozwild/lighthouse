@@ -14,19 +14,35 @@ class SongController extends Controller
         return response()->json($record);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
+     */
     public function searchSong(Request $request)
     {
-        $query = $request->get('query');
-        $results = Song::where('title', 'like', "%$query%")
-            ->limit(10)
+        $this->validate($request, [
+            "query" => "required"
+        ]);
+
+        $results = Song::where('title', 'like', "%{$request->get('query')}%")
+            ->limit(5)
             ->get();
+
         return response()->json([
             "results" => $results
         ]);
     }
 
-    public function save(Request $request)
+    public function store(Request $request)
     {
-        return response()->json($request->all());
+        $song = Song::create($request->all());
+        return response()->json($song);
+    }
+
+    public function update(Request $request, Song $song)
+    {
+        $song->update($request->all());
+        return response()->json($song);
     }
 }

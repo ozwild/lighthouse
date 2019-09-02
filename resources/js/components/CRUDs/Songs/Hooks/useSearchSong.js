@@ -5,8 +5,7 @@ import AwesomeDebouncePromise from 'awesome-debounce-promise';
 import SongModel from "../../../../Models/SongModel";
 
 const _searchSong = async (
-    query,
-    abortSignal
+    query
 ) => {
     if (!query) {
         return;
@@ -18,7 +17,7 @@ const _searchSong = async (
         }
     );*/
 
-    const result = await SongModel.searchSong(query, abortSignal);
+    const result = await SongModel.searchSong(query);
 
     if (result.status !== 200) {
         throw new Error('bad status = ' + result.status);

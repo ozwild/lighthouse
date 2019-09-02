@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export default class SongModel {
     id = '';
     title = '';
@@ -11,28 +13,26 @@ export default class SongModel {
     album_id = '';
     lyrics = '';
 
-    static async searchSong(query, abortSignal) {
+    static async searchSong(query) {
 
         if (!query) {
             return;
         }
 
-        let result = await fetch(
-            `/api/songs/search?query=${encodeURIComponent(query)}`,
-            {
-                signal: abortSignal,
-            });
-
-        if (result.status !== 200) {
-            throw new Error('bad status = ' + result.status);
-        }
-
-        const json = await result.json();
-        return json.results;
+        const response = await axios.get(`/api/songs/search?query=${encodeURIComponent(query)}`);
+        const {data} = await response;
+        return data.results;
     }
 
-    constructor(data = {}) {
-        Object.keys(SongModel).forEach(field => this[field] = data[field]);
+    static newFromData(data) {
+        let model = new SongModel();
+        model.fill(data);
+        return model;
+    }
+
+    fill(data) {
+        Object.keys(this).forEach(field => this[field] = data[field]);
+        return this;
     }
 
     get isANewRecord() {
@@ -40,20 +40,19 @@ export default class SongModel {
     }
 
     save() {
+        return this.isANewRecord ?
+            this._store() :
+            this._update();
+    }
 
-        let options = {
-            data: this
-        };
+    _store() {
+        return axios.post('/api/songs', this)
+            .then(response => response.data);
+    }
 
-        if (this.isANewRecord) {
-            options.action = "/api/songs/store";
-            options.method = "POST";
-        } else {
-            options.action = `/api/songs/${this.id}`;
-            options.method = "PUT";
-        }
-
-        $.ajax(options).done(data => console.log(data));
+    _update() {
+        return axios.put('/api/songs/' + this.id, this)
+            .then(response => response.data);
     }
 
 }

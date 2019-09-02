@@ -1,10 +1,21 @@
 import React, {useState} from 'react';
 
-const useForm = ({initialValues, onSubmit, validate}) => {
+const useForm = ({initialValues, onSubmit}) => {
+
+    /**
+     * Add `validate` to the list of parameters
+     * when implementing Form Validation
+     */
 
     const [values, setValues] = useState(initialValues || {});
     const [touchedValues, setTouchedValues] = useState({});
-    const [errors, setErrors] = useState({});
+    /*const [errors, setErrors] = useState({});*/
+
+    const updateValues = values => {
+        setValues({
+            ...values
+        });
+    };
 
     const handleChange = event => {
         const target = event.target;
@@ -23,30 +34,38 @@ const useForm = ({initialValues, onSubmit, validate}) => {
             ...touchedValues,
             [name]: true
         });
-        const e = validate(values);
-        setErrors({
-            ...errors,
-            ...e
-        })
+        /* Implementation of Form Validation
+        if (validate) {
+            const e = validate(values);
+            setErrors({
+                ...errors,
+                ...e
+            })
+        }*/
     };
 
     const handleSubmit = event => {
         event.preventDefault();
-        const e = validate(values);
-        setErrors({
-            ...errors,
-            ...e
-        });
-        onSubmit({ values, e });
+        /* Implementation of Form Validation
+        if (validate) {
+            const e = validate(values);
+            setErrors({
+                ...errors,
+                ...e
+            });
+        }
+        onSubmit({values, e});*/
+        onSubmit({values});
     };
 
     return {
         values,
         touchedValues,
-        errors,
         handleChange,
         handleSubmit,
-        handleBlur
+        handleBlur,
+        updateValues,
+        setValues
     };
 };
 

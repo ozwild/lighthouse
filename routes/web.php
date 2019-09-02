@@ -15,7 +15,7 @@ Route::get('/', function () {
     return redirect()->to('records');
 })->name('home');
 
-Route::get('/app',function(){
+Route::get('/app', function () {
     return view('app');
 });
 
@@ -26,5 +26,20 @@ Route::prefix("records")
 
         Route::get("{record}/sync", 'RecordController@getSync')
             ->name("records.lyrics.sync");
+
+    });
+
+Route::prefix('audio-test')
+    ->namespace('Api')
+    ->group(function () {
+
+        Route::get('', function () {
+            return view('audio-test');
+        });
+
+        Route::post('', 'AudioController@handleUpload');
+
+        Route::get('{filename}', 'AudioController@serve')
+            ->name('get-audio');
 
     });

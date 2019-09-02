@@ -56986,6 +56986,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SongModel; });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -57000,72 +57002,12 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+
+
 var SongModel =
 /*#__PURE__*/
 function () {
-  _createClass(SongModel, null, [{
-    key: "searchSong",
-    value: function () {
-      var _searchSong = _asyncToGenerator(
-      /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(query, abortSignal) {
-        var result, json;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                if (query) {
-                  _context.next = 2;
-                  break;
-                }
-
-                return _context.abrupt("return");
-
-              case 2:
-                _context.next = 4;
-                return fetch("/api/songs/search?query=".concat(encodeURIComponent(query)), {
-                  signal: abortSignal
-                });
-
-              case 4:
-                result = _context.sent;
-
-                if (!(result.status !== 200)) {
-                  _context.next = 7;
-                  break;
-                }
-
-                throw new Error('bad status = ' + result.status);
-
-              case 7:
-                _context.next = 9;
-                return result.json();
-
-              case 9:
-                json = _context.sent;
-                return _context.abrupt("return", json.results);
-
-              case 11:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }));
-
-      function searchSong(_x, _x2) {
-        return _searchSong.apply(this, arguments);
-      }
-
-      return searchSong;
-    }()
-  }]);
-
   function SongModel() {
-    var _this = this;
-
-    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
     _classCallCheck(this, SongModel);
 
     _defineProperty(this, "id", '');
@@ -57089,35 +57031,95 @@ function () {
     _defineProperty(this, "album_id", '');
 
     _defineProperty(this, "lyrics", '');
-
-    Object.keys(SongModel).forEach(function (field) {
-      return _this[field] = data[field];
-    });
   }
 
   _createClass(SongModel, [{
+    key: "fill",
+    value: function fill(data) {
+      var _this = this;
+
+      Object.keys(this).forEach(function (field) {
+        return _this[field] = data[field];
+      });
+      return this;
+    }
+  }, {
     key: "save",
     value: function save() {
-      var options = {
-        data: this
-      };
-
-      if (this.isANewRecord) {
-        options.action = "/api/songs/store";
-        options.method = "POST";
-      } else {
-        options.action = "/api/songs/".concat(this.id);
-        options.method = "PUT";
-      }
-
-      $.ajax(options).done(function (data) {
-        return console.log(data);
+      return this.isANewRecord ? this._store() : this._update();
+    }
+  }, {
+    key: "_store",
+    value: function _store() {
+      return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/songs', this).then(function (response) {
+        return response.data;
+      });
+    }
+  }, {
+    key: "_update",
+    value: function _update() {
+      return axios__WEBPACK_IMPORTED_MODULE_1___default.a.put('/api/songs/' + this.id, this).then(function (response) {
+        return response.data;
       });
     }
   }, {
     key: "isANewRecord",
     get: function get() {
       return !this.id;
+    }
+  }], [{
+    key: "searchSong",
+    value: function () {
+      var _searchSong = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(query) {
+        var response, _ref, data;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (query) {
+                  _context.next = 2;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 2:
+                _context.next = 4;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/api/songs/search?query=".concat(encodeURIComponent(query)));
+
+              case 4:
+                response = _context.sent;
+                _context.next = 7;
+                return response;
+
+              case 7:
+                _ref = _context.sent;
+                data = _ref.data;
+                return _context.abrupt("return", data.results);
+
+              case 10:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function searchSong(_x) {
+        return _searchSong.apply(this, arguments);
+      }
+
+      return searchSong;
+    }()
+  }, {
+    key: "newFromData",
+    value: function newFromData(data) {
+      var model = new SongModel();
+      model.fill(data);
+      return model;
     }
   }]);
 
@@ -58103,20 +58105,15 @@ window.apps = {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-/*window._ = require('lodash');*/
-
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
  * for JavaScript based Bootstrap features such as modals and tabs. This
  * code may be modified to fit the specific needs of your application.
  */
 try {
-  /*window.Popper = require('popper.js').default;*/
   window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 
   __webpack_require__(/*! materialize-css */ "./node_modules/materialize-css/dist/js/materialize.js");
-  /*require('bootstrap');*/
-
 } catch (e) {}
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -58344,7 +58341,7 @@ var _searchSong =
 function () {
   var _ref = _asyncToGenerator(
   /*#__PURE__*/
-  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(query, abortSignal) {
+  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(query) {
     var result, json;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
       while (1) {
@@ -58359,7 +58356,7 @@ function () {
 
           case 2:
             _context.next = 4;
-            return _Models_SongModel__WEBPACK_IMPORTED_MODULE_5__["default"].searchSong(query, abortSignal);
+            return _Models_SongModel__WEBPACK_IMPORTED_MODULE_5__["default"].searchSong(query);
 
           case 4:
             result = _context.sent;
@@ -58387,7 +58384,7 @@ function () {
     }, _callee);
   }));
 
-  return function _searchSong(_x, _x2) {
+  return function _searchSong(_x) {
     return _ref.apply(this, arguments);
   };
 }();
@@ -58475,6 +58472,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Models_SongModel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../Models/SongModel */ "./resources/js/Models/SongModel.js");
 /* harmony import */ var _SearchSong__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./SearchSong */ "./resources/js/components/CRUDs/Songs/SearchSong.js");
 /* harmony import */ var _Hooks_useForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../Hooks/useForm */ "./resources/js/components/Hooks/useForm.js");
+/* harmony import */ var materialize_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! materialize-css */ "./node_modules/materialize-css/dist/js/materialize.js");
+/* harmony import */ var materialize_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(materialize_css__WEBPACK_IMPORTED_MODULE_5__);
+
 
 
 
@@ -58484,14 +58484,21 @@ __webpack_require__.r(__webpack_exports__);
 var SongForm = function SongForm() {
   var _useForm = Object(_Hooks_useForm__WEBPACK_IMPORTED_MODULE_4__["default"])({
     initialValues: new _Models_SongModel__WEBPACK_IMPORTED_MODULE_2__["default"](),
-    onSubmit: function onSubmit(values, e) {
-      console.log(values);
-    },
-    validate: function validate(values) {}
+    onSubmit: function onSubmit(_ref) {
+      var values = _ref.values;
+      _Models_SongModel__WEBPACK_IMPORTED_MODULE_2__["default"].newFromData(values).save().then(function (response) {
+        Object(materialize_css__WEBPACK_IMPORTED_MODULE_5__["toast"])({
+          html: "Song saved!",
+          classes: "success"
+        });
+        setValues(response);
+      });
+    }
   }),
       values = _useForm.values,
       handleChange = _useForm.handleChange,
-      handleSubmit = _useForm.handleSubmit;
+      handleSubmit = _useForm.handleSubmit,
+      setValues = _useForm.setValues;
 
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "container"
@@ -58503,7 +58510,11 @@ var SongForm = function SongForm() {
     id: "song_form",
     className: "form",
     onSubmit: handleSubmit
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "hidden",
+    value: values.id,
+    onChange: handleChange
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", {
     className: "row"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "input-field col s12 m6"
@@ -58641,9 +58652,12 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var useForm = function useForm(_ref) {
   var initialValues = _ref.initialValues,
-      onSubmit = _ref.onSubmit,
-      validate = _ref.validate;
+      onSubmit = _ref.onSubmit;
 
+  /**
+   * Add `validate` to the list of parameters
+   * when implementing Form Validation
+   */
   var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(initialValues || {}),
       _useState2 = _slicedToArray(_useState, 2),
       values = _useState2[0],
@@ -58653,11 +58667,12 @@ var useForm = function useForm(_ref) {
       _useState4 = _slicedToArray(_useState3, 2),
       touchedValues = _useState4[0],
       setTouchedValues = _useState4[1];
+  /*const [errors, setErrors] = useState({});*/
 
-  var _useState5 = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])({}),
-      _useState6 = _slicedToArray(_useState5, 2),
-      errors = _useState6[0],
-      setErrors = _useState6[1];
+
+  var updateValues = function updateValues(values) {
+    setValues(_objectSpread({}, values));
+  };
 
   var handleChange = function handleChange(event) {
     var target = event.target;
@@ -58670,27 +58685,41 @@ var useForm = function useForm(_ref) {
     var target = event.target;
     var name = target.name;
     setTouchedValues(_objectSpread({}, touchedValues, _defineProperty({}, name, true)));
-    var e = validate(values);
-    setErrors(_objectSpread({}, errors, {}, e));
+    /* Implementation of Form Validation
+    if (validate) {
+        const e = validate(values);
+        setErrors({
+            ...errors,
+            ...e
+        })
+    }*/
   };
 
   var handleSubmit = function handleSubmit(event) {
     event.preventDefault();
-    var e = validate(values);
-    setErrors(_objectSpread({}, errors, {}, e));
+    /* Implementation of Form Validation
+    if (validate) {
+        const e = validate(values);
+        setErrors({
+            ...errors,
+            ...e
+        });
+    }
+    onSubmit({values, e});*/
+
     onSubmit({
-      values: values,
-      e: e
+      values: values
     });
   };
 
   return {
     values: values,
     touchedValues: touchedValues,
-    errors: errors,
     handleChange: handleChange,
     handleSubmit: handleSubmit,
-    handleBlur: handleBlur
+    handleBlur: handleBlur,
+    updateValues: updateValues,
+    setValues: setValues
   };
 };
 
