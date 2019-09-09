@@ -1,0 +1,29 @@
+.search-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(to left, #212335, #131516);
+  border-radius: 4px;
+  height: 100vh;
+  padding: 1.5em 1em 3em 1em;
+  z-index: 5;
+
+  input {
+    text-indent: 2em;
+  }
+
+  .label-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: left 0.6s;
+  }
+
+  .close-icon {
+    position: absolute;
+    top: 11px;
+    right: 0;
+  }
+
+}

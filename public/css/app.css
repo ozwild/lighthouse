@@ -10056,7 +10056,7 @@ body {
 main {
   position: relative;
   z-index: 1;
-  margin: 84px 0;
+  /*margin: 84px 0;*/
 }
 
 a {
@@ -10109,6 +10109,43 @@ textarea {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+}
+
+.search-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(to left, #212335, #131516);
+  border-radius: 4px;
+  height: 100vh;
+  padding: 1.5em 1em 3em 1em;
+  z-index: 5;
+}
+
+.search-box input {
+  text-indent: 2em;
+}
+
+.search-box .label-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: left 0.6s;
+}
+
+.search-box .close-icon {
+  position: absolute;
+  top: 11px;
+  right: 0;
+}
+
+.sidenav {
+  background: linear-gradient(45deg, black, #223);
+}
+
+.sidenav li a {
+  color: white;
 }
 
 .appears {
@@ -10206,7 +10243,7 @@ ul.record-list li:hover .play-link .material-icons.default-icon {
       -ms-user-select: none;
           user-select: none;
   min-height: 1em;
-  white-space: pre;
+  /*white-space: pre;*/
 }
 
 .lyrics-container.display {

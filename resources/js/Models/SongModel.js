@@ -1,58 +1,60 @@
-import axios from 'axios';
+import SongService from "../Services/SongService";
 
 export default class SongModel {
-    id = '';
-    title = '';
-    key = '';
-    artist = '';
-    album = '';
-    youtube_id = '';
-    video_start = '';
-    video_end = '';
-    artist_id = '';
-    album_id = '';
-    lyrics = '';
 
-    static async searchSong(query) {
+    id;
+    title = "";
+    key = "";
+    artist = "";
+    album = "";
+    youtube_id = "";
+    video_start = "";
+    video_end = "";
+    artist_id;
+    album_id;
+    lyrics = "";
 
-        if (!query) {
-            return;
-        }
-
-        const response = await axios.get(`/api/songs/search?query=${encodeURIComponent(query)}`);
-        const {data} = await response;
-        return data.results;
+    /**
+     * @param data {Object}
+     */
+    constructor(data = {}) {
+        Object.keys(data)
+            .forEach(key => {
+                const value = data[key];
+                if (this.hasOwnProperty(key) && value) {
+                    this[key] = value;
+                }
+            });
     }
 
-    static newFromData(data) {
-        let model = new SongModel();
-        model.fill(data);
-        return model;
-    }
-
+    /**
+     * @param data {Object}
+     * @returns {SongModel}
+     */
     fill(data) {
-        Object.keys(this).forEach(field => this[field] = data[field]);
+        Object.keys(data)
+            .forEach(key => {
+                const value = data[key];
+                if (this.hasOwnProperty(key) && value) {
+                    this[key] = value;
+                }
+            });
         return this;
     }
 
-    get isANewRecord() {
+    /**
+     * @returns {boolean}
+     */
+    get isANewSong() {
         return !this.id;
     }
 
+    /**
+     * @returns {Promise<AxiosResponse<any>|never>}
+     */
     save() {
-        return this.isANewRecord ?
-            this._store() :
-            this._update();
-    }
-
-    _store() {
-        return axios.post('/api/songs', this)
-            .then(response => response.data);
-    }
-
-    _update() {
-        return axios.put('/api/songs/' + this.id, this)
-            .then(response => response.data);
+        return SongService.save(this)
+            .then(songData => this.fill(songData));
     }
 
 }

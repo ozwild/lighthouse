@@ -21,9 +21,9 @@ class SongSeeder extends Seeder
                 "youtube_id" => 'PJr0gJ__BPk',
                 "video_start" => 9,
                 "lyrics" => '[17.5] No me pidas que llore por ti,
-[20.5] Alguna vez te vi sometido,
-[25.5] Tus ojos caen why flotan en la obscuridad,
-Alumbrame, que estoy bien perdido.
+[19.5] [20.5] Alguna vez te vi sometido,
+[20.5] [25.5] Tus ojos caen why flotan en la obscuridad,
+[25.5] [27.5] Alumbrame, que estoy bien perdido.
 why fue una vez, si solo una vez,
 Que te dije la verdad, si solo una vez,
 Hinchado en alcohol, perdido en la noche,

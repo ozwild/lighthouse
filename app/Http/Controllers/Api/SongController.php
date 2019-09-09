@@ -5,18 +5,22 @@ namespace App\Http\Controllers\Api;
 use App\Song;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 
 class SongController extends Controller
 {
-
-    public function getSong(Song $record)
+    /**
+     * @param Song $song
+     * @return JsonResponse
+     */
+    public function getSong(Song $song)
     {
-        return response()->json($record);
+        return response()->json($song);
     }
 
     /**
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      * @throws \Illuminate\Validation\ValidationException
      */
     public function searchSong(Request $request)

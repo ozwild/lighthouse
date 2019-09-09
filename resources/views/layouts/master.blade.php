@@ -17,9 +17,7 @@
 </head>
 <body>
 
-<div class="body-content">
-    @yield('content')
-</div>
+@yield('content')
 
 @section('scripts')
     <script src="{{ asset('js/app.js') }}"></script>
